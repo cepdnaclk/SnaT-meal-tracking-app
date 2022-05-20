@@ -3,6 +3,7 @@ import 'package:mobile_app/Components/Tab_Views/chart_view.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
 import 'package:mobile_app/Components/Tab_Views/settings_view.dart';
+import 'package:mobile_app/Components/dashboard_drawer.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
 class DashboardLayout extends StatefulWidget {
@@ -33,6 +34,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
           backgroundColor: ThemeInfo.primaryColor,
           title: const Text("SnaT: Meal Diary"),
         ),
+        drawer: const DashboardDrawer(),
         bottomNavigationBar: BottomAppBar(
           color: ThemeInfo.primaryColor,
           child: TabBar(
