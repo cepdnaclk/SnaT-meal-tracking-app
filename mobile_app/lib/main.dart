@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/welcome_screen.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,9 +16,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SnaT',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: ThemeInfo.primaryColor,
+        primarySwatch: Colors.green,
       ),
-      home: const WelcomeScreen(),
+      home: const DashboardLayout(),
     );
   }
 }
