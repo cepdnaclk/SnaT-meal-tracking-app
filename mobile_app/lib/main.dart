@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/dashboard_layout.dart';
+import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.green,
       ),
-      home: const DashboardLayout(),
+      home: const WelcomeScreen(),
     );
   }
 }
