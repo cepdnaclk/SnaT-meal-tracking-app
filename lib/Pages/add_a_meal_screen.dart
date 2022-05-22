@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 
 import '../Components/date_time_widget.dart';
+import '../Components/meal_tile.dart';
 
 class AddAMealScreen extends StatefulWidget {
   const AddAMealScreen({Key? key}) : super(key: key);
@@ -22,61 +23,29 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
     {"name": "Tea", "icon": Icons.local_cafe}
   ];
 
-  DropdownButton dropDown(List dropList) {
-    List<DropdownMenuItem> dropdownList = [];
-    for (String listItem in dropList) {
-      var newItem = DropdownMenuItem(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(
-            child: Container(
-              height: 32,
-              child: Text(listItem),
-            ),
-          ),
-          Divider(
-            thickness: 1,
-          )
-        ]),
-        value: listItem,
-      );
-      dropdownList.add(newItem);
-    }
-    return DropdownButton(
-      dropdownColor: Colors.white,
-      iconEnabledColor: Colors.grey,
-      value: selectedMeal,
-      items: dropdownList,
-      onChanged: (value) {
-        selectedMeal = value;
-        print(selectedMeal);
-        setState(() {});
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add new meal"),
+        title: const Text("Add new meal"),
         actions: [
           GestureDetector(
             onTap: () {},
-            child: Center(
+            child: const Center(
                 child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: Text("Save"),
             )),
           )
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             "Date and time:",
             style: TextStyle(fontSize: 20),
           ),
@@ -94,10 +63,10 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               setState(() {});
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             "Meal:",
             style: TextStyle(fontSize: 20),
           ),
@@ -108,13 +77,15 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             builder: (FormFieldState<String> state) {
               return InputDecorator(
                 decoration: InputDecoration(
-                    //labelStyle: textStyle,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0))),
+                  //labelStyle: textStyle,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
                 isEmpty: selectedMeal == '',
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    hint: Text('Please select a meal'),
+                    hint: const Text('Please select a meal'),
                     value: selectedMeal,
                     isDense: true,
                     onChanged: (String? newValue) {
@@ -134,53 +105,30 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               );
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           ElevatedButton(
             onPressed: () {},
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: const Text(
+            child: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 15.0),
+              child: Text(
                 "Add a food",
                 style: TextStyle(fontSize: 20),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
-          Text(
+          const Text(
             "Meal items:",
             style: TextStyle(fontSize: 20),
           ),
           const SizedBox(
             height: 5,
           ),
-          for (Map meal in mealItems)
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 2),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                color: Colors.black,
-              )),
-              child: Row(
-                children: [
-                  Icon(
-                    meal["icon"],
-                    size: 30,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    meal["name"],
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            )
+          for (Map meal in mealItems) MealTile(meal: meal)
         ],
       ),
     );
