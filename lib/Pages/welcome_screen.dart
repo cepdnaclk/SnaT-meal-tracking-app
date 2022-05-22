@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/dashboard_layout.dart';
+import 'package:mobile_app/Pages/login_screen.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
@@ -22,7 +22,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       timer.cancel();
       Navigator.of(context).push(CustomPageRoute(
-          child: const DashboardLayout(), transition: "slide left"));
+          child: const LoginScreen(), transition: "slide left"));
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => DashboardLayout()));
     });

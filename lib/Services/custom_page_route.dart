@@ -9,7 +9,7 @@ class CustomPageRoute extends PageRouteBuilder {
                 milliseconds:
                     transition == "slide left" || transition == "slide right"
                         ? 700
-                        : 600),
+                        : 500),
             pageBuilder: (context, animation, secondaryAnimation) => child);
 
   @override

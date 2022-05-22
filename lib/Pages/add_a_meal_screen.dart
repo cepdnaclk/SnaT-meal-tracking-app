@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Pages/add_new_food_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
+import 'package:mobile_app/Services/custom_page_route.dart';
 
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
@@ -109,7 +111,10 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             height: 20,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(CustomPageRoute(
+                  child: AddNewFoodScreen(), transition: "Scale"));
+            },
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 15.0),
               child: Text(
