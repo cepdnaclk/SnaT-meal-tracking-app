@@ -21,8 +21,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.initState();
     timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       timer.cancel();
-      Navigator.of(context).push(CustomPageRoute(
-          child: const LoginScreen(), transition: "slide left"));
+      Navigator.of(context).push(
+          CustomPageRoute(child: LoginScreen(), transition: "slide left"));
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => DashboardLayout()));
     });
