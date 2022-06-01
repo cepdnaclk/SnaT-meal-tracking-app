@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/drop_down.dart';
 import 'package:mobile_app/constants.dart';
 
+import '../Services/custom_page_route.dart';
+import 'dashboard_layout.dart';
+
 class AdditionalSettingsScreen extends StatelessWidget {
   AdditionalSettingsScreen({Key? key}) : super(key: key);
   String? name;
@@ -16,7 +19,7 @@ class AdditionalSettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           const SizedBox(
-            height: 50,
+            height: 40,
           ),
           const Text(
             "Name:",
@@ -98,6 +101,24 @@ class AdditionalSettingsScreen extends StatelessWidget {
               weight = val;
             },
           ),
+          const SizedBox(
+            height: 25,
+          ),
+          ElevatedButton(
+              onPressed: (){
+                print("Hello");
+                Navigator.of(context).push(CustomPageRoute(
+                    child: DashboardLayout(),
+                    transition: "slide right"));
+              },
+              child: const Padding(
+                  padding: EdgeInsets.symmetric(
+                  vertical: 15.0, horizontal: 2),
+                  child: Text(
+                      "Continue",
+                      style: TextStyle(fontSize: 20),
+      ),
+    ),),
         ],
       ),
     );
