@@ -22,9 +22,11 @@ class _TableBasicsExampleState extends State<SchedulingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TableCalendar - Basics'),
-      ),
+      appBar: null,
+      // AppBar(
+      //     automaticallyImplyLeading:false,
+      //   //title: Text('TableCalendar - Basics'),
+      // ),
       body: TableCalendar(
 
         firstDay: DateTime(1970),
