@@ -4,6 +4,7 @@ import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
 import 'package:mobile_app/Components/Tab_Views/settings_view.dart';
 import 'package:mobile_app/Components/dashboard_drawer.dart';
+//import 'package:mobile_app/Pages/SchedulingView.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
 class DashboardLayout extends StatefulWidget {

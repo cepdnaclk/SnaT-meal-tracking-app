@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/additional_settings_screen.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/constants.dart';
@@ -53,7 +54,8 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         print("Hello");
                         Navigator.of(context).push(CustomPageRoute(
-                            child: AdditionalSettingsScreen(),
+                            child: DashboardLayout(),
+                            //child: AdditionalSettingsScreen(),
                             transition: "slide right"));
                       },
                       child: const Padding(

@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SchedulingView extends StatefulWidget {
-  const SchedulingView({Key? key}) : super(key: key);
-
   @override
-  Widget build(BuildContext context) {
-    return const Text("Scheduling View");
-  }
   _TableBasicsExampleState createState() => _TableBasicsExampleState();
 }
 
