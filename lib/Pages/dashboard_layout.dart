@@ -35,8 +35,17 @@ class _DashboardLayoutState extends State<DashboardLayout>
           backgroundColor: ThemeInfo.primaryColor,
           title: const Text("SnaT: Meal Diary"),
         ),
+        // button for camera from bottom Navigation Bar
+        floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.camera_alt_outlined),
+        backgroundColor: ThemeInfo.primaryColor,
+        onPressed:(){},
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         drawer: const DashboardDrawer(),
         bottomNavigationBar: BottomAppBar(
+          shape: CircularNotchedRectangle(),
+          notchMargin: 1,
           color: ThemeInfo.primaryColor,
           child: TabBar(
             indicatorColor: ThemeInfo.bottomTabButtonColor,
