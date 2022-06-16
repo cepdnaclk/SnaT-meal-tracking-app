@@ -4,6 +4,7 @@ import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
 import 'package:mobile_app/Components/Tab_Views/settings_view.dart';
 import 'package:mobile_app/Components/dashboard_drawer.dart';
+
 //import 'package:mobile_app/Pages/SchedulingView.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
@@ -37,14 +38,14 @@ class _DashboardLayoutState extends State<DashboardLayout>
         ),
         // button for camera from bottom Navigation Bar
         floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.camera_alt_outlined),
+        child: const Icon(Icons.camera_alt_outlined),
         backgroundColor: ThemeInfo.primaryColor,
         onPressed:(){},
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         drawer: const DashboardDrawer(),
         bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
+          shape: const CircularNotchedRectangle(),
           notchMargin: 1,
           color: ThemeInfo.primaryColor,
           child: TabBar(
@@ -55,20 +56,28 @@ class _DashboardLayoutState extends State<DashboardLayout>
             onTap: (val) {
               print(val);
             },
-            tabs: const [
-              Tab(
+            tabs:  [
+              const Tab(
                 icon: Icon(
                   Icons.local_dining,
                 ),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(Icons.calendar_today),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(Icons.insert_chart),
               ),
               Tab(
-                icon: Icon(Icons.settings),
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                      'assets/images/bmi_icon.png',
+                    color: Colors.white,
+                    height: 28.0,
+                    width: 28.0,
+                  ),
+                )
               ),
             ],
           ),
