@@ -42,6 +42,7 @@ dependencies:
   gallery_saver:
   dio:
   file_manager: ^1.0.0
+  fluttertoast:
 #  path_provider_extention: ^1.0.3
   flutter_file_manager: ^0.2.0
 #  path_provider_ex: ^1.0.1
