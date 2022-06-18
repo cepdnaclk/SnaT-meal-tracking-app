@@ -70,7 +70,7 @@ class _campageState extends State<campage> {
       //final String path1 = await getApplicationDocumentsDirectory()!.path.toString().;
       //
       // // copy the file to a new path
-       final File newImage = await File(image!.path).copy('$filePath/gallery'+imagenumber.toString()+'.png');
+       final File newImage = await File(image!.path).copy('$filePath/number'+imagenumber.toString()+'.png');
        imagenumber++;
 
 
@@ -105,7 +105,7 @@ class _campageState extends State<campage> {
       final String filePath = '$dirPath/';
       print("       -------        -----------            ------------ "+filePath);///storage/emulated/0/Android/data/com.example.mobile_app/files/
 
-      final File newImage = await File(image!.path).copy('$filePath/camera'+imagenumber.toString()+'.png');
+      final File newImage = await File(image!.path).copy('$filePath/number'+imagenumber.toString()+'.png');
       imagenumber++;
 
 
@@ -160,25 +160,25 @@ class _campageState extends State<campage> {
                     pickImageC();
                   }
               ),
-              // MaterialButton(
-              //     color: Colors.blue,
-              //     child: const Text(
-              //         "Gallery",
-              //         style: TextStyle(
-              //             color: Colors.white70, fontWeight: FontWeight.bold
-              //         )
-              //     ),
-              //     onPressed: (){
-              //           Navigator.of(context).push(MaterialPageRoute(
-              //           builder: (contex)
-              //             {//return CameraScreen(widget.cameras);
-              //               return (){};
-              //             })
-              //           );
-              //     },
-              //       //DisplayPictureScreen(imagePath: '/storage/emulated/0/Android/data/com.example.mobile_app/files/',);
-              //
-              // ),
+              MaterialButton(
+                  color: Colors.blue,
+                  child: const Text(
+                      "Gallery",
+                      style: TextStyle(
+                          color: Colors.white70, fontWeight: FontWeight.bold
+                      )
+                  ),
+                  onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                        builder: (contex)
+                          {//return CameraScreen(widget.cameras);
+                            return MyFileList();
+                            //return list_images();
+                          })
+                        );
+                  },
+                    //DisplayPictureScreen(imagePath: '/storage/emulated/0/Android/data/com.example.mobile_app/files/',);
+              ),
               SizedBox(height: 20,),
               image != null ? Image.file(image!): Text("No image selected")
 
@@ -217,21 +217,21 @@ class _campageState extends State<campage> {
 
 
 // A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({key, required this.imagePath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
-    );
-  }
-}
+// class DisplayPictureScreen extends StatelessWidget {
+//   final String imagePath;
+//
+//   const DisplayPictureScreen({key, required this.imagePath});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Display the Picture')),
+//       // The image is stored as a file on the device. Use the `Image.file`
+//       // constructor with the given path to display the image.
+//       body: Image.file(File(imagePath)),
+//     );
+//   }
+// }
 // await Navigator.of(context).push(
 //               MaterialPageRoute(
 //                 builder: (context) => DisplayPictureScreen(

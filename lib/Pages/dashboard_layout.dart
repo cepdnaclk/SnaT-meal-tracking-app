@@ -40,8 +40,9 @@ class _DashboardLayoutState extends State<DashboardLayout>
         ),
         // button for camera from bottom Navigation Bar
         floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.camera_alt_outlined),
-        backgroundColor: ThemeInfo.primaryColor,
+          heroTag: "btn1",
+          child: const Icon(Icons.camera_alt_outlined),
+          backgroundColor: ThemeInfo.primaryColor,
           onPressed: (){
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex)
