@@ -5,10 +5,9 @@ import 'package:pretty_gauge/pretty_gauge.dart';
 class ScoreScreen extends StatelessWidget {
   final double bmiScore;
 
-  final int age;  String? bmiStatus;
-
+  final int age;
+  String? bmiStatus;
   String? bmiInterpretation;
-
   Color? bmiStatusColor;
 
   ScoreScreen({Key? key, required this.bmiScore, required this.age})
@@ -18,10 +17,6 @@ class ScoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     setBmiInterpretation();
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("BMI Score"),
-      ),
       body: Container(
           padding: const EdgeInsets.all(12),
           child: Card(
@@ -78,7 +73,7 @@ class ScoreScreen extends StatelessWidget {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text("Re-calculate")),
+                            child: const Text("Back")),
                         const SizedBox(
                           width: 10,
                         ),

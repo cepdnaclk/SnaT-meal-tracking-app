@@ -66,20 +66,29 @@ class _DashboardLayoutState extends State<DashboardLayout>
             onTap: (val) {
               print(val);
             },
-            tabs: const [
-              Tab(
+            tabs: [
+              const Tab(
                 icon: Icon(
                   Icons.local_dining,
                 ),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(Icons.calendar_today),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(Icons.insert_chart),
               ),
               Tab(
-                icon: Icon(Icons.settings),
+                  child: Container(
+                    // custom bmi icon for tab view
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/images/bmi_icon.png',
+                      color: Colors.white,
+                      height: 28.0,
+                      width: 28.0,
+                    ),
+                  )
               ),
             ],
           ),
