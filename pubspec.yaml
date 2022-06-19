@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.6
   camera: ^0.9.4+1
+  flutter_3d_choice_chip: ^0.1.4
+  swipeable_button_view: ^0.0.2
+  page_transition: ^2.0.5
+  pretty_gauge: ^1.0.1
   path_provider:
   path:
   image_picker:

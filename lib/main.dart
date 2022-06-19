@@ -9,7 +9,7 @@ List<CameraDescription> cameras=[];
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
-  runApp(new MyApp());
+  runApp(const MyApp());
 }
 
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/Tab_Views/chart_view.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
-import 'package:mobile_app/Components/Tab_Views/settings_view.dart';
+import 'package:mobile_app/Components/Tab_Views/bmi_view.dart';
 import 'package:mobile_app/Components/dashboard_drawer.dart';
 import 'package:mobile_app/Pages/CameraPage.dart';
 //import 'package:mobile_app/Pages/SchedulingView.dart';
@@ -90,7 +90,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
             HomeView(),
             SchedulingView(),
             ChartView(),
-            SettingsView(),
+            BmiCalcView(),
           ],
         ),
       ),
