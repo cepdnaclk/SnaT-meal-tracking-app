@@ -85,6 +85,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
           ),
         ),
         body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: const [
             HomeView(),
