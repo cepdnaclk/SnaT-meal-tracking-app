@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
+import "package:camera/camera.dart";
 
-void main() {
-  runApp(const MyApp());
+
+List<CameraDescription> cameras=[];
+
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  runApp(new MyApp());
 }
+
+
+// void main() {
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -19,7 +30,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.green,
       ),
-      home: const WelcomeScreen(),
+      home:  WelcomeScreen(cameras),
     );
   }
 }

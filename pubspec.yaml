@@ -35,6 +35,21 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.6
+  camera: ^0.9.4+1
+  path_provider:
+  path:
+  image_picker:
+  gallery_saver:
+  dio:
+  file_manager: ^1.0.0
+  fluttertoast:
+#  path_provider_extention: ^1.0.3
+  flutter_file_manager: ^0.2.0
+#  path_provider_ex: ^1.0.1
+#  flutter_file_utils:
+ # flutter_file_manager:
+#  path_provider_extention: ^1.0.3
+  #path_provider_extention: ^1.0.3
 
 dev_dependencies:
   flutter_test:

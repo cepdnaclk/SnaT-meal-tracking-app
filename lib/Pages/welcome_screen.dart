@@ -6,10 +6,12 @@ import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
 import '../Components/app_logo_text.dart';
+import '../main.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
-
+  //const WelcomeScreen({Key? key}) : super(key: key);
+  var cameras;
+  WelcomeScreen(this.cameras);
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
@@ -22,7 +24,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       timer.cancel();
       Navigator.of(context).push(
-          CustomPageRoute(child: LoginScreen(), transition: "slide left"));
+          CustomPageRoute(child: LoginScreen(widget.cameras), transition: "slide left"));
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => DashboardLayout()));
     });

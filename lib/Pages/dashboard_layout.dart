@@ -1,16 +1,18 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/Tab_Views/chart_view.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
 import 'package:mobile_app/Components/Tab_Views/settings_view.dart';
 import 'package:mobile_app/Components/dashboard_drawer.dart';
-
+import 'package:mobile_app/Pages/CameraPage.dart';
 //import 'package:mobile_app/Pages/SchedulingView.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
 class DashboardLayout extends StatefulWidget {
-  const DashboardLayout({Key? key}) : super(key: key);
-
+  //const DashboardLayout({Key? key}) : super(key: key);
+  var cameras;
+  DashboardLayout(this.cameras);
   @override
   State<DashboardLayout> createState() => _DashboardLayoutState();
 }
@@ -38,9 +40,17 @@ class _DashboardLayoutState extends State<DashboardLayout>
         ),
         // button for camera from bottom Navigation Bar
         floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.camera_alt_outlined),
-        backgroundColor: ThemeInfo.primaryColor,
-        onPressed:(){},
+          heroTag: "btn1",
+          child: const Icon(Icons.camera_alt_outlined),
+          backgroundColor: ThemeInfo.primaryColor,
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (contex)
+                    {//return CameraScreen(widget.cameras);
+                      return const campage(title: 'camera',);
+                    })
+            );
+          },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         drawer: const DashboardDrawer(),
@@ -56,28 +66,20 @@ class _DashboardLayoutState extends State<DashboardLayout>
             onTap: (val) {
               print(val);
             },
-            tabs:  [
-              const Tab(
+            tabs: const [
+              Tab(
                 icon: Icon(
                   Icons.local_dining,
                 ),
               ),
-              const Tab(
+              Tab(
                 icon: Icon(Icons.calendar_today),
               ),
-              const Tab(
+              Tab(
                 icon: Icon(Icons.insert_chart),
               ),
               Tab(
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                      'assets/images/bmi_icon.png',
-                    color: Colors.white,
-                    height: 28.0,
-                    width: 28.0,
-                  ),
-                )
+                icon: Icon(Icons.settings),
               ),
             ],
           ),
