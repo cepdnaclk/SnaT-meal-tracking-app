@@ -11,8 +11,7 @@ import 'package:mobile_app/Theme/theme_info.dart';
 
 class DashboardLayout extends StatefulWidget {
   //const DashboardLayout({Key? key}) : super(key: key);
-  var cameras;
-  DashboardLayout(this.cameras);
+  DashboardLayout();
   @override
   State<DashboardLayout> createState() => _DashboardLayoutState();
 }
