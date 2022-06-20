@@ -8,6 +8,7 @@ import 'package:mobile_app/Components/bmi/gender_widget.dart';
 import 'package:mobile_app/Components/bmi/age_weight_widget.dart';
 import 'package:mobile_app/Components/bmi/score_screen.dart';
 import 'package:mobile_app/Components/bmi/height_widget.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 
 class BmiCalcView extends StatefulWidget {
   const BmiCalcView({Key? key}) : super(key: key);
@@ -82,7 +83,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                                     bmiScore: _bmiScore,
                                     age: _age,
                                   ),
-                                  type: PageTransitionType.fade));
+                                  type: PageTransitionType.leftToRightWithFade));
 
                           setState(() {
                             _isFinished = false;
@@ -98,7 +99,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                             });
                           });
                         },
-                        activeColor: Colors.lightBlue,
+                        activeColor: ThemeInfo.primaryColor,
                         buttonWidget: const Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: Colors.black,
