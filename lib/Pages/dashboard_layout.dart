@@ -83,7 +83,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
                       'assets/images/bmi_icon.png',
-                      color: Colors.white,
+                      color: ThemeInfo.bottomTabButtonColor,
                       height: 28.0,
                       width: 28.0,
                     ),
