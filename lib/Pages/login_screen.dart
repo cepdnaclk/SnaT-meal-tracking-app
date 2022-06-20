@@ -9,8 +9,7 @@ import '../main.dart';
 
 class LoginScreen extends StatelessWidget {
   //const LoginScreen({Key? key}) : super(key: key);
-  var camera;
-  LoginScreen(this.camera);
+  LoginScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         print("Hello");
                         Navigator.of(context).push(CustomPageRoute(
-                            child: DashboardLayout(cameras),
+                            child: DashboardLayout(),
                             //child: AdditionalSettingsScreen(),
                             transition: "slide right"));
                       },

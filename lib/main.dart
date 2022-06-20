@@ -4,11 +4,8 @@ import 'package:mobile_app/Theme/theme_info.dart';
 import "package:camera/camera.dart";
 
 
-List<CameraDescription> cameras=[];
 
-Future<Null> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
+void main() {
   runApp(const MyApp());
 }
 
@@ -30,7 +27,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.green,
       ),
-      home:  WelcomeScreen(cameras),
+      home:  WelcomeScreen(),
     );
   }
 }
