@@ -112,8 +112,8 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(CustomPageRoute(
-                  child: AddNewFoodScreen(), transition: "Scale"));
+              showModalBottomSheet(
+                  context: context, builder: (context) => AddNewFoodScreen());
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 15.0),

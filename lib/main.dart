@@ -12,7 +12,7 @@ Future<Null> main() async {
   await Firebase.initializeApp();
   cameras = await availableCameras();
   runApp(const MyApp());
- }
+}
 
 //void main() {
 //  runApp(const MyApp());
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.green,
       ),
-      home: WelcomeScreen(),
+      home: DashboardLayout(),
     );
   }
 }

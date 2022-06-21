@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         await FirebaseServices().signInWithGoogle();
                         print("Hello");
                         Navigator.of(context).push(CustomPageRoute(
