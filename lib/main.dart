@@ -7,16 +7,16 @@ import 'Pages/dashboard_layout.dart';
 
 List<CameraDescription> cameras = [];
 
-// Future<Null> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   cameras = await availableCameras();
-//   runApp(const MyApp());
-// }
-
-void main() {
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  cameras = await availableCameras();
   runApp(const MyApp());
-}
+ }
+
+//void main() {
+//  runApp(const MyApp());
+//}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.green,
       ),
-      home: DashboardLayout(),
+      home: WelcomeScreen(),
     );
   }
 }
