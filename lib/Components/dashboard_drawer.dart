@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+
 import '../Theme/theme_info.dart';
-import 'drawer_tab.dart';
 
 class DashboardDrawer extends StatelessWidget {
   const DashboardDrawer({
@@ -11,75 +11,144 @@ class DashboardDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            color: ThemeInfo.primaryColor,
-            height: MediaQuery.of(context).size.height / 3,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  children: const [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      radius: 30,
-                      backgroundImage:
-                          AssetImage("assets/images/userImage.png"),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "John Doe",
-                      style: TextStyle(color: Colors.white, fontSize: 25),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    children: const [
-                      Text(
-                        "Details",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.keyboard_arrow_down_outlined,
-                        color: Colors.white,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          const DrawerTab(
-            icon: Icons.history_toggle_off,
-            label: "Meal History",
-          ),
-          const DrawerTab(
-            icon: Icons.settings,
-            label: "Settings",
-          ),
-          const DrawerTab(
-            icon: Icons.camera_alt,
-            label: "Cameras",
-          ),
-          const DrawerTab(
-            icon: Icons.alternate_email,
-            label: "Contact Us",
-          ),
-        ],
+      width: 250.0,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            buildHeader(context),
+            buildMenuItems(context),
+          ],
+        ),
       ),
     );
   }
+
+
+  Widget buildHeader(BuildContext context) =>
+      Container(
+        color: Colors.cyan[100],
+        padding: EdgeInsets.only(
+          top: 25 + MediaQuery.of(context).padding.top,
+        ),
+        child: Column(
+          children: const [
+            CircleAvatar(
+              radius: 52,
+              backgroundImage: AssetImage('assets/images/userImage.png'),
+            ),
+            SizedBox(height: 15),
+            ListTile(
+              title: Text('Unknown User'),
+              subtitle: Text('unknown@email.com'),
+            )
+          ],
+        ),
+      );
+
+
+  Widget buildMenuItems(BuildContext context) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              iconColor: Colors.blueGrey,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              leading: const Icon(Icons.history_toggle_off_rounded),
+              title: const Text(
+                  'Meal History',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  )
+              ),
+              onTap: () {
+                // Navigator.pop(context);
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              iconColor: Colors.blueGrey,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              leading: const Icon(Icons.settings_rounded),
+              title: const Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  )
+              ),
+              onTap: () {
+                //
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              iconColor: Colors.blueGrey,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              leading: const Icon(Icons.camera),
+              title: const Text(
+                  'Camera',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  )
+              ),
+              onTap: () {
+                // Navigator.pop(context);
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ListTile(
+              iconColor: Colors.blueGrey,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              leading: const Icon(Icons.notification_add_outlined),
+              title: const Text(
+                  'Notifications',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  )
+              ),
+              onTap: () {
+                // Navigator.pop(context);
+              },
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children:  [
+              const Divider(color: Colors.blueGrey,),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  iconColor: Colors.blueGrey,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  leading: const Icon(Icons.logout),
+                  title: const Text(
+                      'Sign Out',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      )
+                  ),
+                  onTap: () {
+                    // Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          )
+        ],
+      );
 }

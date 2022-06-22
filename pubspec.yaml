@@ -56,6 +56,7 @@ dependencies:
  # flutter_file_manager:
 #  path_provider_extention: ^1.0.3
   #path_provider_extention: ^1.0.3
+  get:
 
 dev_dependencies:
   flutter_test:
