@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import "package:camera/camera.dart";
+import 'Pages/dashboard_layout.dart';
 
-
-List<CameraDescription> cameras=[];
+List<CameraDescription> cameras = [];
 
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,10 +14,9 @@ Future<Null> main() async {
   runApp(const MyApp());
 }
 
-
-// void main() {
-//   runApp(const MyApp());
-// }
+//void main() {
+//  runApp(const MyApp());
+//}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.green,
       ),
-      home:  WelcomeScreen(),
+      home: DashboardLayout(),
     );
   }
 }
