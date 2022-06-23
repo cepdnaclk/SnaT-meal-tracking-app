@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:mobile_app/Components/DrawerView/SettingsView.dart';
 
 import '../Theme/theme_info.dart';
 
@@ -24,10 +24,8 @@ class DashboardDrawer extends StatelessWidget {
     );
   }
 
-
-  Widget buildHeader(BuildContext context) =>
-      Container(
-        color: Colors.cyan[100],
+  Widget buildHeader(BuildContext context) => Container(
+        color: ThemeInfo.primaryColor,
         padding: EdgeInsets.only(
           top: 25 + MediaQuery.of(context).padding.top,
         ),
@@ -46,25 +44,21 @@ class DashboardDrawer extends StatelessWidget {
         ),
       );
 
-
-  Widget buildMenuItems(BuildContext context) =>
-      Column(
+  Widget buildMenuItems(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              iconColor: Colors.blueGrey,
+              iconColor: Colors.greenAccent,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               leading: const Icon(Icons.history_toggle_off_rounded),
-              title: const Text(
-                  'Meal History',
+              title: const Text('Meal History',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
-                  )
-              ),
+                  )),
               onTap: () {
                 // Navigator.pop(context);
               },
@@ -76,31 +70,28 @@ class DashboardDrawer extends StatelessWidget {
               iconColor: Colors.blueGrey,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               leading: const Icon(Icons.settings_rounded),
-              title: const Text(
-                  'Settings',
+              title: const Text('Settings',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
-                  )
-              ),
+                  )),
               onTap: () {
-                //
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const SettingsView()));
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              iconColor: Colors.blueGrey,
+              iconColor: Colors.amberAccent,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               leading: const Icon(Icons.camera),
-              title: const Text(
-                  'Camera',
+              title: const Text('Camera',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
-                  )
-              ),
+                  )),
               onTap: () {
                 // Navigator.pop(context);
               },
@@ -109,39 +100,36 @@ class DashboardDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              iconColor: Colors.blueGrey,
+              iconColor: Colors.redAccent,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               leading: const Icon(Icons.notification_add_outlined),
-              title: const Text(
-                  'Notifications',
+              title: const Text('Notifications',
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
-                  )
-              ),
+                  )),
               onTap: () {
                 // Navigator.pop(context);
               },
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children:  [
-              const Divider(color: Colors.blueGrey,),
+          Wrap(
+            runAlignment: WrapAlignment.end,
+            children: [
+              const Divider(
+                color: Colors.blueGrey,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(
-                  iconColor: Colors.blueGrey,
+                  iconColor: Colors.blueAccent,
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   leading: const Icon(Icons.logout),
-                  title: const Text(
-                      'Sign Out',
+                  title: const Text('Sign Out',
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
-                      )
-                  ),
+                      )),
                   onTap: () {
                     // Navigator.pop(context);
                   },
