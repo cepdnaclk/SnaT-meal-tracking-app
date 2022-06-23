@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
+import 'package:get/get.dart';
 
 /*  Custom Widgets  */
 import 'package:mobile_app/Components/bmi/gender_widget.dart';
@@ -56,7 +57,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                           onChange: (ageVal) {
                             _age = ageVal;
                           },
-                          title: "Age",
+                          title: "age".tr,
                           initValue: 30,
                           min: 0,
                           max: 100),
@@ -64,7 +65,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                           onChange: (weightVal) {
                             _weight = weightVal;
                           },
-                          title: "Weight(Kg)",
+                          title: "weight".tr,
                           initValue: 50,
                           min: 0,
                           max: 200)

@@ -5,6 +5,7 @@ import 'package:mobile_app/Theme/theme_info.dart';
 import "package:camera/camera.dart";
 import 'Pages/dashboard_layout.dart';
 import 'package:get/get.dart';
+import 'package:mobile_app/LocaleString.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: LocalString(),
+      locale: const Locale('en','US'),    // default language - en-US
       debugShowCheckedModeBanner: false,
       title: 'SnaT',
       theme: ThemeData(
