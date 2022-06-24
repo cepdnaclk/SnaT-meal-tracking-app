@@ -31,10 +31,16 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        SizedBox(
+          width: 95,
+        ),
         Text(
           widget.text,
           style: const TextStyle(
               color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          width: 10,
         ),
         IconButton(
           iconSize: 30,

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Pages/add_a_meal_screen.dart' as M;
 
 class AddNewFoodScreen extends StatelessWidget {
-  AddNewFoodScreen({Key? key}) : super(key: key);
+  AddNewFoodScreen({required this.AppBarTitle});
+
+  final Text AppBarTitle;
+
   final TextEditingController searchController = TextEditingController();
   double amount = 0.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add new food"),
+        title: AppBarTitle,
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              print(amount.toInt());
+            },
             child: const Center(
                 child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -29,6 +35,10 @@ class AddNewFoodScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
+                    onTap: () {
+                      showSearch(
+                          context: context, delegate: CustomSearchDelegate());
+                    },
                     controller: searchController,
                     decoration: const InputDecoration(
                       hintText: "search",
@@ -44,7 +54,10 @@ class AddNewFoodScreen extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showSearch(
+                          context: context, delegate: CustomSearchDelegate());
+                    },
                     icon: const Icon(
                       Icons.search,
                       size: 30,
@@ -63,6 +76,87 @@ class AddNewFoodScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  List<String> SearchTerms = [
+    'Apple',
+    'Banana',
+    'Pineapple',
+    'Pears',
+    'Watermelons',
+    'Oranges',
+    'Strawberries',
+    'Grapes'
+  ];
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            close(context, null);
+          })
+    ];
+    // TODO: implement buildActions
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: Icon(Icons.arrow_back));
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in SearchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        // M.addMealItems(fruit);
+        matchQuery.add(fruit);
+      }
+    }
+    return ListView.builder(
+        itemCount: matchQuery.length,
+        itemBuilder: (context, index) {
+          var result = matchQuery[index];
+          return ListTile(
+            title: Text(result),
+          );
+        });
+    // TODO: implement buildResults
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in SearchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+    }
+    return ListView.builder(
+        itemCount: matchQuery.length,
+        itemBuilder: (context, index) {
+          var result = matchQuery[index];
+          return ListTile(
+            onTap: () {
+              M.addMealItems(result);
+              showResults(context);
+            },
+            title: Text(result),
+          );
+        });
+    // TODO: implement buildSuggestions
+    throw UnimplementedError();
   }
 }
 
