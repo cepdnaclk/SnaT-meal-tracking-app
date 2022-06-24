@@ -27,6 +27,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
     _tabController = TabController(vsync: this, length: 4);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -34,6 +35,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
       length: 4,
       child: Scaffold(
         appBar: AppBar(
+          elevation: 8.0,
           backgroundColor: ThemeInfo.primaryColor,
           title: const Text("SnaT: Meal Diary"),
         ),
@@ -83,7 +85,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
                       'assets/images/bmi_icon.png',
-                      color: Colors.white,
+                      color: ThemeInfo.bottomTabButtonColor,
                       height: 28.0,
                       width: 28.0,
                     ),
