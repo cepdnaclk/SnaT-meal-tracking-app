@@ -6,13 +6,14 @@ import 'package:mobile_app/Services/custom_page_route.dart';
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
 
+String foodamount = "";
 List mealItems = [
-  {"name": "Rice & Curry", "icon": Icons.rice_bowl},
-  {"name": "Bread", "icon": Icons.food_bank},
-  {"name": "Tea", "icon": Icons.emoji_food_beverage}
+  {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
+  {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
+  {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
 ];
-void addMealItems(String name) {
-  mealItems.add({"name": name, "icon": Icons.rice_bowl});
+void addMealItems(String name, String amount) {
+  mealItems.add({"name": name, "icon": Icons.rice_bowl, "amount": amount});
   print(mealItems);
 }
 
@@ -29,6 +30,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
   String? selectedMeal;
 
   void StateReload() {
+    print("State reload");
     setState(() {});
   }
 
@@ -138,8 +140,11 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             onPressed: () {
               showModalBottomSheet(
                   context: context,
-                  builder: (context) =>
-                      AddNewFoodScreen(AppBarTitle: Text("Add a New Food")));
+                  builder: (context) => AddNewFoodScreen(
+                        AppBarTitle: Text("Add a New Food"),
+                        ReloadState: StateReload,
+                        tileEdit: false,
+                      ));
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -160,7 +165,11 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             height: 5,
           ),
           for (Map meal in mealItems)
-            MealTile(meal: meal, ReloadState: StateReload)
+            MealTile(
+              meal: meal,
+              ReloadState: StateReload,
+              foodamount: foodamount,
+            )
         ],
       ),
     );

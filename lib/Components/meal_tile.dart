@@ -3,28 +3,34 @@ import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
 
 class MealTile extends StatelessWidget {
-  const MealTile({Key? key, required this.meal, required this.ReloadState})
-      : super(key: key);
+  const MealTile({
+    Key? key,
+    required this.meal,
+    required this.ReloadState,
+    required this.foodamount,
+  }) : super(key: key);
 
   final Map meal;
+  final String foodamount;
   final void Function() ReloadState;
+
+  void editTile(String name, String amount) {
+    for (Map meal1 in mealItems) {
+      if (meal1['name'] == meal["name"]) {
+        int index = mealItems.indexOf(meal1);
+        mealItems[index]['name'] = name;
+        mealItems[index]['icon'] = Icons.food_bank;
+        mealItems[index]['amount'] = amount;
+        break;
+      }
+    }
+  }
 
   void deleteTile() {
     for (Map meal1 in mealItems) {
       if (meal1['name'] == meal["name"]) {
         int index = mealItems.indexOf(meal1);
         mealItems.removeAt(index);
-        break;
-      }
-    }
-  }
-
-  void editTile() {
-    for (Map meal1 in mealItems) {
-      if (meal1['name'] == meal["name"]) {
-        int index = mealItems.indexOf(meal1);
-        mealItems[index]['name'] = "Food Selected";
-        mealItems[index]['icon'] = Icons.food_bank;
         break;
       }
     }
@@ -41,45 +47,56 @@ class MealTile extends StatelessWidget {
       )),
       child: MaterialButton(
         onPressed: () {},
-        child: Row(
+        child: Column(
           children: [
-            Icon(
-              meal["icon"],
-              size: 30,
-            ),
-            const SizedBox(
-              width: 10,
+            Row(
+              children: [
+                Icon(
+                  meal["icon"],
+                  size: 30,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  meal["name"],
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () async {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) => AddNewFoodScreen(
+                              AppBarTitle: Text("Add Quantity"),
+                              ReloadState: ReloadState,
+                              tileEdit: true,
+                              editTileDetails: editTile,
+                            ));
+                    // editTile();
+                    ReloadState();
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    size: 30,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    deleteTile();
+                    ReloadState();
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    size: 30,
+                  ),
+                ),
+              ],
             ),
             Text(
-              meal["name"],
+              meal["amount"],
               style: const TextStyle(fontSize: 18),
-            ),
-            const Spacer(),
-            IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => AddNewFoodScreen(
-                          AppBarTitle: Text("Add Quantity"),
-                        ));
-                editTile();
-                ReloadState();
-              },
-              icon: const Icon(
-                Icons.edit,
-                size: 30,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                deleteTile();
-                ReloadState();
-              },
-              icon: const Icon(
-                Icons.delete,
-                size: 30,
-              ),
-            ),
+            )
           ],
         ),
       ),
