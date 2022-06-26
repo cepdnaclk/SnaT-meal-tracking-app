@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/additional_settings_screen.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
+import 'package:mobile_app/Services/firebase_services.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/constants.dart';
 
+import '../main.dart';
+
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  //const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +55,12 @@ class LoginScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await FirebaseServices().signInWithGoogle();
                         print("Hello");
                         Navigator.of(context).push(CustomPageRoute(
-                            child: AdditionalSettingsScreen(),
+                            child: DashboardLayout(),
+                            //child: AdditionalSettingsScreen(),
                             transition: "slide right"));
                       },
                       child: const Padding(

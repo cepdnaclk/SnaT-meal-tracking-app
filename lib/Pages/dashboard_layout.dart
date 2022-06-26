@@ -1,14 +1,17 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/Tab_Views/chart_view.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
-import 'package:mobile_app/Components/Tab_Views/settings_view.dart';
+import 'package:mobile_app/Components/Tab_Views/bmi_view.dart';
 import 'package:mobile_app/Components/dashboard_drawer.dart';
+import 'package:mobile_app/Pages/CameraPage.dart';
+//import 'package:mobile_app/Pages/SchedulingView.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
 class DashboardLayout extends StatefulWidget {
-  const DashboardLayout({Key? key}) : super(key: key);
-
+  //const DashboardLayout({Key? key}) : super(key: key);
+  DashboardLayout();
   @override
   State<DashboardLayout> createState() => _DashboardLayoutState();
 }
@@ -24,6 +27,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
     _tabController = TabController(vsync: this, length: 4);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -31,11 +35,29 @@ class _DashboardLayoutState extends State<DashboardLayout>
       length: 4,
       child: Scaffold(
         appBar: AppBar(
+          elevation: 8.0,
           backgroundColor: ThemeInfo.primaryColor,
           title: const Text("SnaT: Meal Diary"),
         ),
+        // button for camera from bottom Navigation Bar
+        floatingActionButton: FloatingActionButton(
+          heroTag: "btn1",
+          child: const Icon(Icons.camera_alt_outlined),
+          backgroundColor: ThemeInfo.primaryColor,
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (contex)
+                    {//return CameraScreen(widget.cameras);
+                      return const campage(title: 'camera',);
+                    })
+            );
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         drawer: const DashboardDrawer(),
         bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 1,
           color: ThemeInfo.primaryColor,
           child: TabBar(
             indicatorColor: ThemeInfo.bottomTabButtonColor,
@@ -45,31 +67,41 @@ class _DashboardLayoutState extends State<DashboardLayout>
             onTap: (val) {
               print(val);
             },
-            tabs: const [
-              Tab(
+            tabs: [
+              const Tab(
                 icon: Icon(
                   Icons.local_dining,
                 ),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(Icons.calendar_today),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(Icons.insert_chart),
               ),
               Tab(
-                icon: Icon(Icons.settings),
+                  child: Container(
+                    // custom bmi icon for tab view
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/images/bmi_icon.png',
+                      color: ThemeInfo.bottomTabButtonColor,
+                      height: 28.0,
+                      width: 28.0,
+                    ),
+                  )
               ),
             ],
           ),
         ),
         body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: const [
             HomeView(),
             SchedulingView(),
             ChartView(),
-            SettingsView(),
+            BmiCalcView(),
           ],
         ),
       ),
