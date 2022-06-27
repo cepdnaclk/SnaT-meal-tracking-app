@@ -1,7 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart' as M;
 import 'package:mobile_app/Components/meal_tile.dart' as tile;
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
+
+String unit = "";
+List<String> SearchTerms = [];
+List<Map> FoodandUnits = [];
 
 class AddNewFoodScreen extends StatelessWidget {
   AddNewFoodScreen(
@@ -14,11 +19,17 @@ class AddNewFoodScreen extends StatelessWidget {
   final bool tileEdit;
   final void Function(String, String)? editTileDetails;
 
-//   @override
-//   State<AddNewFoodScreen> createState() => _AddNewFoodScreenState();
-// }
-//
-// class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
+  void getFoodUnit(String foodResult) {
+    print("sdsds" + foodResult);
+    for (Map food in FoodandUnits) {
+      if (food['Food'] == foodResult) {
+        print(food);
+        unit = food['Units'];
+        print(unit);
+      }
+    }
+  }
+
   final TextEditingController searchController = TextEditingController();
 
   final CustomSearchHintDelegate delegate =
@@ -36,9 +47,10 @@ class AddNewFoodScreen extends StatelessWidget {
         actions: [
           MaterialButton(
             onPressed: () {
-              M.addMealItems(resultText, amount.toInt().toString() + "kCals");
+              M.addMealItems(resultText, amount.toInt().toString() + unit);
               ReloadState();
               print(amount.toInt());
+              M.selectedMeal = M.selectedMeal;
               Navigator.pop(context, amount);
             },
             child: const Center(
@@ -52,12 +64,18 @@ class AddNewFoodScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
         onPressed: () async {
-          final String? result = await showSearch<String?>(
+          String? result = await showSearch<String?>(
             context: context,
             delegate: delegate,
           );
           print('result: $result');
-          resultText = result!;
+          if (result == null) {
+            print("Please select a food");
+          }
+          if (result != null) {
+            resultText = result;
+            getFoodUnit(resultText);
+          }
           if (tileEdit == true) {
             editTileDetails!(resultText, amount.toInt().toString() + "kCals");
           }
@@ -125,16 +143,6 @@ class AddNewFoodScreen extends StatelessWidget {
 }
 
 class CustomSearchHintDelegate extends SearchDelegate<String?> {
-  List<String> SearchTerms = [
-    'Apple',
-    'Banana',
-    'Pineapple',
-    'Pears',
-    'Watermelons',
-    'Oranges',
-    'Strawberries',
-    'Grapes'
-  ];
   CustomSearchHintDelegate({
     required String hintText,
   }) : super(
@@ -246,8 +254,8 @@ class _SliderWidgetState extends State<SliderWidget> {
               amount.toInt().toString(),
               style: const TextStyle(fontSize: 16),
             ),
-            const Text(
-              " kCals",
+            Text(
+              unit,
               style: TextStyle(fontSize: 16),
             ),
           ],

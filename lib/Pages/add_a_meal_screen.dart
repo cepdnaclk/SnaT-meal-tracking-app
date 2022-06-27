@@ -5,6 +5,9 @@ import 'package:mobile_app/Services/custom_page_route.dart';
 
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firestore = FirebaseFirestore.instance;
 
 String foodamount = "";
 List mealItems = [
@@ -12,10 +15,36 @@ List mealItems = [
   {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
   {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
 ];
+List<String> meals = [
+  "Cereals and starchy foods",
+  "Vegetables",
+  "Fruits",
+  "Pulses meat fish",
+  "Beverages",
+  "Milk and milk products"
+];
+
+void getFoodData(String selectedMealCategory) async {
+  final foodItems = await _firestore
+      .collection('Standard_food_size')
+      .doc(selectedMealCategory)
+      .collection('Food')
+      .get();
+  SearchTerms = [];
+  FoodandUnits = [];
+  for (var food in foodItems.docs) {
+    SearchTerms.add(food.data()['Food']);
+    FoodandUnits.add(
+        {"Food": food.data()['Food'], "Units": food.data()['Unit']});
+  }
+}
+
 void addMealItems(String name, String amount) {
   mealItems.add({"name": name, "icon": Icons.rice_bowl, "amount": amount});
   print(mealItems);
 }
+
+String? selectedMeal;
 
 class AddAMealScreen extends StatefulWidget {
   const AddAMealScreen({Key? key}) : super(key: key);
@@ -27,21 +56,16 @@ class AddAMealScreen extends StatefulWidget {
 class _AddAMealScreenState extends State<AddAMealScreen> {
   DateTime selectedDate = DateTime.now();
 
-  String? selectedMeal;
+  void initState() {
+    super.initState();
+    selectedMeal = selectedMeal;
+    print(selectedMeal);
+  }
 
   void StateReload() {
     print("State reload");
     setState(() {});
   }
-
-  List<String> meals = [
-    " Cereals and starchy foods",
-    "Vegetables",
-    "Fruits",
-    "Pulses meat fish",
-    "Beverages",
-    "Milk and milk products"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +143,9 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                       setState(() {
                         selectedMeal = newValue;
                         print(selectedMeal);
+                        getFoodData(selectedMeal!);
                         state.didChange(newValue);
+                        StateReload();
                       });
                     },
                     items: meals.map((String value) {
