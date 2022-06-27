@@ -5,6 +5,8 @@ import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Services/firebase_services.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/constants.dart';
+import 'package:mobile_app/Pages/register_page.dart';
+
 
 import '../main.dart';
 
@@ -59,8 +61,9 @@ class LoginScreen extends StatelessWidget {
                         await FirebaseServices().signInWithGoogle();
                         print("Hello");
                         Navigator.of(context).push(CustomPageRoute(
-                            child: DashboardLayout(),
+                            //child: DashboardLayout(),
                             //child: AdditionalSettingsScreen(),
+                            child: RegisterPage(),
                             transition: "slide right"));
                       },
                       child: const Padding(
