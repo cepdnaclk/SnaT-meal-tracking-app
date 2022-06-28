@@ -5,6 +5,46 @@ import 'package:mobile_app/Services/custom_page_route.dart';
 
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firestore = FirebaseFirestore.instance;
+
+String foodamount = "";
+List mealItems = [
+  {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
+  {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
+  {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
+];
+List<String> meals = [
+  "Cereals and starchy foods",
+  "Vegetables",
+  "Fruits",
+  "Pulses meat fish",
+  "Beverages",
+  "Milk and milk products"
+];
+
+void getFoodData(String selectedMealCategory) async {
+  final foodItems = await _firestore
+      .collection('Standard_food_size')
+      .doc(selectedMealCategory)
+      .collection('Food')
+      .get();
+  SearchTerms = [];
+  FoodandUnits = [];
+  for (var food in foodItems.docs) {
+    SearchTerms.add(food.data()['Food']);
+    FoodandUnits.add(
+        {"Food": food.data()['Food'], "Units": food.data()['Unit']});
+  }
+}
+
+void addMealItems(String name, String amount) {
+  mealItems.add({"name": name, "icon": Icons.rice_bowl, "amount": amount});
+  print(mealItems);
+}
+
+String? selectedMeal;
 
 class AddAMealScreen extends StatefulWidget {
   const AddAMealScreen({Key? key}) : super(key: key);
@@ -16,14 +56,16 @@ class AddAMealScreen extends StatefulWidget {
 class _AddAMealScreenState extends State<AddAMealScreen> {
   DateTime selectedDate = DateTime.now();
 
-  String? selectedMeal;
+  void initState() {
+    super.initState();
+    selectedMeal = selectedMeal;
+    print(selectedMeal);
+  }
 
-  List<String> meals = ["Rice & Curry", "Bread", "Noodles"];
-  List mealItems = [
-    {"name": "Rice & Curry", "icon": Icons.fastfood},
-    {"name": "Bread", "icon": Icons.fastfood},
-    {"name": "Tea", "icon": Icons.local_cafe}
-  ];
+  void StateReload() {
+    print("State reload");
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,23 +89,30 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            "Date and time:",
-            style: TextStyle(fontSize: 20),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          DateTimeWidget(
-            iconPic: const Icon(
-              Icons.calendar_today,
-            ),
-            selectedDate: selectedDate,
-            text: DateTimeService.dateConverter(selectedDate),
-            onPressed: (val) async {
-              selectedDate = val;
-              setState(() {});
-            },
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Date and time:",
+                style: TextStyle(fontSize: 20),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              DateTimeWidget(
+                iconPic: const Icon(
+                  Icons.calendar_today,
+                ),
+                selectedDate: selectedDate,
+                text: DateTimeService.dateConverter(selectedDate),
+                onPressed: (val) async {
+                  selectedDate = val;
+                  print(val);
+                  setState(() {});
+                },
+              ),
+            ],
           ),
           const SizedBox(
             height: 20,
@@ -93,7 +142,10 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedMeal = newValue;
+                        print(selectedMeal);
+                        getFoodData(selectedMeal!);
                         state.didChange(newValue);
+                        StateReload();
                       });
                     },
                     items: meals.map((String value) {
@@ -112,8 +164,13 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(CustomPageRoute(
-                  child: AddNewFoodScreen(), transition: "Scale"));
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) => AddNewFoodScreen(
+                        AppBarTitle: Text("Add a New Food"),
+                        ReloadState: StateReload,
+                        tileEdit: false,
+                      ));
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -133,7 +190,12 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           const SizedBox(
             height: 5,
           ),
-          for (Map meal in mealItems) MealTile(meal: meal)
+          for (Map meal in mealItems)
+            MealTile(
+              meal: meal,
+              ReloadState: StateReload,
+              foodamount: foodamount,
+            )
         ],
       ),
     );

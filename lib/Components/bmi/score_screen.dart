@@ -26,8 +26,11 @@ class ScoreScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Your Score",
-                      style: TextStyle(fontSize: 30, color: Colors.blue),
+                      "Your BMI Value",
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.blue,
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -67,7 +70,7 @@ class ScoreScreen extends StatelessWidget {
                       height: 10,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton(
                             onPressed: () {
@@ -75,7 +78,7 @@ class ScoreScreen extends StatelessWidget {
                             },
                             child: const Text("Back")),
                         const SizedBox(
-                          width: 10,
+                          width: 30,
                         ),
                         ElevatedButton(
                             onPressed: () {},
