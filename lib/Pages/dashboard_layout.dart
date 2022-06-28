@@ -1,13 +1,12 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/Tab_Views/chart_view.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
 import 'package:mobile_app/Components/Tab_Views/bmi_view.dart';
 import 'package:mobile_app/Components/dashboard_drawer.dart';
-import 'package:mobile_app/Pages/CameraPage.dart';
-//import 'package:mobile_app/Pages/SchedulingView.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
+
+import 'camera/camera_tabview.dart';
 
 class DashboardLayout extends StatefulWidget {
   //const DashboardLayout({Key? key}) : super(key: key);
@@ -48,7 +47,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex)
                     {//return CameraScreen(widget.cameras);
-                      return const campage(title: 'camera',);
+                      return const tabviewcamera();
                     })
             );
           },
