@@ -48,7 +48,7 @@ class _ChartViewState extends State<ChartView> {
       length: 2,
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(10.0),
           child: Column(
             children: [
               Container(
@@ -68,13 +68,18 @@ class _ChartViewState extends State<ChartView> {
                 ),
               ),
               SizedBox(
-                height: size.height * 0.65,
+                height: size.height * 0.66,
                 child: TabBarView(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Center(
+                      padding: EdgeInsets.all(15.0),
+                      child: Container(
+                        padding: EdgeInsets.all(3.0),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(20.0)),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             const Text(
                               'Daily Nutrients intake',
@@ -84,28 +89,92 @@ class _ChartViewState extends State<ChartView> {
                                   color: Color(0xff0f5951)),
                             ),
                             SizedBox(
-                              height: 20.0,
+                              height: size.height * 0.02,
+                            ),
+                            Container(
+                              height: size.height * 0.15,
+                              width: size.width * 0.8,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade400,
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Container(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Legend(
+                                          colour: _seriesPieData.,
+                                          text: 'Cereals and Starchy foods',
+                                        ),
+                                        Legend(
+                                          colour: Colors.blue,
+                                          text: 'Vegetables',
+                                        ),
+                                        Legend(
+                                          colour: Colors.green,
+                                          text: 'Fruit',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Legend(
+                                          colour: Colors.black,
+                                          text: 'Pulses Meat Fish',
+                                        ),
+                                        Legend(
+                                          colour: Colors.blue,
+                                          text: 'Beverages',
+                                        ),
+                                        Legend(
+                                          colour: Colors.green,
+                                          text: 'Milk and Milk Products',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             Expanded(
                               child: charts.PieChart<String>(
                                 _seriesPieData,
                                 animate: true,
                                 animationDuration: Duration(seconds: 1),
-                                behaviors: [
-                                  charts.DatumLegend(
-                                    outsideJustification:
-                                        charts.OutsideJustification.endDrawArea,
-                                    horizontalFirst: false,
-                                    desiredMaxRows: 3,
-                                    cellPadding: const EdgeInsets.only(
-                                        right: 10.0, bottom: 10.0),
-                                    entryTextStyle: charts.TextStyleSpec(
-                                        color: charts.MaterialPalette.purple
-                                            .shadeDefault,
-                                        fontFamily: 'Georgia',
-                                        fontSize: 12),
-                                  )
-                                ],
+                                // behaviors: [
+                                //   charts.DatumLegend(
+                                //     outsideJustification:
+                                //         charts.OutsideJustification.endDrawArea,
+                                //     horizontalFirst: false,
+                                //     desiredMaxRows: 3,
+                                //     cellPadding: const EdgeInsets.only(
+                                //         top: 5.0,
+                                //         bottom: 5.0,
+                                //         right: 5.0,
+                                //         left: 5.0),
+                                //     entryTextStyle: charts.TextStyleSpec(
+                                //         color: charts
+                                //             .MaterialPalette.blue.shadeDefault,
+                                //         fontFamily: 'Georgia',
+                                //         fontSize: 12),
+                                //   )
+                                // ],
                                 defaultRenderer: charts.ArcRendererConfig(
                                   arcWidth: 75,
                                   arcRendererDecorators: [
@@ -120,7 +189,12 @@ class _ChartViewState extends State<ChartView> {
                         ),
                       ),
                     ),
-                    Container(),
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Container(
+                        color: Colors.teal,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -128,6 +202,39 @@ class _ChartViewState extends State<ChartView> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Legend extends StatelessWidget {
+  final String text;
+  final Color colour;
+  const Legend({
+    Key? key,
+    required this.text,
+    required this.colour,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: colour,
+          ),
+        ),
+        SizedBox(
+          width: 5.0,
+        ),
+        Text(
+          text.toUpperCase(),
+          style: TextStyle(fontSize: 10),
+        ),
+      ],
     );
   }
 }
