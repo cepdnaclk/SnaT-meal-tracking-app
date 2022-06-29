@@ -22,9 +22,13 @@ class _ChartViewState extends State<ChartView> {
 
   _generateData() {
     var data1 = [
-      new Pollution(1980, 'USA', 10),
-      new Pollution(1980, 'Asia', 9),
-      new Pollution(1980, 'Europe', 5),
+      new Pollution(1980, 'Monday', 10),
+      new Pollution(1980, 'Tuesday', 9),
+      new Pollution(1980, 'Wednesday', 1),
+      new Pollution(1980, 'Thursday', 10),
+      new Pollution(1980, 'Friday', 2),
+      new Pollution(1980, 'Saturday', 4),
+      new Pollution(1980, 'Sunday', 7),
     ];
 
     var piedata = [
