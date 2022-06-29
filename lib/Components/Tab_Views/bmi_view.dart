@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:page_transition/page_transition.dart';
 import 'package:swipeable_button_view/swipeable_button_view.dart';
-import 'package:get/get.dart';
 
 /*  Custom Widgets  */
 import 'package:mobile_app/Components/bmi/gender_widget.dart';
 import 'package:mobile_app/Components/bmi/age_weight_widget.dart';
 import 'package:mobile_app/Components/bmi/score_screen.dart';
 import 'package:mobile_app/Components/bmi/height_widget.dart';
-import 'package:mobile_app/Theme/theme_info.dart';
 
 class BmiCalcView extends StatefulWidget {
   const BmiCalcView({Key? key}) : super(key: key);
@@ -57,7 +55,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                           onChange: (ageVal) {
                             _age = ageVal;
                           },
-                          title: "age".tr,
+                          title: "Age",
                           initValue: 30,
                           min: 0,
                           max: 100),
@@ -65,7 +63,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                           onChange: (weightVal) {
                             _weight = weightVal;
                           },
-                          title: "weight".tr,
+                          title: "Weight(Kg)",
                           initValue: 50,
                           min: 0,
                           max: 200)
@@ -84,7 +82,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                                     bmiScore: _bmiScore,
                                     age: _age,
                                   ),
-                                  type: PageTransitionType.leftToRightWithFade));
+                                  type: PageTransitionType.fade));
 
                           setState(() {
                             _isFinished = false;
@@ -100,7 +98,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                             });
                           });
                         },
-                        activeColor: ThemeInfo.primaryColor,
+                        activeColor: Colors.lightBlue,
                         buttonWidget: const Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: Colors.black,

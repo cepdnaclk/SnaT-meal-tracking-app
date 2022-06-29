@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:pretty_gauge/pretty_gauge.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 class ScoreScreen extends StatelessWidget {
   final double bmiScore;
@@ -28,11 +26,8 @@ class ScoreScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Your BMI Value",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.blue,
-                      ),
+                      "Your Score",
+                      style: TextStyle(fontSize: 30, color: Colors.blue),
                     ),
                     const SizedBox(
                       height: 10,
@@ -72,7 +67,7 @@ class ScoreScreen extends StatelessWidget {
                       height: 10,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
                             onPressed: () {
@@ -80,45 +75,10 @@ class ScoreScreen extends StatelessWidget {
                             },
                             child: const Text("Back")),
                         const SizedBox(
-                          width: 30,
+                          width: 10,
                         ),
                         ElevatedButton(
-                            onPressed: () async {
-                              // var result = await canLaunchUrl(
-                              //   Uri.parse(
-                              //     'fb://facewebmodal/f?href=https://www.facebook.com/al.mamun.me12',
-                              //   ),
-                              // );
-                              // print("result$result");
-                              String url =
-                                  "https://m.facebook.com/muthulingamthanoraj11";
-                              print(Platform.isAndroid);
-                              if (Platform.isAndroid) {
-                                print(
-                                    url.startsWith("https://m.facebook.com/"));
-
-                                if (url.startsWith("https://m.facebook.com/")) {
-                                  print("in");
-                                  final url2 = "fb://facewebmodal/f?href=$url";
-                                  // final intent2 = AndroidIntent(
-                                  //     action: "action_view", data: url2);
-                                  // final canWork =
-                                  //     await intent2.canResolveActivity();
-                                  // if (canWork) return intent2.launch();
-                                  launchUrl(Uri.parse(
-                                      "fb://facewebmodal/f?href=https://www.facebook.com/muthulingamthanoraj11"));
-                                }
-                                // final intent = AndroidIntent(
-                                //     action: "action_view", data: url);
-                                // return intent.launch();
-                              } else {
-                                // if (_canLaunch) {
-                                //   await launch(url, forceSafariVC: false);
-                                // } else {
-                                //   throw "Could not launch $url";
-                                // }
-                              }
-                            },
+                            onPressed: () {},
                             child: const Text("Share")),
                       ],
                     )
