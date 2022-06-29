@@ -8,10 +8,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'chart_view/barchart_model.dart';
-import 'chart_view/legend_container.dart';
-import 'chart_view/pieChart_model.dart';
-import 'chart_view/share_button.dart';
+import 'chart_view_components/barchart_model.dart';
+import 'chart_view_components/legend_container.dart';
+import 'chart_view_components/pieChart_model.dart';
+import 'chart_view_components/share_button.dart';
 
 class ChartView extends StatefulWidget {
   const ChartView({Key? key}) : super(key: key);
@@ -134,7 +134,7 @@ class _ChartViewState extends State<ChartView> {
                               ),
                               Container(
                                 height: size.height * 0.13,
-                                width: size.width * 0.78,
+                                width: size.width * 0.85,
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade400,
                                   borderRadius: BorderRadius.circular(10.0),
@@ -208,7 +208,7 @@ class _ChartViewState extends State<ChartView> {
                                   animate: true,
                                   animationDuration: Duration(seconds: 1),
                                   defaultRenderer: charts.ArcRendererConfig(
-                                    arcWidth: 60,
+                                    arcWidth: 75,
                                     arcRendererDecorators: [
                                       charts.ArcLabelDecorator(
                                           labelPosition:

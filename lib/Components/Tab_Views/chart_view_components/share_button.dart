@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
       ),
       child: const Text(
         'Share',
-        style: TextStyle(fontSize: 12.0),
+        style: TextStyle(fontSize: 14.0),
       ),
       color: Colors.teal.shade900,
       textColor: Colors.white,
