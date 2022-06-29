@@ -81,6 +81,9 @@ class _ChartViewState extends State<ChartView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
+                            SizedBox(
+                              height: size.height * 0.01,
+                            ),
                             const Text(
                               'Daily Nutrients intake',
                               style: TextStyle(
@@ -92,11 +95,22 @@ class _ChartViewState extends State<ChartView> {
                               height: size.height * 0.02,
                             ),
                             Container(
-                              height: size.height * 0.15,
+                              height: size.height * 0.13,
                               width: size.width * 0.8,
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade400,
-                                borderRadius: BorderRadius.circular(20.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade500,
+                                    offset: Offset(0.0, 5.0),
+                                    blurRadius: 10.0,
+                                    spreadRadius: 2.0,
+                                  ),
+                                  BoxShadow(
+                                      color: Colors.white,
+                                      offset: Offset(0.0, 0.0))
+                                ],
                               ),
                               child: Row(
                                 mainAxisAlignment:
@@ -108,42 +122,40 @@ class _ChartViewState extends State<ChartView> {
                                           MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[
+                                      children: const <Widget>[
                                         Legend(
-                                          colour: _seriesPieData.,
+                                          colour: Color(0xff054840),
                                           text: 'Cereals and Starchy foods',
                                         ),
                                         Legend(
-                                          colour: Colors.blue,
+                                          colour: Color(0xff16867a),
                                           text: 'Vegetables',
                                         ),
                                         Legend(
-                                          colour: Colors.green,
+                                          colour: Color(0xff85dad0),
                                           text: 'Fruit',
                                         ),
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
+                                  const SizedBox(width: 5),
                                   Container(
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[
+                                      children: const <Widget>[
                                         Legend(
-                                          colour: Colors.black,
+                                          colour: Color(0xffb1dad6),
                                           text: 'Pulses Meat Fish',
                                         ),
                                         Legend(
-                                          colour: Colors.blue,
+                                          colour: Color(0xff7a7979),
                                           text: 'Beverages',
                                         ),
                                         Legend(
-                                          colour: Colors.green,
+                                          colour: Color(0xff000000),
                                           text: 'Milk and Milk Products',
                                         ),
                                       ],
@@ -232,7 +244,7 @@ class Legend extends StatelessWidget {
         ),
         Text(
           text.toUpperCase(),
-          style: TextStyle(fontSize: 10),
+          style: TextStyle(fontSize: 11),
         ),
       ],
     );
