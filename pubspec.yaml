@@ -43,7 +43,6 @@ dependencies:
   swipeable_button_view: ^0.0.2
   page_transition: ^2.0.5
   pretty_gauge: ^1.0.1
-  path_provider:
   path:
   image_picker:
   gallery_saver:
@@ -54,6 +53,12 @@ dependencies:
   get:
   settings_ui: ^2.0.2
   firebase_storage: ^10.2.18
+
+  screenshot: ^1.2.3
+  image_gallery_saver: ^1.7.1
+  permission_handler: ^10.0.0
+  share_plus: ^4.0.10
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

@@ -47,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
   
 
 
-  Future addUserDetails(String name,String birthDate,String gender,String height,String weight,String userID) async {
+  Future addUserDetails(String name,String birthDate,String gender,String height,String weight,String userID,String email) async {
     await FirebaseFirestore.instance.collection('users').add({
       'name':name,
       'birthDate':birthDate,
@@ -55,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'height':height,
       'weight':weight,
       'uid': userID,
+      'email': email,
     });
   }
 
@@ -217,11 +218,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 onPressed: () {
                   User? user = FirebaseAuth.instance.currentUser;
                   String uid;
+                  var email;
                     if(user != null){
                       uid = user.uid;
+                      email = user.email;
                     }
                     else{
                       uid = '';
+                      email = '';
                     }
                   addUserDetails(
                                _nameController.text.trim(),
@@ -230,6 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                _heightController.text.trim(),
                                _weightController.text.trim(),
                                uid,
+                               email,
                   );
                   Navigator.of(context).push(CustomPageRoute(
                             child: DashboardLayout(),
