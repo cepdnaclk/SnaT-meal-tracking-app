@@ -18,8 +18,15 @@ class ChartView extends StatefulWidget {
 
 class _ChartViewState extends State<ChartView> {
   late List<charts.Series<Task, String>> _seriesPieData;
+  late List<charts.Series<Pollution, String>> _seriesData;
 
   _generateData() {
+    var data1 = [
+      new Pollution(1980, 'USA', 10),
+      new Pollution(1980, 'Asia', 9),
+      new Pollution(1980, 'Europe', 5),
+    ];
+
     var piedata = [
       new Task('Cereals and Starchy foods', 35.8, Color(0xff054840)),
       new Task('Vegetables', 8.3, Color(0xff16867a)),
@@ -40,11 +47,23 @@ class _ChartViewState extends State<ChartView> {
         labelAccessorFn: (Task row, _) => '${row.taskvalue}',
       ),
     );
+    _seriesData.add(
+      charts.Series(
+        domainFn: (Pollution pollution, _) => pollution.place,
+        measureFn: (Pollution pollution, _) => pollution.quantity,
+        id: '2017',
+        data: data1,
+        fillPatternFn: (_, __) => charts.FillPatternType.solid,
+        fillColorFn: (Pollution pollution, _) =>
+            charts.ColorUtil.fromDartColor(Color(0xff990099)),
+      ),
+    );
   }
 
   @override
   void initState() {
     super.initState();
+    _seriesData = <charts.Series<Pollution, String>>[];
     _seriesPieData = <charts.Series<Task, String>>[];
     _generateData();
   }
@@ -79,11 +98,11 @@ class _ChartViewState extends State<ChartView> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.66,
+                  height: size.height * 0.69,
                   child: TabBarView(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(15.0),
+                        padding: EdgeInsets.all(10.0),
                         child: Container(
                           padding: EdgeInsets.all(3.0),
                           decoration: BoxDecoration(
@@ -98,7 +117,7 @@ class _ChartViewState extends State<ChartView> {
                               const Text(
                                 'Daily Nutrients intake',
                                 style: TextStyle(
-                                    fontSize: 24.0,
+                                    fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xff0f5951)),
                               ),
@@ -107,7 +126,7 @@ class _ChartViewState extends State<ChartView> {
                               ),
                               Container(
                                 height: size.height * 0.13,
-                                width: size.width * 0.8,
+                                width: size.width * 0.78,
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade400,
                                   borderRadius: BorderRadius.circular(10.0),
@@ -115,8 +134,8 @@ class _ChartViewState extends State<ChartView> {
                                     BoxShadow(
                                       color: Colors.grey.shade500,
                                       offset: Offset(0.0, 5.0),
-                                      blurRadius: 10.0,
-                                      spreadRadius: 2.0,
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0,
                                     ),
                                     BoxShadow(
                                         color: Colors.white,
@@ -149,7 +168,7 @@ class _ChartViewState extends State<ChartView> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 4),
                                     Container(
                                       child: Column(
                                         mainAxisAlignment:
@@ -180,26 +199,8 @@ class _ChartViewState extends State<ChartView> {
                                   _seriesPieData,
                                   animate: true,
                                   animationDuration: Duration(seconds: 1),
-                                  // behaviors: [
-                                  //   charts.DatumLegend(
-                                  //     outsideJustification:
-                                  //         charts.OutsideJustification.endDrawArea,
-                                  //     horizontalFirst: false,
-                                  //     desiredMaxRows: 3,
-                                  //     cellPadding: const EdgeInsets.only(
-                                  //         top: 5.0,
-                                  //         bottom: 5.0,
-                                  //         right: 5.0,
-                                  //         left: 5.0),
-                                  //     entryTextStyle: charts.TextStyleSpec(
-                                  //         color: charts
-                                  //             .MaterialPalette.blue.shadeDefault,
-                                  //         fontFamily: 'Georgia',
-                                  //         fontSize: 12),
-                                  //   )
-                                  // ],
                                   defaultRenderer: charts.ArcRendererConfig(
-                                    arcWidth: 75,
+                                    arcWidth: 60,
                                     arcRendererDecorators: [
                                       charts.ArcLabelDecorator(
                                           labelPosition:
@@ -209,11 +210,14 @@ class _ChartViewState extends State<ChartView> {
                                 ),
                               ),
                               FlatButton(
-                                child: Text(
-                                  'share',
-                                  style: TextStyle(fontSize: 20.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                color: Colors.blueAccent,
+                                child: Text(
+                                  'Share',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                                color: Colors.teal.shade900,
                                 textColor: Colors.white,
                                 onPressed: () async {
                                   final image = await controller.capture();
@@ -230,7 +234,35 @@ class _ChartViewState extends State<ChartView> {
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child: Container(
-                          color: Colors.teal,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colors.grey.shade300,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                height: size.height * 0.01,
+                              ),
+                              Text(
+                                "Total intake for this week",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.teal.shade900,
+                                ),
+                              ),
+                              Expanded(
+                                child: charts.BarChart(
+                                  _seriesData,
+                                  animate: true,
+                                  barGroupingType:
+                                      charts.BarGroupingType.grouped,
+                                  //behaviors: [new charts.SeriesLegend()],
+                                  animationDuration: Duration(seconds: 1),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -278,19 +310,19 @@ class Legend extends StatelessWidget {
     return Row(
       children: <Widget>[
         Container(
-          width: 8,
-          height: 8,
+          width: 9,
+          height: 9,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: colour,
           ),
         ),
         SizedBox(
-          width: 5.0,
+          width: 7.0,
         ),
         Text(
-          text.toUpperCase(),
-          style: TextStyle(fontSize: 11),
+          text,
+          style: TextStyle(fontSize: 12),
         ),
       ],
     );
@@ -305,168 +337,10 @@ class Task {
   Task(this.task, this.taskvalue, this.colorval);
 }
 
-// import 'package:flutter/material.dart';
-// import 'package:charts_flutter/flutter.dart' as charts;
-//
-// class ChartView extends StatefulWidget {
-//   const ChartView({Key? key}) : super(key: key);
-//
-//   @override
-//   State<ChartView> createState() => _ChartViewState();
-// }
-//
-// class _ChartViewState extends State<ChartView> {
-//   late List<charts.Series<Task, String>> _seriesPieData;
-//
-//   _generateData() {
-//     var piedata = [
-//       new Task('Cereals and Starchy foods', 35.8, Color(0xff054840)),
-//       new Task('Vegetables', 8.3, Color(0xff16867a)),
-//       new Task('Fruits', 10.8, Color(0xff85dad0)),
-//       new Task('Pulses Meat Fish', 15.6, Color(0xffb1dad6)),
-//       new Task('Beverages', 19.2, Color(0xff7a7979)),
-//       new Task('Milk and Milk Products', 10.3, Color(0xff000000)),
-//     ];
-//
-//     _seriesPieData.add(
-//       charts.Series(
-//         domainFn: (Task task, _) => task.task,
-//         measureFn: (Task task, _) => task.taskvalue,
-//         colorFn: (Task task, _) =>
-//             charts.ColorUtil.fromDartColor(task.colorval),
-//         id: 'Air Pollution',
-//         data: piedata,
-//         labelAccessorFn: (Task row, _) => '${row.taskvalue}',
-//       ),
-//     );
-//   }
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _seriesPieData = <charts.Series<Task, String>>[];
-//     _generateData();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTabController(
-//       length: 2,
-//       child: Scaffold(
-//         appBar: AppBar(
-//           bottom: TabBar(
-//             indicatorColor: Color(0xff1976d2),
-//             tabs: [
-//               Tab(text: "For Today"),
-//               Tab(text: "This Week"),
-//             ],
-//           ),
-//         ),
-//         body: TabBarView(children: [
-//           Padding(
-//             padding: EdgeInsets.all(10.0),
-//             child: Center(
-//               child: Column(
-//                 children: <Widget>[
-//                   const Text(
-//                     'Daily Nutrients intake',
-//                     style: TextStyle(
-//                         fontSize: 24.0,
-//                         fontWeight: FontWeight.bold,
-//                         color: Color(0xff0f5951)),
-//                   ),
-//                   SizedBox(
-//                     height: 20.0,
-//                   ),
-//                   Expanded(
-//                     child: charts.PieChart<String>(
-//                       _seriesPieData,
-//                       animate: true,
-//                       animationDuration: Duration(seconds: 1),
-//                       behaviors: [
-//                         charts.DatumLegend(
-//                           outsideJustification:
-//                           charts.OutsideJustification.endDrawArea,
-//                           horizontalFirst: false,
-//                           desiredMaxRows: 3,
-//                           cellPadding:
-//                           const EdgeInsets.only(right: 10.0, bottom: 10.0),
-//                           entryTextStyle: charts.TextStyleSpec(
-//                               color: charts.MaterialPalette.purple.shadeDefault,
-//                               fontFamily: 'Georgia',
-//                               fontSize: 12),
-//                         )
-//                       ],
-//                       defaultRenderer: charts.ArcRendererConfig(
-//                         arcWidth: 75,
-//                         arcRendererDecorators: [
-//                           charts.ArcLabelDecorator(
-//                               labelPosition: charts.ArcLabelPosition.inside)
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Padding(
-//             padding: EdgeInsets.all(10.0),
-//             child: Center(
-//               child: Column(
-//                 children: <Widget>[
-//                   const Text(
-//                     'Daily Nutrients intake',
-//                     style: TextStyle(
-//                         fontSize: 24.0,
-//                         fontWeight: FontWeight.bold,
-//                         color: Color(0xff0f5951)),
-//                   ),
-//                   SizedBox(
-//                     height: 20.0,
-//                   ),
-//                   Expanded(
-//                     child: charts.PieChart<String>(
-//                       _seriesPieData,
-//                       animate: true,
-//                       animationDuration: Duration(seconds: 1),
-//                       behaviors: [
-//                         charts.DatumLegend(
-//                           outsideJustification:
-//                           charts.OutsideJustification.endDrawArea,
-//                           horizontalFirst: false,
-//                           desiredMaxRows: 3,
-//                           cellPadding:
-//                           const EdgeInsets.only(right: 10.0, bottom: 10.0),
-//                           entryTextStyle: charts.TextStyleSpec(
-//                               color: charts.MaterialPalette.purple.shadeDefault,
-//                               fontFamily: 'Georgia',
-//                               fontSize: 12),
-//                         )
-//                       ],
-//                       defaultRenderer: charts.ArcRendererConfig(
-//                         arcWidth: 75,
-//                         arcRendererDecorators: [
-//                           charts.ArcLabelDecorator(
-//                               labelPosition: charts.ArcLabelPosition.inside)
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ]),
-//       ),
-//     );
-//   }
-// }
-//
-// class Task {
-//   String task;
-//   double taskvalue;
-//   Color colorval;
-//
-//   Task(this.task, this.taskvalue, this.colorval);
-// }
+class Pollution {
+  String place;
+  int year;
+  int quantity;
+
+  Pollution(this.year, this.place, this.quantity);
+}
