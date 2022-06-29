@@ -4,10 +4,20 @@ import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   getDate() {}
+  void initState() {
+    super.initState();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     getDate();
@@ -35,21 +45,30 @@ class HomeView extends StatelessWidget {
             Expanded(
               child: ListView(
                 shrinkWrap: true,
-                children: const [
+                children: [
                   MealSection(
                     label: "Breakfast",
+                    mealItems: breakFastMealItems,
+                  ),
+                  MealSection(
+                    label: "Morning Snacks",
+                    mealItems: MorningSnacksMealItems,
                   ),
                   MealSection(
                     label: "Lunch",
+                    mealItems: LunchMealItems,
+                  ),
+                  MealSection(
+                    label: "Evening Snacks",
+                    mealItems: EveningSnacksMealItems,
                   ),
                   MealSection(
                     label: "Dinner",
-                  ),
-                  MealSection(
-                    label: "Snacks",
+                    mealItems: DinnerMealItems,
                   ),
                   MealSection(
                     label: "Others",
+                    mealItems: OtherMealItems,
                   ),
                 ],
               ),

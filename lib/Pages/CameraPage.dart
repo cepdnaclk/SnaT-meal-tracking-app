@@ -16,6 +16,7 @@ import 'package:path_provider/path_provider.dart';
 
 
 
+import '../Theme/theme_info.dart';
 import 'list_of_images.dart';
 
 
@@ -117,6 +118,17 @@ class _campageState extends State<campage> {
         appBar: AppBar(
           title: const Text("Image Picker Example"),
         ),
+        floatingActionButton: FloatingActionButton(
+          heroTag: "btn1",
+          child: const Icon(Icons.save),
+          backgroundColor: ThemeInfo.primaryColor,
+          onPressed: (){
+          if(saved) {
+          saveimages(filePath, new_IMAGE!); // working
+          saved=false;
+        }
+          },
+        ),
         body: Center(
           child: Column(
             children: [
@@ -133,20 +145,24 @@ class _campageState extends State<campage> {
                     pickImage();
                   }
               ),
-              // MaterialButton( // for camera
-              //     color: Colors.blue,
-              //     child: const Text(
-              //         "Pick Image from Camera",
-              //         style: TextStyle(
-              //             color: Colors.white70, fontWeight: FontWeight.bold
-              //         )
-              //     ),
-              //     onPressed: () {
-              //      saved=true;
+              MaterialButton( // for camera
+                  color: Colors.blue,
+                  child: const Text(
+                      "Pick Image from Camera",
+                      style: TextStyle(
+                          color: Colors.white70, fontWeight: FontWeight.bold
+                      )
+                  ),
+                  onPressed: () {
+                   saved=true;
 
-          //       pickImageC();
-              //     }
-              // ),
+                pickImageC();
+                  }
+              ),
+              SizedBox(height: 20,),
+              image != null ? Image.file(image!): Icon(Icons.restaurant_menu,size: 390,color:Color.fromARGB(100, 125, 156, 139) ,),
+              //Text("No image selected"),
+
               MaterialButton(// for meal Gallery
                   color: Colors.blue,
                   child: const Text(
@@ -167,27 +183,29 @@ class _campageState extends State<campage> {
                   },
                     //DisplayPictureScreen(imagePath: '/storage/emulated/0/Android/data/com.example.mobile_app/files/',);
               ),
-              MaterialButton( // for saved the images in the meal gallery
-                color: Colors.blue,
-                child: const Text(
-                    "Save",
-                    style: TextStyle(
-                        color: Colors.white70, fontWeight: FontWeight.bold
-                    )
-                ),
-                onPressed: (){
-                  if(saved) {
-                    saveimages(filePath, new_IMAGE!); // working
-                    saved=false;
-                  }
-                },
-                //DisplayPictureScreen(imagePath: '/storage/emulated/0/Android/data/com.example.mobile_app/files/',);
-              ),
-              SizedBox(height: 20,),
-              image != null ? Image.file(image!): Text("No image selected")
+              // MaterialButton( // for saved the images in the meal gallery
+              //   color: Colors.blue,
+              //   child: const Text(
+              //       "Save",
+              //       style: TextStyle(
+              //           color: Colors.white70, fontWeight: FontWeight.bold
+              //       )
+              //   ),
+              //   onPressed: (){
+              //     if(saved) {
+              //       saveimages(filePath, new_IMAGE!); // working
+              //       saved=false;
+              //     }
+              //   },
+              //   //DisplayPictureScreen(imagePath: '/storage/emulated/0/Android/data/com.example.mobile_app/files/',);
+              // ),
+              // SizedBox(height: 20,),
+              // image != null ? Image.file(image!): Text("No image selected")
 
             ],
+
           ),
+
         ),
     //     floatingActionButton: FloatingActionButton(
     //     child: const Icon(Icons.camera_alt_outlined),
