@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.green,
       ),
-      home: WelcomeScreen(),
+      home: DashboardLayout(),
     );
   }
 }

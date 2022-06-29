@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart' as M;
 import 'package:mobile_app/Components/meal_tile.dart' as tile;
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firestore = FirebaseFirestore.instance;
 
 String unit = "";
 List<String> SearchTerms = [];
@@ -20,7 +23,7 @@ class AddNewFoodScreen extends StatelessWidget {
   final void Function(String, String)? editTileDetails;
 
   void getFoodUnit(String foodResult) {
-    print("sdsds" + foodResult);
+    // print("sdsds" + foodResult);
     for (Map food in FoodandUnits) {
       if (food['Food'] == foodResult) {
         print(food);
@@ -30,6 +33,7 @@ class AddNewFoodScreen extends StatelessWidget {
     }
   }
 
+  void updateFood() {}
   final TextEditingController searchController = TextEditingController();
 
   final CustomSearchHintDelegate delegate =
@@ -51,6 +55,15 @@ class AddNewFoodScreen extends StatelessWidget {
               ReloadState();
               print(amount.toInt());
               M.selectedMeal = M.selectedMeal;
+              _firestore
+                  .collection('foodLog')
+                  .doc(selectedDate.toString())
+                  .collection(selectedMealTime.toString())
+                  .add({
+                'food': resultText,
+                'unit': unit,
+                'amount': amount.toInt()
+              });
               Navigator.pop(context, amount);
             },
             child: const Center(
@@ -75,9 +88,9 @@ class AddNewFoodScreen extends StatelessWidget {
           if (result != null) {
             resultText = result;
             getFoodUnit(resultText);
-          }
-          if (tileEdit == true) {
-            editTileDetails!(resultText, amount.toInt().toString() + "kCals");
+            if (tileEdit == true) {
+              editTileDetails!(resultText, amount.toInt().toString() + "kCals");
+            }
           }
           // setState(() {});
         },
@@ -97,34 +110,34 @@ class AddNewFoodScreen extends StatelessWidget {
             ),
             Row(
               children: [
-                Expanded(
-                  child: TextField(
-                    onTap: () {
-                      // showSearch(
-                      //     context: context, delegate: CustomSearchDelegate());
-                    },
-                    controller: searchController,
-                    decoration: const InputDecoration(
-                      hintText: "search",
-                      hintStyle: TextStyle(fontSize: 18),
-                      border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.blueAccent, width: 1.0),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(32.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      // CustomSearchDelegate();
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                      size: 30,
-                    ))
+                // Expanded(
+                //   child: TextField(
+                //     onTap: () {
+                //       // showSearch(
+                //       //     context: context, delegate: CustomSearchDelegate());
+                //     },
+                //     controller: searchController,
+                //     decoration: const InputDecoration(
+                //       hintText: "search",
+                //       hintStyle: TextStyle(fontSize: 18),
+                //       border: OutlineInputBorder(
+                //         borderSide:
+                //             BorderSide(color: Colors.blueAccent, width: 1.0),
+                //         borderRadius: BorderRadius.all(
+                //           Radius.circular(32.0),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // IconButton(
+                //     onPressed: () {
+                //       // CustomSearchDelegate();
+                //     },
+                //     icon: const Icon(
+                //       Icons.search,
+                //       size: 30,
+                //     ))
               ],
             ),
             const SizedBox(
