@@ -4,6 +4,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
@@ -92,7 +93,7 @@ class _ChartViewState extends State<ChartView> {
                   ),
                   child: TabBar(
                     indicator: BoxDecoration(
-                        color: Color(0xff629c44),
+                        color: ThemeInfo.primaryColor,
                         borderRadius: BorderRadius.circular(20.0)),
                     indicatorColor: Color(0xff1976d2),
                     tabs: [
@@ -255,6 +256,9 @@ class _ChartViewState extends State<ChartView> {
                                   color: Colors.teal.shade900,
                                 ),
                               ),
+                              SizedBox(
+                                height: size.height * 0.01,
+                              ),
                               Expanded(
                                 child: charts.BarChart(
                                   _seriesData,
@@ -264,6 +268,27 @@ class _ChartViewState extends State<ChartView> {
                                   //behaviors: [new charts.SeriesLegend()],
                                   animationDuration: Duration(seconds: 1),
                                 ),
+                              ),
+                              SizedBox(
+                                height: size.height * 0.01,
+                              ),
+                              FlatButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  'Share',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                                color: Colors.teal.shade900,
+                                textColor: Colors.white,
+                                onPressed: () async {
+                                  final image = await controller.capture();
+                                  if (image == null) return;
+
+                                  await saveImage(image);
+                                  await saveAndShare(image);
+                                },
                               ),
                             ],
                           ),
