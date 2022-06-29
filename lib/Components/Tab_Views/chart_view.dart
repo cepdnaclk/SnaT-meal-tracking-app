@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -9,6 +8,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'chart_view/barchart_model.dart';
+import 'chart_view/legend_container.dart';
+import 'chart_view/pieChart_model.dart';
+import 'chart_view/share_button.dart';
 
 class ChartView extends StatefulWidget {
   const ChartView({Key? key}) : super(key: key);
@@ -214,17 +217,8 @@ class _ChartViewState extends State<ChartView> {
                                   ),
                                 ),
                               ),
-                              FlatButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  'Share',
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                color: Colors.teal.shade900,
-                                textColor: Colors.white,
-                                onPressed: () async {
+                              Button(
+                                press: () async {
                                   final image = await controller.capture();
                                   if (image == null) return;
 
@@ -272,17 +266,8 @@ class _ChartViewState extends State<ChartView> {
                               SizedBox(
                                 height: size.height * 0.01,
                               ),
-                              FlatButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Text(
-                                  'Share',
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                color: Colors.teal.shade900,
-                                textColor: Colors.white,
-                                onPressed: () async {
+                              Button(
+                                press: () async {
                                   final image = await controller.capture();
                                   if (image == null) return;
 
@@ -323,53 +308,4 @@ class _ChartViewState extends State<ChartView> {
 
     return result['filePath'];
   }
-}
-
-class Legend extends StatelessWidget {
-  final String text;
-  final Color colour;
-  const Legend({
-    Key? key,
-    required this.text,
-    required this.colour,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: 9,
-          height: 9,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: colour,
-          ),
-        ),
-        SizedBox(
-          width: 7.0,
-        ),
-        Text(
-          text,
-          style: TextStyle(fontSize: 12),
-        ),
-      ],
-    );
-  }
-}
-
-class Task {
-  String task;
-  double taskvalue;
-  Color colorval;
-
-  Task(this.task, this.taskvalue, this.colorval);
-}
-
-class Pollution {
-  String place;
-  int year;
-  int quantity;
-
-  Pollution(this.year, this.place, this.quantity);
 }
