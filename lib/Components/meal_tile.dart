@@ -1,12 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Pages/add_a_meal_screen.dart';
+import 'package:mobile_app/Pages/add_new_food_screen.dart';
 
 class MealTile extends StatelessWidget {
   const MealTile({
     Key? key,
     required this.meal,
+    required this.ReloadState,
+    required this.foodamount,
   }) : super(key: key);
 
   final Map meal;
+  final String foodamount;
+  final void Function() ReloadState;
+
+  void editTile(String name, String amount) {
+    for (Map meal1 in mealItems) {
+      if (meal1['name'] == meal["name"]) {
+        int index = mealItems.indexOf(meal1);
+        mealItems[index]['name'] = name;
+        mealItems[index]['icon'] = Icons.food_bank;
+        mealItems[index]['amount'] = amount;
+        break;
+      }
+    }
+  }
+
+  void deleteTile() {
+    for (Map meal1 in mealItems) {
+      if (meal1['name'] == meal["name"]) {
+        int index = mealItems.indexOf(meal1);
+        mealItems.removeAt(index);
+        break;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,27 +45,60 @@ class MealTile extends StatelessWidget {
           border: Border.all(
         color: Colors.black,
       )),
-      child: Row(
-        children: [
-          Icon(
-            meal["icon"],
-            size: 30,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Text(
-            meal["name"],
-            style: const TextStyle(fontSize: 18),
-          ),
-          const Spacer(),
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                size: 30,
-              ))
-        ],
+      child: MaterialButton(
+        onPressed: () {},
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Icon(
+                  meal["icon"],
+                  size: 30,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  meal["name"],
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () async {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) => AddNewFoodScreen(
+                              AppBarTitle: Text("Add Quantity"),
+                              ReloadState: ReloadState,
+                              tileEdit: true,
+                              editTileDetails: editTile,
+                            ));
+                    // editTile();
+                    ReloadState();
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    size: 30,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    deleteTile();
+                    ReloadState();
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    size: 30,
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              meal["amount"],
+              style: const TextStyle(fontSize: 18),
+            )
+          ],
+        ),
       ),
     );
   }
