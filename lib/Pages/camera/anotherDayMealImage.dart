@@ -148,7 +148,7 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
                         isDense: true,
                         onChanged: (String? newValue) {
                           setState(() {
-                            selectedMealTime = newValue;
+                            selectedMealTime = newValue!;
                             print(selectedMealTime);
                             // getFoodData(selectedMeal!);
                             state.didChange(newValue);
