@@ -1,7 +1,6 @@
 class Pollution {
-  String place;
-  int year;
-  int quantity;
+  String day;
+  int serves;
 
-  Pollution(this.year, this.place, this.quantity);
+  Pollution(this.day, this.serves);
 }

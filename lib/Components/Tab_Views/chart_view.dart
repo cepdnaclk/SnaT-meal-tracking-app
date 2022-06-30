@@ -26,13 +26,13 @@ class _ChartViewState extends State<ChartView> {
 
   _generateData() {
     var data1 = [
-      Pollution(1980, 'Monday', 10),
-      Pollution(1980, 'Tuesday', 9),
-      Pollution(1980, 'Wednesday', 1),
-      Pollution(1980, 'Thursday', 10),
-      Pollution(1980, 'Friday', 2),
-      Pollution(1980, 'Saturday', 4),
-      Pollution(1980, 'Sunday', 7),
+      Pollution('Monday', 10),
+      Pollution('Tuesday', 9),
+      Pollution('Wednesday', 1),
+      Pollution('Thursday', 10),
+      Pollution('Friday', 2),
+      Pollution('Saturday', 4),
+      Pollution('Sunday', 7),
     ];
 
     var piedata = [
@@ -57,8 +57,8 @@ class _ChartViewState extends State<ChartView> {
     );
     _seriesData.add(
       charts.Series(
-        domainFn: (Pollution pollution, _) => pollution.place,
-        measureFn: (Pollution pollution, _) => pollution.quantity,
+        domainFn: (Pollution pollution, _) => pollution.day,
+        measureFn: (Pollution pollution, _) => pollution.serves,
         id: '2017',
         data: data1,
         fillPatternFn: (_, __) => charts.FillPatternType.solid,
