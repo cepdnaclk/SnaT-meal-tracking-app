@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 class Task {
-  String task;
-  double taskvalue;
-  Color colorval;
+  String mealType;
+  double serving;
+  Color colorVal;
 
-  Task(this.task, this.taskvalue, this.colorval);
+  Task(this.mealType, this.serving, this.colorVal);
 }

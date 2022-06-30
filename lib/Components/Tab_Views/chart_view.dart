@@ -26,33 +26,33 @@ class _ChartViewState extends State<ChartView> {
 
   _generateData() {
     var data1 = [
-      new Pollution(1980, 'Monday', 10),
-      new Pollution(1980, 'Tuesday', 9),
-      new Pollution(1980, 'Wednesday', 1),
-      new Pollution(1980, 'Thursday', 10),
-      new Pollution(1980, 'Friday', 2),
-      new Pollution(1980, 'Saturday', 4),
-      new Pollution(1980, 'Sunday', 7),
+      Pollution(1980, 'Monday', 10),
+      Pollution(1980, 'Tuesday', 9),
+      Pollution(1980, 'Wednesday', 1),
+      Pollution(1980, 'Thursday', 10),
+      Pollution(1980, 'Friday', 2),
+      Pollution(1980, 'Saturday', 4),
+      Pollution(1980, 'Sunday', 7),
     ];
 
     var piedata = [
-      new Task('Cereals and Starchy foods', 35.8, Color(0xff054840)),
-      new Task('Vegetables', 8.3, Color(0xff16867a)),
-      new Task('Fruits', 10.8, Color(0xff85dad0)),
-      new Task('Pulses Meat Fish', 15.6, Color(0xffb1dad6)),
-      new Task('Beverages', 19.2, Color(0xff7a7979)),
-      new Task('Milk and Milk Products', 10.3, Color(0xff000000)),
+      Task('Cereals and Starchy foods', 35.8, const Color(0xff054840)),
+      Task('Vegetables', 8.3, const Color(0xff16867a)),
+      Task('Fruits', 10.8, const Color(0xff85dad0)),
+      Task('Pulses Meat Fish', 15.6, const Color(0xffb1dad6)),
+      Task('Beverages', 19.2, const Color(0xff7a7979)),
+      Task('Milk and Milk Products', 10.3, const Color(0xff000000)),
     ];
 
     _seriesPieData.add(
       charts.Series(
-        domainFn: (Task task, _) => task.task,
-        measureFn: (Task task, _) => task.taskvalue,
+        domainFn: (Task task, _) => task.mealType,
+        measureFn: (Task task, _) => task.serving,
         colorFn: (Task task, _) =>
-            charts.ColorUtil.fromDartColor(task.colorval),
-        id: 'Air Pollution',
+            charts.ColorUtil.fromDartColor(task.colorVal),
+        id: 'Daily Nutrients',
         data: piedata,
-        labelAccessorFn: (Task row, _) => '${row.taskvalue}',
+        labelAccessorFn: (Task row, _) => '${row.serving}',
       ),
     );
     _seriesData.add(
@@ -63,7 +63,7 @@ class _ChartViewState extends State<ChartView> {
         data: data1,
         fillPatternFn: (_, __) => charts.FillPatternType.solid,
         fillColorFn: (Pollution pollution, _) =>
-            charts.ColorUtil.fromDartColor(Color(0xff990099)),
+            charts.ColorUtil.fromDartColor(const Color(0xff990099)),
       ),
     );
   }
@@ -77,6 +77,7 @@ class _ChartViewState extends State<ChartView> {
   }
 
   final controller = ScreenshotController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -86,7 +87,7 @@ class _ChartViewState extends State<ChartView> {
         controller: controller,
         child: Scaffold(
           body: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
                 Container(
@@ -98,8 +99,8 @@ class _ChartViewState extends State<ChartView> {
                     indicator: BoxDecoration(
                         color: ThemeInfo.primaryColor,
                         borderRadius: BorderRadius.circular(20.0)),
-                    indicatorColor: Color(0xff1976d2),
-                    tabs: [
+                    indicatorColor: const Color(0xff1976d2),
+                    tabs: const [
                       Tab(text: "For Today"),
                       Tab(text: "This Week"),
                     ],
@@ -110,9 +111,9 @@ class _ChartViewState extends State<ChartView> {
                   child: TabBarView(
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Container(
-                          padding: EdgeInsets.all(3.0),
+                          padding: const EdgeInsets.all(3.0),
                           decoration: BoxDecoration(
                               color: Colors.grey.shade300,
                               borderRadius: BorderRadius.circular(20.0)),
@@ -141,11 +142,11 @@ class _ChartViewState extends State<ChartView> {
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.shade500,
-                                      offset: Offset(0.0, 5.0),
+                                      offset: const Offset(0.0, 5.0),
                                       blurRadius: 5.0,
                                       spreadRadius: 1.0,
                                     ),
-                                    BoxShadow(
+                                    const BoxShadow(
                                         color: Colors.white,
                                         offset: Offset(0.0, 0.0))
                                   ],
@@ -154,50 +155,54 @@ class _ChartViewState extends State<ChartView> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
-                                    Container(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: const <Widget>[
-                                          Legend(
-                                            colour: Color(0xff054840),
-                                            text: 'Cereals and Starchy foods',
-                                          ),
-                                          Legend(
-                                            colour: Color(0xff16867a),
-                                            text: 'Vegetables',
-                                          ),
-                                          Legend(
-                                            colour: Color(0xff85dad0),
-                                            text: 'Fruit',
-                                          ),
-                                        ],
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const <Widget>[
+                                        Legend(
+                                          colour: Color(0xff054840),
+                                          text: 'Cereals and Starchy foods',
+                                        ),
+                                        Legend(
+                                          colour: Color(0xff16867a),
+                                          text: 'Vegetables',
+                                        ),
+                                        Legend(
+                                          colour: Color(0xff85dad0),
+                                          text: 'Fruit',
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                      height: size.height * 0.12,
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade500,
+                                        ),
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
-                                    Container(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: const <Widget>[
-                                          Legend(
-                                            colour: Color(0xffb1dad6),
-                                            text: 'Pulses Meat Fish',
-                                          ),
-                                          Legend(
-                                            colour: Color(0xff7a7979),
-                                            text: 'Beverages',
-                                          ),
-                                          Legend(
-                                            colour: Color(0xff000000),
-                                            text: 'Milk and Milk Products',
-                                          ),
-                                        ],
-                                      ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const <Widget>[
+                                        Legend(
+                                          colour: Color(0xffb1dad6),
+                                          text: 'Pulses Meat Fish',
+                                        ),
+                                        Legend(
+                                          colour: Color(0xff7a7979),
+                                          text: 'Beverages',
+                                        ),
+                                        Legend(
+                                          colour: Color(0xff000000),
+                                          text: 'Milk and Milk Products',
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -206,7 +211,7 @@ class _ChartViewState extends State<ChartView> {
                                 child: charts.PieChart<String>(
                                   _seriesPieData,
                                   animate: true,
-                                  animationDuration: Duration(seconds: 1),
+                                  animationDuration: const Duration(seconds: 1),
                                   defaultRenderer: charts.ArcRendererConfig(
                                     arcWidth: 75,
                                     arcRendererDecorators: [
@@ -231,7 +236,7 @@ class _ChartViewState extends State<ChartView> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
@@ -260,7 +265,7 @@ class _ChartViewState extends State<ChartView> {
                                   barGroupingType:
                                       charts.BarGroupingType.grouped,
                                   //behaviors: [new charts.SeriesLegend()],
-                                  animationDuration: Duration(seconds: 1),
+                                  animationDuration: const Duration(seconds: 1),
                                 ),
                               ),
                               SizedBox(
