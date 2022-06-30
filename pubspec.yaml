@@ -54,6 +54,7 @@ dependencies:
   get:
   settings_ui: ^2.0.2
   firebase_storage: ^10.2.18
+  getwidget:
 
   screenshot: ^1.2.3
   image_gallery_saver: ^1.7.1

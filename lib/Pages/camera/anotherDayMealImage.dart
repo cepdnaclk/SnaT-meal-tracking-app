@@ -27,7 +27,7 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
   XFile? new_IMAGE;
   String? filePath;
   bool saved= true;
-  late String selectedMealTime;
+  late String MealTime ;
   final imageStorage staorage = imageStorage();
   final ImagePicker picker = ImagePicker();
 
@@ -149,6 +149,7 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedMealTime = newValue!;
+                            MealTime = newValue;
                             print(selectedMealTime);
                             // getFoodData(selectedMeal!);
                             state.didChange(newValue);
