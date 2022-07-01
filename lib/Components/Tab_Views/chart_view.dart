@@ -22,17 +22,17 @@ class ChartView extends StatefulWidget {
 
 class _ChartViewState extends State<ChartView> {
   late List<charts.Series<Task, String>> _seriesPieData;
-  late List<charts.Series<Pollution, String>> _seriesData;
+  late List<charts.Series<WeekReport, String>> _seriesData;
 
   _generateData() {
     var data1 = [
-      Pollution('Monday', 10),
-      Pollution('Tuesday', 9),
-      Pollution('Wednesday', 1),
-      Pollution('Thursday', 10),
-      Pollution('Friday', 2),
-      Pollution('Saturday', 4),
-      Pollution('Sunday', 7),
+      WeekReport('Monday', 35),
+      WeekReport('Tuesday', 30),
+      WeekReport('Wednesday', 40),
+      WeekReport('Thursday', 25),
+      WeekReport('Friday', 36),
+      WeekReport('Saturday', 28),
+      WeekReport('Sunday', 15),
     ];
 
     var piedata = [
@@ -57,12 +57,12 @@ class _ChartViewState extends State<ChartView> {
     );
     _seriesData.add(
       charts.Series(
-        domainFn: (Pollution pollution, _) => pollution.day,
-        measureFn: (Pollution pollution, _) => pollution.serves,
+        domainFn: (WeekReport pollution, _) => pollution.day,
+        measureFn: (WeekReport pollution, _) => pollution.serves,
         id: '2017',
         data: data1,
         fillPatternFn: (_, __) => charts.FillPatternType.solid,
-        fillColorFn: (Pollution pollution, _) =>
+        fillColorFn: (WeekReport pollution, _) =>
             charts.ColorUtil.fromDartColor(const Color(0xff990099)),
       ),
     );
@@ -71,7 +71,7 @@ class _ChartViewState extends State<ChartView> {
   @override
   void initState() {
     super.initState();
-    _seriesData = <charts.Series<Pollution, String>>[];
+    _seriesData = <charts.Series<WeekReport, String>>[];
     _seriesPieData = <charts.Series<Task, String>>[];
     _generateData();
   }
@@ -107,7 +107,7 @@ class _ChartViewState extends State<ChartView> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.69,
+                  height: size.height * 0.75,
                   child: TabBarView(
                     children: [
                       Padding(
@@ -248,11 +248,12 @@ class _ChartViewState extends State<ChartView> {
                               SizedBox(
                                 height: size.height * 0.01,
                               ),
-                              Text(
+                              const Text(
                                 "Total intake for this week",
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.teal.shade900,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff0f5951),
                                 ),
                               ),
                               SizedBox(
@@ -262,11 +263,51 @@ class _ChartViewState extends State<ChartView> {
                                 child: charts.BarChart(
                                   _seriesData,
                                   animate: true,
-                                  barGroupingType:
-                                      charts.BarGroupingType.grouped,
-                                  //behaviors: [new charts.SeriesLegend()],
                                   animationDuration: const Duration(seconds: 1),
+
+                                  /// Assign a custom style for the domain axis.
+                                  ///
+                                  /// This is an OrdinalAxisSpec to match up with BarChart's default
+                                  /// ordinal domain axis (use NumericAxisSpec or DateTimeAxisSpec for
+                                  /// other charts).
+                                  domainAxis: const charts.OrdinalAxisSpec(
+                                      renderSpec: charts.SmallTickRendererSpec(
+
+                                          // Tick and Label styling here.
+                                          labelStyle: charts.TextStyleSpec(
+                                              fontSize: 7, // size in Pts.
+                                              color:
+                                                  charts.MaterialPalette.black),
+
+                                          // Change the line colors to match text color.
+                                          lineStyle: charts.LineStyleSpec(
+                                              color: charts
+                                                  .MaterialPalette.black))),
+
+                                  /// Assign a custom style for the measure axis.
+                                  primaryMeasureAxis: const charts
+                                          .NumericAxisSpec(
+                                      renderSpec: charts.GridlineRendererSpec(
+
+                                          // Tick and Label styling here.
+                                          labelStyle: charts.TextStyleSpec(
+                                              fontSize: 14, // size in Pts.
+                                              color:
+                                                  charts.MaterialPalette.black),
+
+                                          // Change the line colors to match text color.
+                                          lineStyle: charts.LineStyleSpec(
+                                              color: charts
+                                                  .MaterialPalette.black))),
                                 ),
+                                // charts.BarChart(
+                                //   _seriesData,
+                                //   animate: true,
+                                //   barGroupingType:
+                                //       charts.BarGroupingType.grouped,
+                                //   //behaviors: [new charts.SeriesLegend()],
+                                //   animationDuration: const Duration(seconds: 1),
+                                // ),
                               ),
                               SizedBox(
                                 height: size.height * 0.01,

@@ -3,6 +3,7 @@ import 'package:mobile_app/Components/meal_section.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
     getDate();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: ThemeInfo.primaryColor,
         onPressed: () {
           Navigator.of(context).push(
               CustomPageRoute(child: AddAMealScreen(), transition: "scale"));

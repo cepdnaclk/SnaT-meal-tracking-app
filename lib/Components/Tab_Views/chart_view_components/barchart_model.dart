@@ -1,6 +1,6 @@
-class Pollution {
+class WeekReport {
   String day;
   int serves;
 
-  Pollution(this.day, this.serves);
+  WeekReport(this.day, this.serves);
 }

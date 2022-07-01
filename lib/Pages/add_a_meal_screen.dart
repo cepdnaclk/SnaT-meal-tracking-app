@@ -7,6 +7,8 @@ import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Theme/theme_info.dart';
+
 final _firestore = FirebaseFirestore.instance;
 List mealList = [];
 String foodamount = "";
@@ -102,6 +104,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add new meal"),
+        backgroundColor: ThemeInfo.primaryColor,
         actions: [
           GestureDetector(
             onTap: () {
