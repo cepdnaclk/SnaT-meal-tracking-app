@@ -32,7 +32,8 @@ class tabviewcamera extends StatelessWidget {
                         {//return CameraScreen(widget.cameras);
                           return const mealIamgeAnotherDay();
                         })
-                    );},
+                    );
+                      },
                     child: Icon(
                         Icons.calendar_today
                     ),

@@ -1,11 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Services/IamageStoreService.dart';
 
 import '../../Components/date_time_widget.dart';
 import '../../Services/DateTime.dart';
 import '../../Theme/theme_info.dart';
 import '../add_a_meal_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'listOfImagesAccordingToDate.dart';
 
 class selectDateShowImage extends StatefulWidget {
   const selectDateShowImage({Key? key}) : super(key: key);
@@ -15,34 +19,39 @@ class selectDateShowImage extends StatefulWidget {
 }
 
 class _selectDateShowImageState extends State<selectDateShowImage> {
+  DateTime selectedDate = DateTime.now();
   File? image;
-  late String date;
-  late String mealtime;
+  late String MealTime ="Others";
+  List<String> urlList = [];
+
+  final imageStorage staorage = imageStorage();
+
+
   void StateReload() {
     print("State reload");
     setState(() {});
   }
-  void search() async{
-    String datepicked = await date;
-    String mealtimepicked = await date;
-    print(datepicked);
-    print(mealtimepicked);
-
-  }
+  // void search() async{
+  //   staorage.getUrl(selectedDate.toString().split(' ')[0], MealTime);
+  //
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:null,
-      // AppBar(
-      //   title: const Text("pickn date and meal time"),
-      //
-      // ),
+
       floatingActionButton: FloatingActionButton(
         heroTag: "btn6",
         child: const Icon(Icons.search_rounded),
         backgroundColor: ThemeInfo.primaryColor,
         onPressed: (){
-          search();
+          //search();
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (contex)
+              {//return CameraScreen(widget.cameras);
+                return listAccordingToDate(selectedDate.toString().split(' ')[0], MealTime);
+              })
+          );
         },
       ),
       body: ListView(
@@ -54,10 +63,6 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
-              // const Text(
-              //   "Date and time:",
-              //   style: TextStyle(fontSize: 20),
-              // ),
               DateTimeWidget(
                 iconPic: const Icon(
                   Icons.calendar_today,
@@ -66,28 +71,13 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
                 text: DateTimeService.dateConverter(selectedDate),
                 onPressed: (val) async {
                   selectedDate = val;
-                  date = selectedDate as String;
+                  //dateSelected = val.toSring();
+                  print(selectedDate);
+                  //print(dateSelected);
                   print(val);
                   setState(() {});
                 },
               ),
-              // MaterialButton(// Gallery
-              //     elevation: 100,
-              //     hoverElevation: 100,
-              //     focusElevation: 50,
-              //     highlightElevation: 50,
-              //     color: Colors.black12,
-              //     child: const Text(
-              //         "Pick from Gallery",
-              //         style: TextStyle(
-              //           color: Colors.black, fontWeight: FontWeight.bold , fontSize: 15,
-              //         )
-              //     ),
-              //     onPressed: () {
-              //       saved=true;
-              //       pickImage();
-              //     }
-              // ),
               FormField<String>(
                 builder: (FormFieldState<String> state) {
                   return InputDecorator(
@@ -106,7 +96,8 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedMealTime = newValue!;
-                            mealtime = selectedMealTime!;
+                            MealTime = newValue;
+                            //mealtime = selectedMealTime!;
                             print(selectedMealTime);
                             // getFoodData(selectedMeal!);
                             state.didChange(newValue);
@@ -125,13 +116,8 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
                   );
                 },
               ),
-              const SizedBox(height: 5,),
-              image != null ? Image.file(image!): const Icon(Icons.food_bank,size: 380,color:Color.fromARGB(100, 125, 156, 139) ,),
-
             ],
-
           ),
-
         ],
       ),
     );

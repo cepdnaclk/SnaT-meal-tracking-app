@@ -27,11 +27,11 @@ class mealview extends StatelessWidget {
                 labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                 tabs: [
                   Tab(
-                     icon: Icon(Icons.grid_on_outlined),
+                     icon: Icon(Icons.find_in_page),
                    // text: "grid",
                   ),
                   Tab(
-                     icon: Icon(Icons.find_in_page),
+                     icon: Icon(Icons.grid_on_outlined),
                      //text: "list"
                   ),
                 ],
@@ -39,8 +39,9 @@ class mealview extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    MyFileList(),
                     selectDateShowImage(),
+                    MyFileList(),
+
                     //ScrollViewlist(),
                   ],
                 ),

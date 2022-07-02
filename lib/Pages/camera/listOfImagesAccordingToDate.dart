@@ -1,55 +1,69 @@
-/*
- ALL ABOUT THE MEAL GALLERY
- */
-// importing packeges
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
+
 import '../../Services/IamageStoreService.dart';
-import 'CameraPage.dart';
-import 'oneImageViewFromGrid.dart';
+import '../../Theme/theme_info.dart';
+import 'camera_tabview.dart';
+import 'meal_view.dart';
 import 'one_image_view_page.dart';
 
-class MyFileList extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _MyFileList();
+class listAccordingToDate extends StatelessWidget {
+  late String date;
+  late String meaTime;
+  listAccordingToDate(String date,String meaTime){
+    this.date = date;
+    this.meaTime = meaTime;
   }
-}
 
-class _MyFileList extends State<MyFileList> {
   //var files;
   final imageStorage staorage = imageStorage();
   var image_path = <String>[]; // Creates growable list.
-
-  @override
-  void initState() {
-    print("====================================================================\n");
-    print("dsds\n");
-    super.initState();
-  }
-
 
 
   @override
   Widget build(BuildContext context) {
     const title = 'Meal Gallery'; // main Title
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: title,
       home: Scaffold(
-          appBar: null,
-
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(90.0),
+            child:AppBar(
+              title: Text('Meal Gallery'),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                tooltip: 'Menu Icon',
+                onPressed: () {Navigator.of(context).push(MaterialPageRoute(
+                    builder: (contex)
+                    {//return CameraScreen(widget.cameras);
+                      return const tabviewcamera();
+                    })
+                );
+                },
+              ),
+              titleSpacing: 00.0,
+              centerTitle: true,
+              toolbarHeight: 60.2,
+              toolbarOpacity: 0.8,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(25),
+                    bottomLeft: Radius.circular(25)),
+              ),
+              elevation: 0.00,
+              backgroundColor: ThemeInfo.primaryColor,
+            ),
+          ),
           body: FutureBuilder(
-            future: staorage.loadImages(),
-            //getpaths(),
+            future:staorage.getUrl(date.toString().split(' ')[0], meaTime),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 // untill the data is load
                 return const Center(
                   //child: Text('Waiting'),
                   child:
-                  CircularProgressIndicator(backgroundColor: Colors.limeAccent,
+                  CircularProgressIndicator(backgroundColor: Colors.red,
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.green),),
                 );
               } else {
@@ -60,36 +74,42 @@ class _MyFileList extends State<MyFileList> {
                   return GridView.builder(
                     gridDelegate: // grid view
                     const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 20,
+                      crossAxisCount: 1,
+                      mainAxisSpacing: 10,
                     ),
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return
+
+
                         Card(
-                          child: InkWell(
-                              onTap: () {
+                            child: InkWell(
+                              onTap: () {// view individual image
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (contex)
                                     {
-                                      return oneimageviewfromgrid(snapshot.data[index]);
+                                      return showimage(snapshot.data[index],date,meaTime);
                                     })
                                 );
                               },
                               onLongPress: () {},
                               child: Image.network(
-                                  snapshot.data[index],
+                                snapshot.data[index],
                               ),
-                          )
-
+                            )
                         );
+
 
                     },
                   );
                 }
               }
             },
-          )),
+          )
+      ),
+
     );
   }
+
 }
+

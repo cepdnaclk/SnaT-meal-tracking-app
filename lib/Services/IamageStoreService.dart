@@ -3,24 +3,72 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class imageStorage{
   User? user = FirebaseAuth.instance.currentUser;
   var email = "";
+  var id ;
 
-  //email= user.email;
+  DatabaseReference userImage = FirebaseDatabase.instance.ref('users_Images');
 
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   String url="";
   late UploadTask uploadTask;
+  final _firestore = FirebaseFirestore.instance;
+
 
   imageStorage(){
     email =  user?.email as String;
+    id = user?.uid;
+
+    print("=========++++++++++++++++++================++++++++++++++============--------------");
+    print(email);
+    print(id);
   }
+  // add iamge url to firebase
+  Future<void> setImageUrl( String date , String mealtime , String imageurl) async {
+    _firestore
+        .collection('user_Images')
+        .doc(id)
+        .collection('ImageURls')
+        .doc(date)
+        .collection(mealtime)
+        .add({
+    'url': imageurl,
+    });
+   // DatabaseReference ref = FirebaseDatabase.instance.ref("user_Images/$id/$date/$mealtime");
+    //DatabaseReference ref = FirebaseDatabase.instance.ref("user_Images");
+    // await ref.set({
+    //   "date": imageurl
+    // }).then((value) => print("================================url set"));
+  }
+  Future<List<String>> getUrl(String date , String mealtime)async{
+    List<String> urlList = [];
+    final urls = await _firestore
+      .collection('user_Images')
+      .doc(id)
+      .collection('ImageURls')
+      .doc(date)
+      .collection(mealtime)
+      .get();
+      for (var url in urls.docs) {
+        print(url.data()['url']);
+        // SearchTerms.add(food.data()['Food']);
+        // FoodandUnits.add(
+        //     {"Food": food.data()['Food'], "Units": food.data()['Unit']});
+        urlList.add(url.data()['url'].toString());
+      }
+      print(urlList);
+      return urlList;
+  }
+
   // for upload a image
   Future<String> uploadFile(String filepath,String filename) async{
     final  Reference storageReference = FirebaseStorage.instance.ref('images/$email/$filename');
@@ -68,6 +116,7 @@ class imageStorage{
   Future<void> delete(String ref) async {
     await storage.ref(ref).delete();
   }
+
 }
 
 
