@@ -2,6 +2,7 @@
  this is for tab view for gallery change between list view and grid view hadel by this
  */
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
 import 'list_image_ScrollView.dart';
 import 'list_of_images.dart';
 
@@ -30,7 +31,7 @@ class mealview extends StatelessWidget {
                    // text: "grid",
                   ),
                   Tab(
-                     icon: Icon(Icons.line_weight_sharp),
+                     icon: Icon(Icons.find_in_page),
                      //text: "list"
                   ),
                 ],
@@ -39,7 +40,8 @@ class mealview extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     MyFileList(),
-                    ScrollViewlist(),
+                    selectDateShowImage(),
+                    //ScrollViewlist(),
                   ],
                 ),
               ),

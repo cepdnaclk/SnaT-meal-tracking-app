@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'SnaT',
       theme: ThemeData(
         primaryColor: ThemeInfo.primaryColor,
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.teal,
       ),
       home: DashboardLayout(),
     );

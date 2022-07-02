@@ -26,7 +26,6 @@ class _DashboardLayoutState extends State<DashboardLayout>
     _tabController = TabController(vsync: this, length: 4);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -43,20 +42,18 @@ class _DashboardLayoutState extends State<DashboardLayout>
           heroTag: "btn1",
           child: const Icon(Icons.camera_alt_outlined),
           backgroundColor: ThemeInfo.primaryColor,
-          onPressed: (){
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (contex)
-                    {//return CameraScreen(widget.cameras);
-                      return const tabviewcamera();
-                    })
-            );
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (contex) {
+              //return CameraScreen(widget.cameras);
+              return const tabviewcamera();
+            }));
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         drawer: const DashboardDrawer(),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
-          notchMargin: 1,
+          notchMargin: 2,
           color: ThemeInfo.primaryColor,
           child: TabBar(
             indicatorColor: ThemeInfo.bottomTabButtonColor,
@@ -80,16 +77,15 @@ class _DashboardLayoutState extends State<DashboardLayout>
               ),
               Tab(
                   child: Container(
-                    // custom bmi icon for tab view
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/bmi_icon.png',
-                      color: ThemeInfo.bottomTabButtonColor,
-                      height: 28.0,
-                      width: 28.0,
-                    ),
-                  )
-              ),
+                // custom bmi icon for tab view
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  'assets/images/bmi_icon.png',
+                  color: ThemeInfo.bottomTabButtonColor,
+                  height: 23.0,
+                  width: 23.0,
+                ),
+              )),
             ],
           ),
         ),

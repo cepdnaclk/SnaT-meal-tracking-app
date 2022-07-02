@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,16 +9,34 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 
 class imageStorage{
+  User? user = FirebaseAuth.instance.currentUser;
+  var email = "";
+
+  //email= user.email;
+
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  String email='SnaT@gmail.com';
+  String url="";
+  late UploadTask uploadTask;
+
+  imageStorage(){
+    email =  user?.email as String;
+  }
   // for upload a image
-  Future<void> uploadFile(String filepath,String filename) async{
+  Future<String> uploadFile(String filepath,String filename) async{
+    final  Reference storageReference = FirebaseStorage.instance.ref('images/$email/$filename');
     File file = File(filepath);
     try{///images
-      await storage.ref('images/$email/$filename').putFile(file);
+      url=await(await storage.ref('images/$email/$filename').putFile(file)).ref.getDownloadURL();
+      //uploadTask = storageReference.putFile(file);
+      //url = await (await uploadTask).ref.getDownloadURL();
+
+
     }on firebase_core.FirebaseException catch(e) {
       print(e);
     }
+    //print("================================================================");
+   // print(url);
+    return url;
   }
   Future<firebase_storage.ListResult> listimages() async{
     firebase_storage.ListResult result=await storage.ref('images/$email').listAll();
