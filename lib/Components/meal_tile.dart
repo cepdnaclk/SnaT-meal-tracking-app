@@ -15,22 +15,25 @@ class MealTile extends StatelessWidget {
   final void Function() ReloadState;
 
   void editTile(String name, String amount) {
-    for (Map meal1 in mealItems) {
+    print(meal['name']);
+    print("hey");
+    for (Map meal1 in mealList) {
       if (meal1['name'] == meal["name"]) {
-        int index = mealItems.indexOf(meal1);
-        mealItems[index]['name'] = name;
-        mealItems[index]['icon'] = Icons.food_bank;
-        mealItems[index]['amount'] = amount;
+        int index = mealList.indexOf(meal1);
+        print(index);
+        mealList[index]['name'] = name;
+        mealList[index]['icon'] = Icons.food_bank;
+        mealList[index]['amount'] = amount;
         break;
       }
     }
   }
 
   void deleteTile() {
-    for (Map meal1 in mealItems) {
+    for (Map meal1 in mealList) {
       if (meal1['name'] == meal["name"]) {
-        int index = mealItems.indexOf(meal1);
-        mealItems.removeAt(index);
+        int index = mealList.indexOf(meal1);
+        mealList.removeAt(index);
         break;
       }
     }
