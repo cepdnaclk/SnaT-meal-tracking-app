@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'chart_view_components/barChartLegend.dart';
 import 'chart_view_components/barchart_model.dart';
 import 'chart_view_components/legend_container.dart';
 import 'chart_view_components/pieChart_model.dart';
@@ -24,16 +25,41 @@ class _ChartViewState extends State<ChartView> {
   late List<charts.Series<Task, String>> _seriesPieData;
   late List<charts.Series<WeekReport, String>> _seriesData;
 
+  // Color valuess for bar chart
+  Color basicColor = const Color(0xff054840);
+  Color eatLessColor = const Color(0xffa80000);
+  Color eatMoreColor = const Color(0xfffff000);
+
   _generateData() {
-    var data1 = [
-      WeekReport('Monday', 35),
-      WeekReport('Tuesday', 30),
-      WeekReport('Wednesday', 40),
-      WeekReport('Thursday', 25),
-      WeekReport('Friday', 36),
-      WeekReport('Saturday', 28),
-      WeekReport('Sunday', 15),
+    var barColor = [
+      basicColor,
+      basicColor,
+      basicColor,
+      basicColor,
+      basicColor,
+      basicColor,
+      basicColor
     ];
+    var data1 = [
+      WeekReport('Monday', 35, barColor[0]),
+      WeekReport('Tuesday', 30, barColor[1]),
+      WeekReport('Wednesday', 40, barColor[2]),
+      WeekReport('Thursday', 25, barColor[3]),
+      WeekReport('Friday', 36, barColor[4]),
+      WeekReport('Saturday', 28, barColor[5]),
+      WeekReport('Sunday', 15, barColor[6]),
+    ];
+    // 27
+    // 39
+    for (int i = 0; i < 7; i++) {
+      if (data1[i].serves > 39) {
+        data1[i].colorVal = eatLessColor;
+      } else if (data1[i].serves < 27) {
+        data1[i].colorVal = eatMoreColor;
+      } else {
+        data1[i].colorVal = basicColor;
+      }
+    }
 
     var piedata = [
       Task('Cereals and Starchy foods', 35.8, const Color(0xff054840)),
@@ -63,7 +89,7 @@ class _ChartViewState extends State<ChartView> {
         data: data1,
         fillPatternFn: (_, __) => charts.FillPatternType.solid,
         fillColorFn: (WeekReport pollution, _) =>
-            charts.ColorUtil.fromDartColor(const Color(0xff990099)),
+            charts.ColorUtil.fromDartColor(pollution.colorVal),
       ),
     );
   }
@@ -259,6 +285,65 @@ class _ChartViewState extends State<ChartView> {
                                   ),
                                 ),
                                 SizedBox(
+                                  height: size.height * 0.02,
+                                ),
+                                Container(
+                                  height: size.height * 0.08,
+                                  width: size.width * 0.7,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueGrey.shade500,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.shade400,
+                                        offset: const Offset(0.0, 5.0),
+                                        blurRadius: 5.0,
+                                        spreadRadius: 1.0,
+                                      ),
+                                      const BoxShadow(
+                                          color: Colors.white,
+                                          offset: Offset(0.0, 0.0))
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Row(
+                                            children: const [
+                                              BoxLegend(
+                                                colour: Color(0xff054840),
+                                                text: 'You are on Point',
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              const BoxLegend(
+                                                colour: Color(0xffa80000),
+                                                text: 'Eat less',
+                                              ),
+                                              SizedBox(width: size.width * 0.1),
+                                              const BoxLegend(
+                                                colour: Color(0xfffff000),
+                                                text: 'Eat more',
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
                                   height: size.height * 0.01,
                                 ),
                                 Expanded(
@@ -281,7 +366,7 @@ class _ChartViewState extends State<ChartView> {
                                                 labelStyle:
                                                     charts.TextStyleSpec(
                                                         fontSize:
-                                                            7, // size in Pts.
+                                                            8, // size in Pts.
                                                         color: charts
                                                             .MaterialPalette
                                                             .black),
@@ -308,14 +393,6 @@ class _ChartViewState extends State<ChartView> {
                                                 color: charts
                                                     .MaterialPalette.black))),
                                   ),
-                                  // charts.BarChart(
-                                  //   _seriesData,
-                                  //   animate: true,
-                                  //   barGroupingType:
-                                  //       charts.BarGroupingType.grouped,
-                                  //   //behaviors: [new charts.SeriesLegend()],
-                                  //   animationDuration: const Duration(seconds: 1),
-                                  // ),
                                 ),
                                 SizedBox(
                                   height: size.height * 0.01,
