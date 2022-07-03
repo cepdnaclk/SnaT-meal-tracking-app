@@ -107,7 +107,7 @@ class _ChartViewState extends State<ChartView> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.75,
+                  height: size.height * 0.69,
                   child: TabBarView(
                     children: [
                       Padding(
@@ -242,86 +242,95 @@ class _ChartViewState extends State<ChartView> {
                             borderRadius: BorderRadius.circular(20.0),
                             color: Colors.grey.shade300,
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              SizedBox(
-                                height: size.height * 0.01,
-                              ),
-                              const Text(
-                                "Total intake for this week",
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff0f5951),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: size.height * 0.01,
                                 ),
-                              ),
-                              SizedBox(
-                                height: size.height * 0.01,
-                              ),
-                              Expanded(
-                                child: charts.BarChart(
-                                  _seriesData,
-                                  animate: true,
-                                  animationDuration: const Duration(seconds: 1),
-
-                                  /// Assign a custom style for the domain axis.
-                                  ///
-                                  /// This is an OrdinalAxisSpec to match up with BarChart's default
-                                  /// ordinal domain axis (use NumericAxisSpec or DateTimeAxisSpec for
-                                  /// other charts).
-                                  domainAxis: const charts.OrdinalAxisSpec(
-                                      renderSpec: charts.SmallTickRendererSpec(
-
-                                          // Tick and Label styling here.
-                                          labelStyle: charts.TextStyleSpec(
-                                              fontSize: 7, // size in Pts.
-                                              color:
-                                                  charts.MaterialPalette.black),
-
-                                          // Change the line colors to match text color.
-                                          lineStyle: charts.LineStyleSpec(
-                                              color: charts
-                                                  .MaterialPalette.black))),
-
-                                  /// Assign a custom style for the measure axis.
-                                  primaryMeasureAxis: const charts
-                                          .NumericAxisSpec(
-                                      renderSpec: charts.GridlineRendererSpec(
-
-                                          // Tick and Label styling here.
-                                          labelStyle: charts.TextStyleSpec(
-                                              fontSize: 14, // size in Pts.
-                                              color:
-                                                  charts.MaterialPalette.black),
-
-                                          // Change the line colors to match text color.
-                                          lineStyle: charts.LineStyleSpec(
-                                              color: charts
-                                                  .MaterialPalette.black))),
+                                const Text(
+                                  "Total intake for this week",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff0f5951),
+                                  ),
                                 ),
-                                // charts.BarChart(
-                                //   _seriesData,
-                                //   animate: true,
-                                //   barGroupingType:
-                                //       charts.BarGroupingType.grouped,
-                                //   //behaviors: [new charts.SeriesLegend()],
-                                //   animationDuration: const Duration(seconds: 1),
-                                // ),
-                              ),
-                              SizedBox(
-                                height: size.height * 0.01,
-                              ),
-                              Button(
-                                press: () async {
-                                  final image = await controller.capture();
-                                  if (image == null) return;
+                                SizedBox(
+                                  height: size.height * 0.01,
+                                ),
+                                Expanded(
+                                  child: charts.BarChart(
+                                    _seriesData,
+                                    animate: true,
+                                    animationDuration:
+                                        const Duration(seconds: 1),
 
-                                  await saveImage(image);
-                                  await saveAndShare(image);
-                                },
-                              ),
-                            ],
+                                    /// Assign a custom style for the domain axis.
+                                    ///
+                                    /// This is an OrdinalAxisSpec to match up with BarChart's default
+                                    /// ordinal domain axis (use NumericAxisSpec or DateTimeAxisSpec for
+                                    /// other charts).
+                                    domainAxis: const charts.OrdinalAxisSpec(
+                                        renderSpec:
+                                            charts.SmallTickRendererSpec(
+
+                                                // Tick and Label styling here.
+                                                labelStyle:
+                                                    charts.TextStyleSpec(
+                                                        fontSize:
+                                                            7, // size in Pts.
+                                                        color: charts
+                                                            .MaterialPalette
+                                                            .black),
+
+                                                // Change the line colors to match text color.
+                                                lineStyle: charts.LineStyleSpec(
+                                                    color: charts
+                                                        .MaterialPalette
+                                                        .black))),
+
+                                    /// Assign a custom style for the measure axis.
+                                    primaryMeasureAxis: const charts
+                                            .NumericAxisSpec(
+                                        renderSpec: charts.GridlineRendererSpec(
+
+                                            // Tick and Label styling here.
+                                            labelStyle: charts.TextStyleSpec(
+                                                fontSize: 14, // size in Pts.
+                                                color: charts
+                                                    .MaterialPalette.black),
+
+                                            // Change the line colors to match text color.
+                                            lineStyle: charts.LineStyleSpec(
+                                                color: charts
+                                                    .MaterialPalette.black))),
+                                  ),
+                                  // charts.BarChart(
+                                  //   _seriesData,
+                                  //   animate: true,
+                                  //   barGroupingType:
+                                  //       charts.BarGroupingType.grouped,
+                                  //   //behaviors: [new charts.SeriesLegend()],
+                                  //   animationDuration: const Duration(seconds: 1),
+                                  // ),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.01,
+                                ),
+                                Button(
+                                  press: () async {
+                                    final image = await controller.capture();
+                                    if (image == null) return;
+
+                                    await saveImage(image);
+                                    await saveAndShare(image);
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       )
