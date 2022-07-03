@@ -89,7 +89,6 @@ class _campageState extends State<campage> {
 
     await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore);
 
-
     if(image == null) return;
     setState(() {
       image = (newImage as XFile?)!;
