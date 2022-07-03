@@ -21,12 +21,15 @@ class Legend extends StatelessWidget {
             color: colour,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 7.0,
         ),
         Text(
           text,
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xff033438),
+          ),
         ),
       ],
     );

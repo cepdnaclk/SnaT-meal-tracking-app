@@ -26,7 +26,10 @@ class BoxLegend extends StatelessWidget {
         ),
         Text(
           text,
-          style: const TextStyle(fontSize: 14, color: Colors.white),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xff033438),
+          ),
         ),
       ],
     );
