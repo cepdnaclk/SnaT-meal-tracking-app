@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../Services/IamageStoreService.dart';
+import 'oneImageViewFromGrid.dart';
 import 'one_image_view_page.dart';
 
 class ScrollViewlist extends StatefulWidget {
@@ -62,7 +63,7 @@ class _ScrollViewlist extends State<ScrollViewlist> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (contex)
                                     {
-                                      return showimage(snapshot.data[index]);
+                                      return oneimageviewfromgrid(snapshot.data[index]);
                                     })
                                 );
                               },
@@ -77,7 +78,8 @@ class _ScrollViewlist extends State<ScrollViewlist> {
                 }
               }
             },
-          )),
+          )
+      ),
     );
   }
 }

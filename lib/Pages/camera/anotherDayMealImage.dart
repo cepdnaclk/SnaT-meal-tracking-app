@@ -27,11 +27,12 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
   XFile? new_IMAGE;
   String? filePath;
   bool saved= true;
-  late String MealTime ;
+  late String MealTime ="Others";
+  late String dateSelected ="";
   final imageStorage staorage = imageStorage();
   final ImagePicker picker = ImagePicker();
 
-  late String imageuflFromFireStore;
+  late String imageurlFromFireStore;
 
   Future pickImage() async {
     try {
@@ -56,8 +57,19 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
     final now = DateTime.now();// date and time of the moment
     String filepath = '$filePath/'+now.toString()+'.png';// make now as image name
     final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
-    imageuflFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
-    print(imageuflFromFireStore);
+    imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
+    print(imageurlFromFireStore);
+    //setImageUrl( String date , String mealtime , String imageurl)
+
+    //var dateTime = await dateSelected.split(' ');
+    //String date = "07/01";
+    print("date--------------------------------------------------------------------------------");
+    print(dateSelected);
+    //print(date);
+    //date  = '1212';
+    //MealTime = 'sccs';
+    //imageurlFromFireStore = "1";
+    await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore);
     if(image == null) return;
     setState(() {
       image = (newImage as XFile?)!;
@@ -110,7 +122,9 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
                 text: DateTimeService.dateConverter(selectedDate),
                 onPressed: (val) async {
                   selectedDate = val;
-                  print(val);
+                  dateSelected = val.toSring();
+                  print(selectedDate);
+                  print(dateSelected);
                   setState(() {});
                 },
               ),

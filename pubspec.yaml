@@ -61,6 +61,7 @@ dependencies:
   permission_handler: ^10.0.0
   share_plus: ^4.0.10
   path_provider: ^2.0.11
+  firebase_database: ^9.0.17
 
 dev_dependencies:
   flutter_test:

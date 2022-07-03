@@ -30,16 +30,18 @@ class campage extends StatefulWidget {
 }
 
 class _campageState extends State<campage> {
-
+  DateTime selectedDate = DateTime.now();
   File? image;
   String? path;
   XFile? new_IMAGE;
   String? filePath;
   bool saved= true;
+  late String MealTime ="Others";
+
   final imageStorage staorage = imageStorage();
   final ImagePicker picker = ImagePicker();
 
-  late String imageuflFromFireStore;
+  late String imageurlFromFireStore;
   // method for pick image from Gallery
   Future pickImage() async {
     try {
@@ -82,8 +84,11 @@ class _campageState extends State<campage> {
     final now = DateTime.now();// date and time of the moment
     String filepath = '$filePath/'+now.toString()+'.png';// make now as image name
     final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
-    imageuflFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
-    print(imageuflFromFireStore);
+    imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
+    print(imageurlFromFireStore);
+
+    await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore);
+
 
     if(image == null) return;
     setState(() {
@@ -171,6 +176,7 @@ class _campageState extends State<campage> {
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedMealTime = newValue;
+                            MealTime = newValue!;
                             print(selectedMealTime);
                             // getFoodData(selectedMeal!);
                             state.didChange(newValue);
