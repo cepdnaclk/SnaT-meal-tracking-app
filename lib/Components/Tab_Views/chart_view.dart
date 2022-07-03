@@ -107,7 +107,7 @@ class _ChartViewState extends State<ChartView> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.69,
+                  height: size.height * 0.75,
                   child: TabBarView(
                     children: [
                       Padding(
