@@ -163,7 +163,7 @@ class _campageState extends State<campage> {
                     decoration: InputDecoration(
                       //labelStyle: textStyle,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                     isEmpty: selectedMealTime == '',

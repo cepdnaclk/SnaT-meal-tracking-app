@@ -1,5 +1,8 @@
 /*
- this is for tab view for gallery change between list view and grid view hadel by this
+ this is for tab view for gallery change between
+ searching meal images
+  according to date and meal time
+  and grid view hadele by this
  */
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';

@@ -60,9 +60,6 @@ class imageStorage{
       .get();
       for (var url in urls.docs) {
         print(url.data()['url']);
-        // SearchTerms.add(food.data()['Food']);
-        // FoodandUnits.add(
-        //     {"Food": food.data()['Food'], "Units": food.data()['Unit']});
         urlList.add(url.data()['url'].toString());
       }
       print(urlList);
@@ -75,15 +72,10 @@ class imageStorage{
     File file = File(filepath);
     try{///images
       url=await(await storage.ref('images/$email/$filename').putFile(file)).ref.getDownloadURL();
-      //uploadTask = storageReference.putFile(file);
-      //url = await (await uploadTask).ref.getDownloadURL();
-
 
     }on firebase_core.FirebaseException catch(e) {
       print(e);
     }
-    //print("================================================================");
-   // print(url);
     return url;
   }
   Future<firebase_storage.ListResult> listimages() async{
