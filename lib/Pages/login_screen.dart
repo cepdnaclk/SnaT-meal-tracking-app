@@ -116,7 +116,15 @@ class LoginScreen extends StatelessWidget {
                             )
                           ],
                         ),
+                        
               ),
+              Text('OR',style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              )),
+
+              SizedBox(height: 10),
 
               Center(
                       
@@ -137,7 +145,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     child: const Text(
                       "Sign in with Google",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold),
                     ),
                   ),
                 
