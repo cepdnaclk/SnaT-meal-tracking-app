@@ -62,19 +62,30 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ThemeInfo.primaryColor,
+      //backgroundColor: ThemeInfo.primaryColor,
+      appBar: AppBar(
+          elevation: 8.0,
+          backgroundColor: ThemeInfo.primaryColor,
+          title: const Text("User Details"),
+        ),
       body: SafeArea(
         child:SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 30),
-              Text(
-                'User Details',
-                style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 30,
+              SizedBox(height: 20),
+              // Text(
+              //   'User Details',
+              //   style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
+              // ),
+              // SizedBox(
+              //   height: 20,
+              // ),
+              Container(
+                height:150,
+                child: Image(image: AssetImage("assets/images/userDetails.jpg"),
+                fit: BoxFit.contain,
+                ),
               ),
         
         
@@ -86,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.teal),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -94,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Name',
-                    fillColor: Colors.lightGreen[100],
+                    fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.person),
                   ),
@@ -109,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _birthController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.teal),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -117,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Date of birth',
-                    fillColor: Colors.lightGreen[100],
+                    fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.calendar_month)
                     
@@ -147,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _genderController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.teal),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -155,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Gender',
-                    fillColor: Colors.lightGreen[100],
+                    fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.boy),
                     
@@ -175,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _heightController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.teal),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -183,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Height(cm)',
-                    fillColor: Colors.lightGreen[100],
+                    fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.height),
                   ),
@@ -197,7 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _weightController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.teal),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -205,13 +216,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Weight(kg)',
-                    fillColor: Colors.lightGreen[100],
+                    fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.monitor_weight_rounded),
                   ),
                 ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 25),
         
         
               ElevatedButton(

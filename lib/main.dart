@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       //home: DashboardLayout(),
-      home: DashboardLayout(),
+      home: WelcomeScreen(),
     );
   }
 }

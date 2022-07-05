@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                               onPressed: () async{
                                 Navigator.push(context, MaterialPageRoute(builder : (context) => SignIn()));
                               },
-                              child: Text('  Sign In  ',style: TextStyle(
+                              child:Text('  Sign In  ',style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
