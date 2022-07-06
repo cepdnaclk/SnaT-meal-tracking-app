@@ -2,10 +2,13 @@
  this is for main tab view to take image part or view meal images
  */
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'CameraPage.dart';
 import 'anotherDayMealImage.dart';
 import 'meal_view.dart';
+import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
+import 'list_of_images.dart';
 
 class tabviewcamera extends StatelessWidget {
   const tabviewcamera({Key? key}) : super(key: key);
@@ -15,11 +18,23 @@ class tabviewcamera extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: PreferredSize(
+
             preferredSize: Size.fromHeight(90.0),
             child:AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                tooltip: 'back',
+                onPressed: () {Navigator.of(context).push(MaterialPageRoute(
+                    builder: (contex)
+                    {//return CameraScreen(widget.cameras);
+                      return DashboardLayout();
+                    })
+                );
+                },
+              ),
             title: Text('Meal Gallery'),
             actions: <Widget>[
 
@@ -44,7 +59,14 @@ class tabviewcamera extends StatelessWidget {
             bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.camera_alt)),
-                Tab(icon: Icon(Icons.browse_gallery_sharp))
+                Tab(
+                  icon: Icon(Icons.find_in_page),
+                  // text: "grid",
+                ),
+                Tab(
+                  icon: Icon(Icons.grid_on_outlined),
+                  //text: "list"
+                ),
               ],
             ),
             titleSpacing: 00.0,
@@ -63,7 +85,10 @@ class tabviewcamera extends StatelessWidget {
           body: const TabBarView(
             children: [
             campage(title: 'camera',),
-              mealview(),
+              //mealview(),
+              selectDateShowImage(),
+              MyFileList(),
+
             ],
           ),
         ),

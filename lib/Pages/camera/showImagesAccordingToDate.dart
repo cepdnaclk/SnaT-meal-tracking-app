@@ -4,6 +4,7 @@
  */
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobile_app/Services/IamageStoreService.dart';
 
 import '../../Components/date_time_widget.dart';
@@ -25,6 +26,7 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
   File? image;
   late String MealTime ="non";
   List<String> urlList = [];
+  bool selected = false;
 
   final imageStorage staorage = imageStorage();
 
@@ -44,8 +46,15 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
         child: const Icon(Icons.search_rounded),
         backgroundColor: ThemeInfo.primaryColor,
         onPressed: (){
-          //search();
-          if (MealTime!="non") {
+          if(selected!=true){
+            Fluttertoast.showToast(
+              msg:"Please select a meal time",
+            );
+          }
+          else{
+            Fluttertoast.showToast(
+              msg: selectedDate.toString().split(' ')[0]+' '+MealTime+" images",
+            );
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex) { //return CameraScreen(widget.cameras);
                   return listAccordingToDate(
@@ -53,9 +62,14 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
                 })
             );
           }
-          else{
+
+          //search();
+         // if (MealTime!="non") {
+
+         // }
+         // else{
             // add a toast here
-          }
+        //  }
         },
       ),
       body: ListView(
@@ -100,6 +114,7 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
               FormField<String>(
                 builder: (FormFieldState<String> state) {
                   return InputDecorator(
+
                     decoration: InputDecoration(
                       //labelStyle: textStyle,
                       border: OutlineInputBorder(
@@ -108,12 +123,15 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
                     ),
                     isEmpty: selectedMealTime == '',
                     child: DropdownButtonHideUnderline(
+
                       child: DropdownButton<String>(
+
                         hint: const Text('Please select a meal time'),
                         value: selectedMealTime,
                         isDense: true,
                         onChanged: (String? newValue) {
                           setState(() {
+                            selected=true;
                             selectedMealTime = newValue!;
                             MealTime = newValue;
                             //mealtime = selectedMealTime!;

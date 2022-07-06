@@ -47,7 +47,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex)
                     {//return CameraScreen(widget.cameras);
-                      return const tabviewcamera();
+                      return tabviewcamera();
                     })
             );
           },

@@ -10,6 +10,7 @@ import 'oneImageViewFromGrid.dart';
 import 'one_image_view_page.dart';
 
 class MyFileList extends StatefulWidget {
+  const MyFileList({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return _MyFileList();
@@ -32,11 +33,11 @@ class _MyFileList extends State<MyFileList> {
 
   @override
   Widget build(BuildContext context) {
-    const title = 'Meal Gallery'; // main Title
+    //const title = 'Meal Gallery'; // main Title
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: title,
+      //title: title,
       home: Scaffold(
           appBar: null,
 
