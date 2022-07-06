@@ -1,5 +1,11 @@
-import 'dart:io';
+/*
+this is for choose date and meal time and save the images in fire base
+user have to choose date amd meal time
+and relevent image
+then hae to save
 
+ */
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -33,7 +39,7 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
   final ImagePicker picker = ImagePicker();
 
   late String imageurlFromFireStore;
-
+  // method for pick images from gallery
   Future pickImage() async {
     try {
       var image = await picker.pickImage(source: ImageSource.gallery,maxHeight: 400,maxWidth: 400,preferredCameraDevice: CameraDevice.rear);
@@ -59,16 +65,7 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
     final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
     imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
     print(imageurlFromFireStore);
-    //setImageUrl( String date , String mealtime , String imageurl)
 
-    //var dateTime = await dateSelected.split(' ');
-    //String date = "07/01";
-    print("date--------------------------------------------------------------------------------");
-    print(dateSelected);
-    //print(date);
-    //date  = '1212';
-    //MealTime = 'sccs';
-    //imageurlFromFireStore = "1";
     await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore);
     if(image == null) return;
     setState(() {
@@ -84,7 +81,18 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("new meal Image"),
+        title: const Text("Select Date & Mealtime"),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 60.2,
+        toolbarOpacity: 0.8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
+        ),
+        elevation: 0.00,
+        backgroundColor: ThemeInfo.primaryColor,
 
       ),
       floatingActionButton: FloatingActionButton(
@@ -185,9 +193,7 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
               image != null ? Image.file(image!): const Icon(Icons.food_bank,size: 380,color:Color.fromARGB(100, 125, 156, 139) ,),
 
             ],
-
           ),
-
         ],
       ),
     );

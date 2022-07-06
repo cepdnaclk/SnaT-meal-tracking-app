@@ -1,6 +1,8 @@
+import 'dart:ui';
+
 class WeekReport {
   String day;
   int serves;
-
-  WeekReport(this.day, this.serves);
+  Color colorVal;
+  WeekReport(this.day, this.serves, this.colorVal);
 }

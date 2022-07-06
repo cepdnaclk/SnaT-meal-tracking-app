@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firestore = FirebaseFirestore.instance;
 
 class MealTile extends StatelessWidget {
   const MealTile({
@@ -30,11 +33,31 @@ class MealTile extends StatelessWidget {
   }
 
   void deleteTile() {
+    getFoodData1();
     for (Map meal1 in mealList) {
       if (meal1['name'] == meal["name"]) {
         int index = mealList.indexOf(meal1);
         mealList.removeAt(index);
         break;
+      }
+    }
+  }
+
+  void getFoodData1() async {
+    print(selectedMealTime);
+    final foodItems = await _firestore
+        .collection('foodLog')
+        .doc(selectedDate.toString())
+        .collection(selectedMealTime.toString())
+        .get();
+    for (var food in foodItems.docs) {
+      if (food.data()['food'] == meal["name"]) {
+        await _firestore
+            .collection('foodLog')
+            .doc(selectedDate.toString())
+            .collection(selectedMealTime.toString())
+            .doc(food.reference.id)
+            .delete();
       }
     }
   }

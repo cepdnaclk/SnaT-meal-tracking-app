@@ -89,7 +89,6 @@ class _campageState extends State<campage> {
 
     await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore);
 
-
     if(image == null) return;
     setState(() {
       image = (newImage as XFile?)!;
@@ -164,7 +163,7 @@ class _campageState extends State<campage> {
                     decoration: InputDecoration(
                       //labelStyle: textStyle,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                     isEmpty: selectedMealTime == '',

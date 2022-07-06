@@ -1,3 +1,7 @@
+/*
+  showing list of all images which took
+ */
+
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
 
@@ -10,6 +14,7 @@ import 'one_image_view_page.dart';
 class listAccordingToDate extends StatelessWidget {
   late String date;
   late String meaTime;
+
   listAccordingToDate(String date,String meaTime){
     this.date = date;
     this.meaTime = meaTime;
@@ -30,7 +35,7 @@ class listAccordingToDate extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(90.0),
             child:AppBar(
-              title: Text('Meal Gallery'),
+              title: Text(date+' '+meaTime),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 tooltip: 'Menu Icon',
@@ -80,8 +85,6 @@ class listAccordingToDate extends StatelessWidget {
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return
-
-
                         Card(
                             child: InkWell(
                               onTap: () {// view individual image
@@ -98,8 +101,6 @@ class listAccordingToDate extends StatelessWidget {
                               ),
                             )
                         );
-
-
                     },
                   );
                 }

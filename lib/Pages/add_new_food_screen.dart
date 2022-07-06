@@ -50,12 +50,12 @@ class AddNewFoodScreen extends StatelessWidget {
         title: AppBarTitle,
         actions: [
           MaterialButton(
-            onPressed: () {
+            onPressed: () async {
               M.addMealItems(resultText, amount.toInt().toString() + unit);
               ReloadState();
               print(amount.toInt());
               M.selectedMeal = M.selectedMeal;
-              _firestore
+              await _firestore
                   .collection('foodLog')
                   .doc(selectedDate.toString())
                   .collection(selectedMealTime.toString())
@@ -251,7 +251,7 @@ class SliderWidget extends StatefulWidget {
 }
 
 class _SliderWidgetState extends State<SliderWidget> {
-  double amount = 50;
+  double amount = 1;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -275,12 +275,13 @@ class _SliderWidgetState extends State<SliderWidget> {
         ),
         Slider(
           value: amount,
+          divisions: 15,
+          max: 15.0,
           onChanged: (val) {
             amount = val;
             widget.onChanged(val);
             setState(() {});
           },
-          max: 100,
           min: 0,
         ),
       ],

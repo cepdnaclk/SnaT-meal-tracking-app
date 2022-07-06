@@ -1,5 +1,7 @@
+/*
+  show individual images the image url is requied for this
+ */
 import 'package:flutter/material.dart';
-
 import '../../Theme/theme_info.dart';
 import 'camera_tabview.dart';
 import 'listOfImagesAccordingToDate.dart';
@@ -11,20 +13,19 @@ class showimage extends StatelessWidget {
   String mealtime;
   showimage(this.imageurl,this.date,this.mealtime) {
     print(imageurl);
-
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'EasyFlutter',
+      //title: 'EasyFlutter',
       home: Scaffold(
         appBar:AppBar(
-          title: Text('Meal Gallery'),
+          title: Text(date +' '+mealtime),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            tooltip: 'Menu Icon',
+            tooltip: 'back',
             onPressed: () {Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex)
                 {//return CameraScreen(widget.cameras);

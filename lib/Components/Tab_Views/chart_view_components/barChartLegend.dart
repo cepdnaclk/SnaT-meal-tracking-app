@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Legend extends StatelessWidget {
+class BoxLegend extends StatelessWidget {
   final String text;
   final Color colour;
-  const Legend({
+  const BoxLegend({
     Key? key,
     required this.text,
     required this.colour,
@@ -17,7 +17,7 @@ class Legend extends StatelessWidget {
           width: 9,
           height: 9,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
             color: colour,
           ),
         ),
@@ -27,7 +27,7 @@ class Legend extends StatelessWidget {
         Text(
           text,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 14,
             color: Color(0xff033438),
           ),
         ),
