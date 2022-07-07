@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Components/DrawerView/NotificationView.dart';
 import 'package:mobile_app/Components/DrawerView/SettingsView.dart';
 
 import '../Theme/theme_info.dart';
@@ -109,7 +110,8 @@ class DashboardDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               onTap: () {
-                // Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const NotificationView()));
               },
             ),
           ),
