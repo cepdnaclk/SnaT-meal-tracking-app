@@ -33,7 +33,14 @@ class _NotificationViewState extends State<NotificationView> {
               child: const Text('show notification'),
             ),
             ElevatedButton(
-              onPressed: () async {},
+              onPressed: () async {
+                await service.showScheduledNotification(
+                  id: 0,
+                  title: 'title',
+                  body: 'somebody',
+                  seconds: 4,
+                );
+              },
               child: const Text('show scheduled notification'),
             ),
             ElevatedButton(

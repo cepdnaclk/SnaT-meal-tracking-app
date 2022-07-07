@@ -4,12 +4,13 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 class NotificationService {
-
   NotificationService();
 
   final _notificationService = FlutterLocalNotificationsPlugin();
+  final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
 
   Future<void> initialize() async {
+    tz.initializeTimeZones();
     const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('mipmap/ic_launcher');
 
@@ -45,7 +46,8 @@ class NotificationService {
     const IOSNotificationDetails iosNotificationDetails =
         IOSNotificationDetails();
 
-    return const NotificationDetails(android: androidNotificationDetails,iOS: iosNotificationDetails);
+    return const NotificationDetails(
+        android: androidNotificationDetails, iOS: iosNotificationDetails);
   }
 
   Future<void> showNotification({
@@ -57,6 +59,37 @@ class NotificationService {
     await _notificationService.show(id, title, body, details);
   }
 
+  Future<void> showScheduledNotification(
+      {required int id,
+        required String title,
+        required String body,
+        required int seconds}) async {
+    final details = await _notificationDetails();
+    await _notificationService.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(
+        DateTime.now().add(Duration(seconds: seconds)),
+        tz.local,
+      ),
+      details,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+      UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> showNotificationWithPayload(
+      {required int id,
+        required String title,
+        required String body,
+        required String payload}) async {
+    final details = await _notificationDetails();
+    await _notificationService.show(id, title, body, details,
+        payload: payload);
+  }
+
   void onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) {
     print('id $id');
@@ -64,5 +97,8 @@ class NotificationService {
 
   void onSelectNotification(String? payload) {
     print('payload $payload');
+    if (payload != null && payload.isNotEmpty) {
+      onNotificationClick.add(payload);
+    }
   }
 }
