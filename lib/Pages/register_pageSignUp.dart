@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
-import 'package:mobile_app/Pages/dashboard_layout.dart';
+import 'package:mobile_app/Pages/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
@@ -48,7 +48,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
   Future addUserDetails(String name,String birthDate,String gender,String height,String weight) async {
-      User? user = FirebaseAuth.instance.currentUser;
+
+    User? user = FirebaseAuth.instance.currentUser;
                   String uid;
                   var email;
                     if(user != null){
@@ -59,7 +60,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       uid = '';
                       email = '';
                     }
-
     await FirebaseFirestore.instance.collection('users').doc(uid).set({
       'name':name,
       'birthDate':birthDate,
@@ -256,10 +256,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                _genderController.text.trim(),
                                _heightController.text.trim(),
                                _weightController.text.trim(),
-                               
+                              
                   );
                   Navigator.of(context).push(CustomPageRoute(
-                            child: DashboardLayout(),
+                            child: LoginScreen(),
                             transition: "slide right"));
                 },
                 child: Text(

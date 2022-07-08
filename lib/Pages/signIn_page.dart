@@ -4,6 +4,7 @@ import 'package:mobile_app/Pages/register_page.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/Pages/signUp_page.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 
 
 class SignIn extends StatefulWidget {
@@ -26,7 +27,7 @@ class _SignInState extends State<SignIn> {
     User? user = FirebaseAuth.instance.currentUser;
     if(user != null){
       Navigator.of(context).push(CustomPageRoute(
-      child: RegisterPage()));
+      child: DashboardLayout()));
     }
                     
     @override
@@ -48,6 +49,8 @@ class _SignInState extends State<SignIn> {
         UserCredential result = await _auth.signInWithEmailAndPassword(email: _email, password: _password);
         //User user = await _auth.signInWithEmailAndPassword(email: _email, password: _password);
         User? user = result.user;
+        Navigator.of(context).push(CustomPageRoute(
+        child: DashboardLayout()));
       }
       
       catch(e){

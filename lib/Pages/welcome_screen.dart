@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/login_screen.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 
 import '../Components/app_logo_text.dart';
 import '../main.dart';
@@ -16,16 +18,31 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+
+  checkAuthentification() async{
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user != null){
+      Navigator.of(context).push(CustomPageRoute(
+      child: DashboardLayout()));
+    }
+    else{
+      Navigator.of(context).push(CustomPageRoute(
+      child: LoginScreen()));
+    }
+}
+
+
   late Timer timer;
   @override
   void initState() {
     super.initState();
     timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       timer.cancel();
-      Navigator.of(context).push(
-          CustomPageRoute(child: LoginScreen(), transition: "slide left"));
+      //Navigator.of(context).push(
+      //    CustomPageRoute(child: LoginScreen(), transition: "slide left"));
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => DashboardLayout()));
+      checkAuthentification();
     });
   }
 

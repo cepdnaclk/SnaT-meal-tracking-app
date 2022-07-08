@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/register_page.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Pages/signIn_page.dart';
 import 'package:mobile_app/Pages/signUp_page.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Services/firebase_services.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -132,9 +135,27 @@ class LoginScreen extends StatelessWidget {
                   onTap: () async {
                     await FirebaseServices().signInWithGoogle();
                     print("Hello");
+                   
+                    User? user = FirebaseAuth.instance.currentUser;
+                    String uid;
+                  
+                    if(user != null){
+                      uid = user.uid;
+                      }
+                    else{
+                      uid = '';
+                    }
+                    final snapShot = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+                    if(snapShot.exists){
                     Navigator.of(context).push(CustomPageRoute(
+                        child:  DashboardLayout(),
+                        transition: "slide right"));
+                    }
+                    else{
+                      Navigator.of(context).push(CustomPageRoute(
                         child: const RegisterPage(),
                         transition: "slide right"));
+                    }
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
