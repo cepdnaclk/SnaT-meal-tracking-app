@@ -59,11 +59,15 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   MealSection(
                     label: "Morning Snacks",
-                    mealItems: (todayDate==true)?Today_MorningSnacksMealItems:,
+                    mealItems: (todayDate == true)
+                        ? Today_MorningSnacksMealItems
+                        : NotToday_MorningSnacksMealItems,
                   ),
                   MealSection(
                     label: "Lunch",
-                    mealItems: Today_LunchMealItems,
+                    mealItems: (todayDate == true)
+                        ? Today_MorningSnacksMealItems
+                        : NotToday_LunchMealItems,
                   ),
                   MealSection(
                     label: "Evening Snacks",

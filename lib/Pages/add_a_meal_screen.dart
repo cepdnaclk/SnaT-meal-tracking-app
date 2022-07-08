@@ -23,11 +23,7 @@ List Today_MorningSnacksMealItems = [];
 List Today_EveningSnacksMealItems = [];
 List Today_OtherMealItems = [];
 
-List NotToday_breakFastMealItems = [
-  // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
-  // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
-  // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
-];
+List NotToday_breakFastMealItems = [];
 List NotToday_LunchMealItems = [];
 List NotToday_DinnerMealItems = [];
 List NotToday_MorningSnacksMealItems = [];

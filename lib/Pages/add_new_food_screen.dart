@@ -272,7 +272,7 @@ class _SliderWidgetState extends State<SliderWidget> {
             ),
             Spacer(),
             Text(
-              amount.toInt().toString() + " " + unit,
+              amount.toInt().toString() + " ",
               style: const TextStyle(fontSize: 16),
             ),
             Text(
@@ -281,10 +281,11 @@ class _SliderWidgetState extends State<SliderWidget> {
             ),
           ],
         ),
-        Slider(
+        Slider.adaptive(
           value: amount,
           divisions: 15,
           max: 15.0,
+          label: "$amount",
           onChanged: (val) {
             amount = val;
             widget.onChanged(val);
