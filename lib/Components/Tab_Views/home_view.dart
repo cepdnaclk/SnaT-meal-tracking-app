@@ -21,6 +21,11 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    bool todayDate = (selectedDate.toString().substring(0, 10) ==
+            DateTime.now().toString().substring(0, 10))
+        ? true
+        : false;
+    print(todayDate);
     getDate();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -50,27 +55,27 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   MealSection(
                     label: "Breakfast",
-                    mealItems: breakFastMealItems,
+                    mealItems: Today_breakFastMealItems,
                   ),
                   MealSection(
                     label: "Morning Snacks",
-                    mealItems: MorningSnacksMealItems,
+                    mealItems: (todayDate==true)?Today_MorningSnacksMealItems:,
                   ),
                   MealSection(
                     label: "Lunch",
-                    mealItems: LunchMealItems,
+                    mealItems: Today_LunchMealItems,
                   ),
                   MealSection(
                     label: "Evening Snacks",
-                    mealItems: EveningSnacksMealItems,
+                    mealItems: Today_EveningSnacksMealItems,
                   ),
                   MealSection(
                     label: "Dinner",
-                    mealItems: DinnerMealItems,
+                    mealItems: Today_DinnerMealItems,
                   ),
                   MealSection(
                     label: "Others",
-                    mealItems: OtherMealItems,
+                    mealItems: Today_OtherMealItems,
                   ),
                 ],
               ),

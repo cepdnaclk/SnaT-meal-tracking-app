@@ -12,16 +12,27 @@ import '../Theme/theme_info.dart';
 final _firestore = FirebaseFirestore.instance;
 List mealList = [];
 String foodamount = "";
-List breakFastMealItems = [
+List Today_breakFastMealItems = [
   // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
   // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
   // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
 ];
-List LunchMealItems = [];
-List DinnerMealItems = [];
-List MorningSnacksMealItems = [];
-List EveningSnacksMealItems = [];
-List OtherMealItems = [];
+List Today_LunchMealItems = [];
+List Today_DinnerMealItems = [];
+List Today_MorningSnacksMealItems = [];
+List Today_EveningSnacksMealItems = [];
+List Today_OtherMealItems = [];
+
+List NotToday_breakFastMealItems = [
+  // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
+  // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
+  // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
+];
+List NotToday_LunchMealItems = [];
+List NotToday_DinnerMealItems = [];
+List NotToday_MorningSnacksMealItems = [];
+List NotToday_EveningSnacksMealItems = [];
+List NotToday_OtherMealItems = [];
 
 List<String> meals = [
   "Cereals and starchy foods",
@@ -41,12 +52,12 @@ List<String> mealTime = [
 ];
 
 List<Map> mealTimeLists = [
-  {"mealtime": "Breakfast", "List": breakFastMealItems},
-  {"mealtime": "Morning Snacks", "List": MorningSnacksMealItems},
-  {"mealtime": "Lunch", "List": LunchMealItems},
-  {"mealtime": "Evening Snacks", "List": EveningSnacksMealItems},
-  {"mealtime": "Dinner", "List": DinnerMealItems},
-  {"mealtime": "Others", "List": OtherMealItems}
+  {"mealtime": "Breakfast", "List": Today_breakFastMealItems},
+  {"mealtime": "Morning Snacks", "List": Today_MorningSnacksMealItems},
+  {"mealtime": "Lunch", "List": Today_LunchMealItems},
+  {"mealtime": "Evening Snacks", "List": Today_EveningSnacksMealItems},
+  {"mealtime": "Dinner", "List": Today_DinnerMealItems},
+  {"mealtime": "Others", "List": Today_OtherMealItems}
 ];
 void getFoodData(String selectedMealCategory) async {
   final foodItems = await _firestore
@@ -152,9 +163,11 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            "Meal Time:",
-            style: TextStyle(fontSize: 20),
+          Center(
+            child: const Text(
+              "Meal Time",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           const SizedBox(
             height: 5,
@@ -165,7 +178,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 decoration: InputDecoration(
                   //labelStyle: textStyle,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
                 isEmpty: selectedMealTime == '',
@@ -197,9 +210,11 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           const SizedBox(
             height: 5,
           ),
-          const Text(
-            "Meal Tile:",
-            style: TextStyle(fontSize: 20),
+          Center(
+            child: const Text(
+              "Meal Type",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           const SizedBox(
             height: 5,
@@ -210,7 +225,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 decoration: InputDecoration(
                   //labelStyle: textStyle,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
                 isEmpty: selectedMeal == '',

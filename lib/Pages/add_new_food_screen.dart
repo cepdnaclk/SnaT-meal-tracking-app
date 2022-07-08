@@ -11,7 +11,7 @@ String unit = "";
 List<String> SearchTerms = [];
 List<Map> FoodandUnits = [];
 
-class AddNewFoodScreen extends StatelessWidget {
+class AddNewFoodScreen extends StatefulWidget {
   AddNewFoodScreen(
       {required this.AppBarTitle,
       required this.ReloadState,
@@ -22,6 +22,11 @@ class AddNewFoodScreen extends StatelessWidget {
   final bool tileEdit;
   final void Function(String, String)? editTileDetails;
 
+  @override
+  State<AddNewFoodScreen> createState() => _AddNewFoodScreenState();
+}
+
+class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   void getFoodUnit(String foodResult) {
     // print("sdsds" + foodResult);
     for (Map food in FoodandUnits) {
@@ -31,9 +36,11 @@ class AddNewFoodScreen extends StatelessWidget {
         print(unit);
       }
     }
+    setState(() {});
   }
 
   void updateFood() {}
+
   final TextEditingController searchController = TextEditingController();
 
   final CustomSearchHintDelegate delegate =
@@ -47,12 +54,12 @@ class AddNewFoodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppBarTitle,
+        title: widget.AppBarTitle,
         actions: [
           MaterialButton(
             onPressed: () async {
               M.addMealItems(resultText, amount.toInt().toString() + unit);
-              ReloadState();
+              widget.ReloadState();
               print(amount.toInt());
               M.selectedMeal = M.selectedMeal;
               await _firestore
@@ -88,8 +95,9 @@ class AddNewFoodScreen extends StatelessWidget {
           if (result != null) {
             resultText = result;
             getFoodUnit(resultText);
-            if (tileEdit == true) {
-              editTileDetails!(resultText, amount.toInt().toString() + "kCals");
+            if (widget.tileEdit == true) {
+              widget.editTileDetails!(
+                  resultText, amount.toInt().toString() + " " + unit);
             }
           }
           // setState(() {});
@@ -264,7 +272,7 @@ class _SliderWidgetState extends State<SliderWidget> {
             ),
             Spacer(),
             Text(
-              amount.toInt().toString(),
+              amount.toInt().toString() + " " + unit,
               style: const TextStyle(fontSize: 16),
             ),
             Text(
