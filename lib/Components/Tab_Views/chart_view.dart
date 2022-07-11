@@ -340,6 +340,10 @@ class _ChartViewState extends State<ChartView> {
                                             offset: Offset(0.0, 0.0))
                                       ],
                                     ),
+                                    child: Image.asset(
+                                      "assets/images/globe.gif",
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                   SizedBox(
                                     height: size.height * 0.01,
@@ -460,47 +464,51 @@ class _ChartViewState extends State<ChartView> {
                                             offset: Offset(0.0, 0.0))
                                       ],
                                     ),
-                                    // child: Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceEvenly,
-                                    //   children: <Widget>[
-                                    //     Column(
-                                    //       mainAxisAlignment:
-                                    //           MainAxisAlignment.spaceEvenly,
-                                    //       crossAxisAlignment:
-                                    //           CrossAxisAlignment.center,
-                                    //       children: <Widget>[
-                                    //         Row(
-                                    //           children: const [
-                                    //             BoxLegend(
-                                    //               colour: Color(0xff054840),
-                                    //               text: 'You are on Point 😍',
-                                    //             ),
-                                    //           ],
-                                    //         ),
-                                    //         Row(
-                                    //           crossAxisAlignment:
-                                    //               CrossAxisAlignment.center,
-                                    //           mainAxisAlignment:
-                                    //               MainAxisAlignment.spaceEvenly,
-                                    //           children: [
-                                    //             const BoxLegend(
-                                    //               colour: Color(0xffa80000),
-                                    //               text: 'Too much 🤨',
-                                    //             ),
-                                    //             SizedBox(
-                                    //                 width: size.width * 0.1),
-                                    //             const BoxLegend(
-                                    //               colour: Color(0xfffff000),
-                                    //               text: 'Not enough 🥲',
-                                    //             ),
-                                    //           ],
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ],
-                                    // ),
+                                    child: Image.asset(
+                                      "assets/images/globe.gif",
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
+                                  // child: Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceEvenly,
+                                  //   children: <Widget>[
+                                  //     Column(
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.spaceEvenly,
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.center,
+                                  //       children: <Widget>[
+                                  //         Row(
+                                  //           children: const [
+                                  //             BoxLegend(
+                                  //               colour: Color(0xff054840),
+                                  //               text: 'You are on Point 😍',
+                                  //             ),
+                                  //           ],
+                                  //         ),
+                                  //         Row(
+                                  //           crossAxisAlignment:
+                                  //               CrossAxisAlignment.center,
+                                  //           mainAxisAlignment:
+                                  //               MainAxisAlignment.spaceEvenly,
+                                  //           children: [
+                                  //             const BoxLegend(
+                                  //               colour: Color(0xffa80000),
+                                  //               text: 'Too much 🤨',
+                                  //             ),
+                                  //             SizedBox(
+                                  //                 width: size.width * 0.1),
+                                  //             const BoxLegend(
+                                  //               colour: Color(0xfffff000),
+                                  //               text: 'Not enough 🥲',
+                                  //             ),
+                                  //           ],
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   SizedBox(
                                     height: size.height * 0.01,
                                   ),

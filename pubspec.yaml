@@ -54,6 +54,7 @@ dependencies:
   get:
   settings_ui: ^2.0.2
   firebase_storage: ^10.2.18
+  flutter_svg: ^0.23.0+1
   getwidget:
 
   screenshot: ^1.2.3
