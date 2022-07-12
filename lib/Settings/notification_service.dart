@@ -61,9 +61,9 @@ class NotificationService {
 
   Future<void> showScheduledNotification(
       {required int id,
-        required String title,
-        required String body,
-        required int seconds}) async {
+      required String title,
+      required String body,
+      required int seconds}) async {
     final details = await _notificationDetails();
     await _notificationService.zonedSchedule(
       id,
@@ -76,18 +76,17 @@ class NotificationService {
       details,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
   Future<void> showNotificationWithPayload(
       {required int id,
-        required String title,
-        required String body,
-        required String payload}) async {
+      required String title,
+      required String body,
+      required String payload}) async {
     final details = await _notificationDetails();
-    await _notificationService.show(id, title, body, details,
-        payload: payload);
+    await _notificationService.show(id, title, body, details, payload: payload);
   }
 
   void onDidReceiveLocalNotification(
@@ -100,5 +99,10 @@ class NotificationService {
     if (payload != null && payload.isNotEmpty) {
       onNotificationClick.add(payload);
     }
+  }
+
+  // cancel all notifications
+  Future<void> cancelAllNotifications() async {
+    await _notificationService.cancelAll();
   }
 }

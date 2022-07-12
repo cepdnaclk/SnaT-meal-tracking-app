@@ -47,6 +47,12 @@ class _NotificationViewState extends State<NotificationView> {
               onPressed: () async {},
               child: const Text('show notification with payload'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                await service.cancelAllNotifications();
+              },
+              child: const Text('cancel notification'),
+            ),
           ],
         ),
       ),
