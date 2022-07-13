@@ -26,10 +26,9 @@ class _MyFileList extends State<MyFileList> {
   void initState() {
     print("====================================================================\n");
     print("dsds\n");
+    staorage.deleteAfterExpire();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +69,12 @@ class _MyFileList extends State<MyFileList> {
                         Card(
                           child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (contex)
-                                    {
-                                      return oneimageviewfromgrid(snapshot.data[index]);
-                                    })
-                                );
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (contex)
+                                //     {
+                                //       return oneimageviewfromgrid(snapshot.data[index]);
+                                //     })
+                                // );
                               },
                               onLongPress: () {},
                               child: Image.network(
