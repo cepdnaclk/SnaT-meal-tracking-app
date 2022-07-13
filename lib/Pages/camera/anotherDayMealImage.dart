@@ -8,8 +8,10 @@ then hae to save
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../Components/date_time_widget.dart';
@@ -37,14 +39,29 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
   late String dateSelected ="";
   final imageStorage staorage = imageStorage();
   final ImagePicker picker = ImagePicker();
+  bool mealtimeselected = false;
 
   late String imageurlFromFireStore;
   // method for pick images from gallery
+  // method for pick image from Gallery
   Future pickImage() async {
     try {
-      var image = await picker.pickImage(source: ImageSource.gallery,maxHeight: 400,maxWidth: 400,preferredCameraDevice: CameraDevice.rear);
-      new_IMAGE=image ;
+      var image = await picker.pickImage(source: ImageSource.gallery,maxHeight: 400,maxWidth: 400,imageQuality: 80,preferredCameraDevice: CameraDevice.rear);
+      new_IMAGE=image  as XFile;
       // var path2 = image!.path;
+      print("===============================");
+      // giving access to save only .jpg and pgg format
+      String filename = basename(image.path);
+      print(filename);
+      String jpg = ".jpg";
+      String png = ".png";
+      if(!(filename.contains(jpg)| filename.contains(png))){
+        image = null;
+        saved = false;
+        Fluttertoast.showToast(
+          msg: "Please use only .jpg and .png format",
+        );
+      }
       final Directory? extDir = await getExternalStorageDirectory();
       final String dirPath = extDir!.path.toString();
       await Directory(dirPath).create(recursive: true);
@@ -59,18 +76,36 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
     }
   }
   // for save the image
+  // for save the image
   Future<void> saveimages(String filePath,XFile image) async{
-    final now = DateTime.now();// date and time of the moment
-    String filepath = '$filePath/'+now.toString()+'.png';// make now as image name
-    final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
-    imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
-    print(imageurlFromFireStore);
+    print("++++++++++"+mealtimeselected.toString());
+    if (mealtimeselected == true){
+      Fluttertoast.showToast(
+        msg:"Please wait",
+      );
+      final now = DateTime.now();// date and time of the moment
+      print(filePath);
+      String filepath = '$filePath/'+now.toString()+'.png';// make now as image name
+      final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
+      imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
+      print(imageurlFromFireStore);
 
-    await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore);
-    if(image == null) return;
-    setState(() {
-      image = (newImage as XFile?)!;
-    });
+      await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore).then((value) => Fluttertoast.showToast(
+        msg: "The image saved",
+      ),
+      );
+
+      if(image == null) return;
+      setState(() {
+        image = (newImage as XFile?)!;
+      });
+    }
+    else{
+      Fluttertoast.showToast(
+        msg:"Please select a meal time",
+      );
+    }
+
   }
   void StateReload() {
     print("State reload");
@@ -170,12 +205,17 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
                         isDense: true,
                         onChanged: (String? newValue) {
                           setState(() {
+                            print("+++++++=============++++++=== setstate");
+                            mealtimeselected =true;
                             selectedMealTime = newValue!;
                             MealTime = newValue;
                             print(selectedMealTime);
                             // getFoodData(selectedMeal!);
                             state.didChange(newValue);
                             StateReload();
+                            Fluttertoast.showToast(
+                              msg:MealTime,
+                            );
                           });
                         },
                         items: mealTime.map((String value) {

@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Pages/register_page.dart';
 import 'package:mobile_app/Pages/signIn_page.dart';
 import 'package:mobile_app/Pages/signUp_page.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Services/firebase_services.dart';
-import 'package:mobile_app/Theme/theme_info.dart';
+import 'package:mobile_app/Theme/theme_infobase_auth.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -81,60 +84,75 @@ class LoginScreen extends StatelessWidget {
               ),
               Center(
                 child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async{
-                                Navigator.push(context, MaterialPageRoute(builder : (context) => SignIn()));
-                              },
-                              child:Text('  Sign In  ',style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-                              style: ElevatedButton.styleFrom(
-                              primary: ThemeInfo.bottomTabButtonColor,
-                              shadowColor:Colors.white
-                              ),
-                            ),
-                  
-                            SizedBox(width: 50.0),
-                  
-                            ElevatedButton(
-                              onPressed: () async{
-                                Navigator.push(context, MaterialPageRoute(builder : (context) => SignUp()));
-                              },
-                              child: Text('  Sign Up  ',style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-                              style: ElevatedButton.styleFrom(
-                              primary: ThemeInfo.bottomTabButtonColor,
-                              shadowColor:Colors.white
-                              ),
-                            )
-                          ],
-                        ),
-                        
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignIn()));
+                      },
+                      child: Text('  Sign In  ',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                          primary: ThemeInfo.bottomTabButtonColor,
+                          shadowColor: Colors.white),
+                    ),
+                    SizedBox(width: 50.0),
+                    ElevatedButton(
+                      onPressed: () async {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignUp()));
+                      },
+                      child: Text('  Sign Up  ',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          )),
+                      style: ElevatedButton.styleFrom(
+                          primary: ThemeInfo.bottomTabButtonColor,
+                          shadowColor: Colors.white),
+                    )
+                  ],
+                ),
               ),
-              Text('OR',style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-
+              Text('OR',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  )),
               SizedBox(height: 10),
-
               Center(
-                      
-                child:GestureDetector(
+                child: GestureDetector(
                   onTap: () async {
                     await FirebaseServices().signInWithGoogle();
                     print("Hello");
-                    Navigator.of(context).push(CustomPageRoute(
-                        child: const RegisterPage(),
-                        transition: "slide right"));
+
+                    User? user = FirebaseAuth.instance.currentUser;
+                    String uid;
+
+                    if (user != null) {
+                      uid = user.uid;
+                    } else {
+                      uid = '';
+                    }
+                    final snapShot = await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(uid)
+                        .get();
+                    if (snapShot.exists) {
+                      Navigator.of(context).push(CustomPageRoute(
+                          child: DashboardLayout(), transition: "slide right"));
+                    } else {
+                      Navigator.of(context).push(CustomPageRoute(
+                          child: const RegisterPage(),
+                          transition: "slide right"));
+                    }
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -145,19 +163,19 @@ class LoginScreen extends StatelessWidget {
                     ),
                     child: const Text(
                       "Sign in with Google",
-                      style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                
+                ),
               ),
-          ),
               const Spacer(),
-              
             ],
           ),
         ],
       ),
     );
-    
   }
 }

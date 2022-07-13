@@ -54,6 +54,7 @@ dependencies:
   get:
   settings_ui: ^2.0.2
   firebase_storage: ^10.2.18
+  flutter_svg: ^0.23.0+1
   getwidget:
 
   screenshot: ^1.2.3
@@ -62,6 +63,9 @@ dependencies:
   share_plus: ^4.0.10
   path_provider: ^2.0.11
   firebase_database: ^9.0.17
+  flutter_local_notifications: ^9.6.1
+  timezone: ^0.8.0
+  rxdart: ^0.27.4
 
 dev_dependencies:
   flutter_test:

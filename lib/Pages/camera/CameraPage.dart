@@ -12,9 +12,9 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/Services/IamageStoreService.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../Theme/theme_info.dart';
 import '../add_a_meal_screen.dart';
 
@@ -37,6 +37,7 @@ class _campageState extends State<campage> {
   String? filePath;
   bool saved= true;
   late String MealTime ="Others";
+  bool mealtimeselected = false;
 
   final imageStorage staorage = imageStorage();
   final ImagePicker picker = ImagePicker();
@@ -46,8 +47,21 @@ class _campageState extends State<campage> {
   Future pickImage() async {
     try {
       var image = await picker.pickImage(source: ImageSource.gallery,maxHeight: 400,maxWidth: 400,imageQuality: 80,preferredCameraDevice: CameraDevice.rear);
-      new_IMAGE=image ;
+      new_IMAGE=image  as XFile;
       // var path2 = image!.path;
+      print("===============================");
+      // giving access to save only .jpg and pgg format
+      String filename = basename(image.path);
+      print(filename);
+      String jpg = ".jpg";
+      String png = ".png";
+      if(!(filename.contains(jpg)| filename.contains(png))){
+        image = null;
+        saved = false;
+        Fluttertoast.showToast(
+          msg: "Please use only .jpg and .png format",
+        );
+      }
       final Directory? extDir = await getExternalStorageDirectory();
       final String dirPath = extDir!.path.toString();
       await Directory(dirPath).create(recursive: true);
@@ -64,8 +78,9 @@ class _campageState extends State<campage> {
   // pick Image from camera
   Future pickImageC() async {
     try {
+
       var image = await picker.pickImage(source: ImageSource.camera,maxHeight: 470,maxWidth: 470,imageQuality: 80,preferredCameraDevice: CameraDevice.rear);
-      new_IMAGE=image ;
+      new_IMAGE=image as XFile;
       final Directory? extDir = await getExternalStorageDirectory();
       final String dirPath = extDir!.path.toString();
       await Directory(dirPath).create(recursive: true);
@@ -81,20 +96,36 @@ class _campageState extends State<campage> {
   }
   // for save the image
   Future<void> saveimages(String filePath,XFile image) async{
-    final now = DateTime.now();// date and time of the moment
-    String filepath = '$filePath/'+now.toString()+'.png';// make now as image name
-    final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
-    imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
-    print(imageurlFromFireStore);
+    if (mealtimeselected == true){
+      Fluttertoast.showToast(
+        msg:"Please wait",
+      );
+      final now = DateTime.now();// date and time of the moment
+      print(filePath);
+      String filepath = '$filePath/'+now.toString()+'.png';// make now as image name
+      final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
+      imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
+      print(imageurlFromFireStore);
 
-    await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore);
+      await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore).then((value) => Fluttertoast.showToast(
+        msg: "The image saved",
+      ),
+      );
 
-    if(image == null) return;
-    setState(() {
-      image = (newImage as XFile?)!;
-    });
+      if(image == null) return;
+      setState(() {
+        image = (newImage as XFile?)!;
+      });
+    }
+    else{
+      Fluttertoast.showToast(
+        msg:"Please select a meal time",
+      );
+    }
+
   }
   void StateReload() {
+    print("==============================");
     print("State reload");
     setState(() {});
   }
@@ -174,12 +205,17 @@ class _campageState extends State<campage> {
                         isDense: true,
                         onChanged: (String? newValue) {
                           setState(() {
+
+                            mealtimeselected =true;
                             selectedMealTime = newValue;
                             MealTime = newValue!;
                             print(selectedMealTime);
                             // getFoodData(selectedMeal!);
                             state.didChange(newValue);
                             StateReload();
+                            Fluttertoast.showToast(
+                              msg:MealTime,
+                            );
                           });
                         },
                         items: mealTime.map((String value) {
@@ -195,6 +231,7 @@ class _campageState extends State<campage> {
               ),
               const SizedBox(height: 2,),
               image != null ? Image.file(image!): const Icon(Icons.food_bank,size: 380,color:Color.fromARGB(100, 125, 156, 139) ,),
+             // image != null ? Image.file(image!): ,
             ],
           ),
         ),

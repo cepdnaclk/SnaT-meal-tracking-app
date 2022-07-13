@@ -1,27 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
-import 'package:mobile_app/Services/custom_page_route.dart';
 
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../Theme/theme_info.dart';
+import 'welcome_screen.dart';
+
+String resultText = "";
+String unit = "";
+double amount = 0.0;
 
 final _firestore = FirebaseFirestore.instance;
 List mealList = [];
-String foodamount = "";
-List breakFastMealItems = [
+String foodAmount = "";
+List todayBreakFastMealItems = [
   // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
   // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
   // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
 ];
-List LunchMealItems = [];
-List DinnerMealItems = [];
-List MorningSnacksMealItems = [];
-List EveningSnacksMealItems = [];
-List OtherMealItems = [];
+List Today_LunchMealItems = [];
+List Today_DinnerMealItems = [];
+List Today_MorningSnacksMealItems = [];
+List Today_EveningSnacksMealItems = [];
+List Today_OtherMealItems = [];
+
+List NotToday_breakFastMealItems = [];
+List NotToday_LunchMealItems = [];
+List NotToday_DinnerMealItems = [];
+List NotToday_MorningSnacksMealItems = [];
+List NotToday_EveningSnacksMealItems = [];
+List NotToday_OtherMealItems = [];
 
 List<String> meals = [
   "Cereals and starchy foods",
@@ -41,12 +51,12 @@ List<String> mealTime = [
 ];
 
 List<Map> mealTimeLists = [
-  {"mealtime": "Breakfast", "List": breakFastMealItems},
-  {"mealtime": "Morning Snacks", "List": MorningSnacksMealItems},
-  {"mealtime": "Lunch", "List": LunchMealItems},
-  {"mealtime": "Evening Snacks", "List": EveningSnacksMealItems},
-  {"mealtime": "Dinner", "List": DinnerMealItems},
-  {"mealtime": "Others", "List": OtherMealItems}
+  {"mealtime": "Breakfast", "List": todayBreakFastMealItems},
+  {"mealtime": "Morning Snacks", "List": Today_MorningSnacksMealItems},
+  {"mealtime": "Lunch", "List": Today_LunchMealItems},
+  {"mealtime": "Evening Snacks", "List": Today_EveningSnacksMealItems},
+  {"mealtime": "Dinner", "List": Today_DinnerMealItems},
+  {"mealtime": "Others", "List": Today_OtherMealItems}
 ];
 void getFoodData(String selectedMealCategory) async {
   final foodItems = await _firestore
@@ -65,10 +75,10 @@ void getFoodData(String selectedMealCategory) async {
 
 void addMealItems(String name, String amount) {
   print("plz" + selectedMealTime.toString());
-  for (Map meallist in mealTimeLists) {
-    if (meallist["mealtime"] == selectedMealTime) {
-      print(meallist['List']);
-      mealList = meallist["List"];
+  for (Map mealList in mealTimeLists) {
+    if (mealList["mealtime"] == selectedMealTime) {
+      print(mealList['List']);
+      mealList = mealList["List"];
     }
   }
   print(mealList);
@@ -87,6 +97,7 @@ class AddAMealScreen extends StatefulWidget {
 }
 
 class _AddAMealScreenState extends State<AddAMealScreen> {
+  @override
   void initState() {
     super.initState();
     selectedMeal = selectedMeal;
@@ -94,7 +105,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
     print(selectedMeal);
   }
 
-  void StateReload() {
+  void stateReload() {
     print("State reload");
     setState(() {});
   }
@@ -107,7 +118,13 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
         backgroundColor: ThemeInfo.primaryColor,
         actions: [
           GestureDetector(
-            onTap: () {
+            onTap: () async {
+              await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(user!.uid)
+                  .collection("foodLog")
+                  .doc(selectedDate.toString())
+                  .update({});
               Navigator.pop(context);
             },
             child: const Center(
@@ -152,9 +169,11 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            "Meal Time:",
-            style: TextStyle(fontSize: 20),
+          const Center(
+            child: Text(
+              "Meal Time",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           const SizedBox(
             height: 5,
@@ -165,7 +184,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 decoration: InputDecoration(
                   //labelStyle: textStyle,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
                 isEmpty: selectedMealTime == '',
@@ -180,7 +199,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                         print(selectedMealTime);
                         // getFoodData(selectedMeal!);
                         state.didChange(newValue);
-                        StateReload();
+                        stateReload();
                       });
                     },
                     items: mealTime.map((String value) {
@@ -197,9 +216,11 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           const SizedBox(
             height: 5,
           ),
-          const Text(
-            "Meal Tile:",
-            style: TextStyle(fontSize: 20),
+          const Center(
+            child: Text(
+              "Meal Type",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           const SizedBox(
             height: 5,
@@ -210,7 +231,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 decoration: InputDecoration(
                   //labelStyle: textStyle,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
                 isEmpty: selectedMeal == '',
@@ -225,7 +246,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                         print(selectedMeal);
                         getFoodData(selectedMeal!);
                         state.didChange(newValue);
-                        StateReload();
+                        stateReload();
                       });
                     },
                     items: meals.map((String value) {
@@ -244,13 +265,17 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) => AddNewFoodScreen(
-                        AppBarTitle: Text("Add a New Food"),
-                        ReloadState: StateReload,
-                        tileEdit: false,
-                      ));
+              var val = showModalBottomSheet(
+                context: context,
+                builder: (context) => AddNewFoodScreen(
+                  AppBarTitle: const Text(
+                    "Add a New Food",
+                  ),
+                  ReloadState: stateReload,
+                  tileEdit: false,
+                ),
+              );
+              print(val);
             },
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 15.0),
@@ -273,8 +298,8 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           for (Map meal in mealList)
             MealTile(
               meal: meal,
-              ReloadState: StateReload,
-              foodamount: foodamount,
+              ReloadState: stateReload,
+              foodamount: foodAmount,
             )
         ],
       ),

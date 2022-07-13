@@ -1,17 +1,14 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart' as M;
-import 'package:mobile_app/Components/meal_tile.dart' as tile;
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
-String unit = "";
 List<String> SearchTerms = [];
 List<Map> FoodandUnits = [];
 
-class AddNewFoodScreen extends StatelessWidget {
+class AddNewFoodScreen extends StatefulWidget {
   AddNewFoodScreen(
       {required this.AppBarTitle,
       required this.ReloadState,
@@ -22,6 +19,11 @@ class AddNewFoodScreen extends StatelessWidget {
   final bool tileEdit;
   final void Function(String, String)? editTileDetails;
 
+  @override
+  State<AddNewFoodScreen> createState() => _AddNewFoodScreenState();
+}
+
+class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   void getFoodUnit(String foodResult) {
     // print("sdsds" + foodResult);
     for (Map food in FoodandUnits) {
@@ -31,39 +33,37 @@ class AddNewFoodScreen extends StatelessWidget {
         print(unit);
       }
     }
+    setState(() {});
   }
 
   void updateFood() {}
+
   final TextEditingController searchController = TextEditingController();
 
   final CustomSearchHintDelegate delegate =
       CustomSearchHintDelegate(hintText: 'Search your food Here');
 
-  double amount = 0.0;
-
-  String resultText = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppBarTitle,
+        title: widget.AppBarTitle,
         actions: [
           MaterialButton(
             onPressed: () async {
               M.addMealItems(resultText, amount.toInt().toString() + unit);
-              ReloadState();
+              widget.ReloadState();
               print(amount.toInt());
               M.selectedMeal = M.selectedMeal;
-              await _firestore
-                  .collection('foodLog')
-                  .doc(selectedDate.toString())
-                  .collection(selectedMealTime.toString())
-                  .add({
-                'food': resultText,
-                'unit': unit,
-                'amount': amount.toInt()
-              });
+              // await _firestore
+              //     .collection('foodLog')
+              //     .doc(selectedDate.toString())
+              //     .collection(selectedMealTime.toString())
+              //     .add({
+              //   'food': resultText,
+              //   'unit': unit,
+              //   'amount': amount.toInt()
+              // });
               Navigator.pop(context, amount);
             },
             child: const Center(
@@ -75,7 +75,7 @@ class AddNewFoodScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
+        child: const Icon(Icons.search),
         onPressed: () async {
           String? result = await showSearch<String?>(
             context: context,
@@ -88,8 +88,9 @@ class AddNewFoodScreen extends StatelessWidget {
           if (result != null) {
             resultText = result;
             getFoodUnit(resultText);
-            if (tileEdit == true) {
-              editTileDetails!(resultText, amount.toInt().toString() + "kCals");
+            if (widget.tileEdit == true) {
+              widget.editTileDetails!(
+                  resultText, amount.toInt().toString() + " " + unit);
             }
           }
           // setState(() {});
@@ -109,7 +110,7 @@ class AddNewFoodScreen extends StatelessWidget {
               child: Text(resultText),
             ),
             Row(
-              children: [
+              children: const [
                 // Expanded(
                 //   child: TextField(
                 //     onTap: () {
@@ -221,7 +222,7 @@ class CustomSearchHintDelegate extends SearchDelegate<String?> {
         onPressed: () {
           close(context, null);
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
     throw UnimplementedError();
   }
 
@@ -229,7 +230,7 @@ class CustomSearchHintDelegate extends SearchDelegate<String?> {
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
           onPressed: () {
             close(context, null);
           })
@@ -262,21 +263,22 @@ class _SliderWidgetState extends State<SliderWidget> {
               "Amount",
               style: TextStyle(fontSize: 18),
             ),
-            Spacer(),
+            const Spacer(),
             Text(
-              amount.toInt().toString(),
+              amount.toInt().toString() + " ",
               style: const TextStyle(fontSize: 16),
             ),
             Text(
               unit,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
-        Slider(
+        Slider.adaptive(
           value: amount,
           divisions: 15,
           max: 15.0,
+          label: "$amount",
           onChanged: (val) {
             amount = val;
             widget.onChanged(val);

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/Pages/confirmationLogin.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/Pages/signIn_page.dart';
+import 'package:mobile_app/Pages/register_pageSignUp.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -46,6 +47,7 @@ class _SignUpState extends State<SignUp> {
           //user.updateProfile(updateuser);
 
           await _auth.currentUser!.updateDisplayName(_name);
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => RegisterPage())));
         }
 
       }

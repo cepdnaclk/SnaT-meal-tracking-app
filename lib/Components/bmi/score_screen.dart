@@ -82,10 +82,10 @@ class ScoreScreen extends StatelessWidget {
                         ),
                         ElevatedButton(
                             onPressed: () {},
-                            child: const Text("Share")),
+                            child: const Text("Share"),),
                       ],
-                    )
-                  ]))),
+                    ),
+                  ],),),),
     );
   }
 

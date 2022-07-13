@@ -21,12 +21,13 @@ class imageStorage{
   final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   String url="";
   late UploadTask uploadTask;
-  final _firestore = FirebaseFirestore.instance;
+  late final _firestore;
 
 
   imageStorage(){
     email =  user?.email as String;
     id = user?.uid;
+    _firestore = FirebaseFirestore.instance;
 
     print("=========++++++++++++++++++================++++++++++++++============--------------");
     print(email);
@@ -85,6 +86,17 @@ class imageStorage{
     });
     return result;
   }
+  // this is for when image is delete replace that with this iamge
+  // the image opath is /System images/delete
+  Future<firebase_storage.ListResult> deleteimages() async{
+    firebase_storage.ListResult result=await storage.ref('/System images/delete').listAll();
+    result.items.forEach((firebase_storage.Reference ref){
+      print("image : $ref");
+    });
+    return result;
+  }
+
+  // download images from firebase
   Future<String> dowmloadURL(String imageName)async{
     String downloadURL = await storage.ref('images/$email/$imageName').getDownloadURL();
     return downloadURL;
@@ -102,11 +114,89 @@ class imageStorage{
       files.add(fileUrl);
     });
     reversedList = List.from(files.reversed);
-
     return reversedList;
   }
-  Future<void> delete(String ref) async {
-    await storage.ref(ref).delete();
+  // delete images with url stored in  after push delete button
+  Future<String> deletefromfirebase(String date ,String mealtime , String urldelete) async {
+    final urls = await _firestore
+        .collection('user_Images')
+        .doc(id)
+        .collection('ImageURls')
+        .doc(date)
+        .collection(mealtime)
+        .get()
+        .catchError((error) => print("Failed to delete user: $error"));
+
+    print("\n ============ \n urldelete = "+urldelete+"   \n\n");
+
+    for (var url in urls.docs) {
+      print("\n url = from urls => " +url.data()['url']);
+      if (url.data()['url'].toString() == urldelete.toString()) {
+        print(url.data()['url'] +"\n selected \n");
+        await _firestore
+            .collection('user_Images')
+            .doc(id)
+            .collection('ImageURls')
+            .doc(date)
+            .collection(mealtime)
+            .doc(url.reference.id)
+            .delete()
+            .catchError((error) => print("Failed to delete user: $error"));
+      }
+      else{
+        print("\n not selected \n");
+      }
+    }
+    print("\n deletefromfirebase finished \n ");
+    return urldelete;
+  }
+  // delete image with the stored url after a month
+  Future <void> deleteAfterExpire()async {
+    var date = DateTime.now();
+    var prevMonth = DateTime(date.year, date.month - 1, date.day);
+    String premonthFromToday = prevMonth.toString().split(' ')[0];
+    print(premonthFromToday);
+
+    List<String> mealTimes = [
+      "Breakfast",
+      "Morning Snacks",
+      "Lunch",
+      "Evening Snacks",
+      "Dinner",
+      "Others"
+    ];
+    for (var mealTime in mealTimes) {
+
+      final urls = await _firestore
+          .collection('user_Images')
+          .doc(id)
+          .collection('ImageURls')
+          .doc(premonthFromToday)
+          .collection(mealTime)
+          .get()
+          .catchError((error) => print("Failed to delete user: $error"));
+      try{
+        for (var url in urls.docs) {
+          await _firestore
+              .collection('user_Images')
+              .doc(id)
+              .collection('ImageURls')
+              .doc(premonthFromToday)
+              .collection(mealTime)
+              .doc(url.reference.id)
+              .delete()
+              .catchError((error) => print("Failed to delete user: $error"));
+          delete(url);
+        }
+      }
+      catch(e){
+        print (e);
+      }
+    }
+  }
+  // delete images from url
+  Future <void> delete(String url) async{
+    FirebaseStorage.instance.refFromURL(url).delete();
   }
 
 }

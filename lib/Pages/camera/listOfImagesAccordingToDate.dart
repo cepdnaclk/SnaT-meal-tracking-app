@@ -2,6 +2,7 @@
   showing list of all images which took
  */
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
 
@@ -14,17 +15,26 @@ import 'one_image_view_page.dart';
 class listAccordingToDate extends StatelessWidget {
   late String date;
   late String meaTime;
-
-  listAccordingToDate(String date,String meaTime){
-    this.date = date;
-    this.meaTime = meaTime;
-  }
-
-  //var files;
   final imageStorage staorage = imageStorage();
   var image_path = <String>[]; // Creates growable list.
 
-
+  listAccordingToDate(this.date,this.meaTime,String urlForDelete, {Key? key}){
+    try{
+      print("\n came to delete url = \n"+urlForDelete+"===================");
+      //staorage.delete(urlForDelete);
+      delete(urlForDelete);
+      //staorage.deleteAfterExpire();
+    }
+    catch(e){
+      print(e);
+    }
+  }
+  Future <void> delete(String url) async{
+    FirebaseStorage.instance.refFromURL(url).delete();
+    //staorage.refFromURL(url).delete();
+    //await staorage.delete(url);
+  }
+  //var files;
   @override
   Widget build(BuildContext context) {
     const title = 'Meal Gallery'; // main Title
@@ -35,14 +45,14 @@ class listAccordingToDate extends StatelessWidget {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(90.0),
             child:AppBar(
-              title: Text(date+' '+meaTime),
+              title: Text(date+'   '+meaTime),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 tooltip: 'Menu Icon',
                 onPressed: () {Navigator.of(context).push(MaterialPageRoute(
                     builder: (contex)
                     {//return CameraScreen(widget.cameras);
-                      return const tabviewcamera();
+                      return tabviewcamera();
                     })
                 );
                 },

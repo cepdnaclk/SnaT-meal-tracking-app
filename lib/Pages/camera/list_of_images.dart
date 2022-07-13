@@ -10,6 +10,7 @@ import 'oneImageViewFromGrid.dart';
 import 'one_image_view_page.dart';
 
 class MyFileList extends StatefulWidget {
+  const MyFileList({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return _MyFileList();
@@ -25,18 +26,17 @@ class _MyFileList extends State<MyFileList> {
   void initState() {
     print("====================================================================\n");
     print("dsds\n");
+    staorage.deleteAfterExpire();
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    const title = 'Meal Gallery'; // main Title
+    //const title = 'Meal Gallery'; // main Title
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: title,
+      //title: title,
       home: Scaffold(
           appBar: null,
 
@@ -69,12 +69,12 @@ class _MyFileList extends State<MyFileList> {
                         Card(
                           child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (contex)
-                                    {
-                                      return oneimageviewfromgrid(snapshot.data[index]);
-                                    })
-                                );
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (contex)
+                                //     {
+                                //       return oneimageviewfromgrid(snapshot.data[index]);
+                                //     })
+                                // );
                               },
                               onLongPress: () {},
                               child: Image.network(
