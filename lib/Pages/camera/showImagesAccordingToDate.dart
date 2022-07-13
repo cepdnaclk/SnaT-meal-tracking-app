@@ -33,6 +33,7 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
 
   void StateReload() {
     print("State reload");
+    staorage.deleteAfterExpire();
     setState(() {});
   }
 
@@ -58,7 +59,7 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex) { //return CameraScreen(widget.cameras);
                   return listAccordingToDate(
-                      selectedDate.toString().split(' ')[0], MealTime);
+                      selectedDate.toString().split(' ')[0], MealTime,"");
                 })
             );
           }
