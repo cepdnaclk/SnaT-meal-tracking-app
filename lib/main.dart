@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Pages/login_screen.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import "package:camera/camera.dart";
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       //home: DashboardLayout(),
-      home: WelcomeScreen(),
+      home: DashboardLayout(),
     );
   }
 }

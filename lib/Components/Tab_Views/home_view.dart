@@ -5,6 +5,17 @@ import 'package:mobile_app/Services/DateTime.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
+bool todayDate = (selectedDate.toString().substring(0, 10) ==
+        DateTime.now().toString().substring(0, 10))
+    ? true
+    : false;
+
+// (todayDate == true)
+// ? selectedDate.toString().substring(0, 10)
+// : DateTimeService.getDateString(DateTime.now())
+// .toString()
+//     .substring(0, 10)),
+
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -21,10 +32,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    bool todayDate = (selectedDate.toString().substring(0, 10) ==
-            DateTime.now().toString().substring(0, 10))
-        ? true
-        : false;
     print(todayDate);
     getDate();
     return Scaffold(
@@ -55,7 +62,9 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   MealSection(
                     label: "Breakfast",
-                    mealItems: Today_breakFastMealItems,
+                    mealItems: (todayDate == true)
+                        ? Today_breakFastMealItems
+                        : NotToday_breakFastMealItems,
                   ),
                   MealSection(
                     label: "Morning Snacks",
@@ -66,20 +75,26 @@ class _HomeViewState extends State<HomeView> {
                   MealSection(
                     label: "Lunch",
                     mealItems: (todayDate == true)
-                        ? Today_MorningSnacksMealItems
+                        ? Today_LunchMealItems
                         : NotToday_LunchMealItems,
                   ),
                   MealSection(
                     label: "Evening Snacks",
-                    mealItems: Today_EveningSnacksMealItems,
+                    mealItems: (todayDate == true)
+                        ? Today_EveningSnacksMealItems
+                        : NotToday_EveningSnacksMealItems,
                   ),
                   MealSection(
                     label: "Dinner",
-                    mealItems: Today_DinnerMealItems,
+                    mealItems: (todayDate == true)
+                        ? Today_DinnerMealItems
+                        : NotToday_DinnerMealItems,
                   ),
                   MealSection(
                     label: "Others",
-                    mealItems: Today_OtherMealItems,
+                    mealItems: (todayDate == true)
+                        ? Today_OtherMealItems
+                        : NotToday_OtherMealItems,
                   ),
                 ],
               ),

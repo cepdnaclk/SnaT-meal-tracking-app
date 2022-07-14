@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
-
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,12 +9,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Theme/theme_info.dart';
 
 final _firestore = FirebaseFirestore.instance;
+bool todayDate = (selectedDate.toString().substring(0, 10) ==
+        DateTime.now().toString().substring(0, 10))
+    ? true
+    : false;
+
 List mealList = [];
 String foodamount = "";
 List Today_breakFastMealItems = [
-  // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
-  // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
-  // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
+  {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
+  {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
+  {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
 ];
 List Today_LunchMealItems = [];
 List Today_DinnerMealItems = [];
@@ -47,7 +51,7 @@ List<String> mealTime = [
   "Others"
 ];
 
-List<Map> mealTimeLists = [
+List<Map> Today_mealTimeLists = [
   {"mealtime": "Breakfast", "List": Today_breakFastMealItems},
   {"mealtime": "Morning Snacks", "List": Today_MorningSnacksMealItems},
   {"mealtime": "Lunch", "List": Today_LunchMealItems},
@@ -55,6 +59,16 @@ List<Map> mealTimeLists = [
   {"mealtime": "Dinner", "List": Today_DinnerMealItems},
   {"mealtime": "Others", "List": Today_OtherMealItems}
 ];
+
+List<Map> NotToday_mealTimeLists = [
+  {"mealtime": "Breakfast", "List": NotToday_breakFastMealItems},
+  {"mealtime": "Morning Snacks", "List": NotToday_MorningSnacksMealItems},
+  {"mealtime": "Lunch", "List": NotToday_LunchMealItems},
+  {"mealtime": "Evening Snacks", "List": NotToday_EveningSnacksMealItems},
+  {"mealtime": "Dinner", "List": NotToday_DinnerMealItems},
+  {"mealtime": "Others", "List": NotToday_OtherMealItems}
+];
+
 void getFoodData(String selectedMealCategory) async {
   final foodItems = await _firestore
       .collection('Standard_food_size')
@@ -82,6 +96,7 @@ void addMealItems(String name, String amount) {
   mealList.add({"name": name, "icon": Icons.rice_bowl, "amount": amount});
 }
 
+List<Map> mealTimeLists = [];
 String? selectedMeal;
 String? selectedMealTime;
 DateTime selectedDate = DateTime.now();
@@ -96,13 +111,26 @@ class AddAMealScreen extends StatefulWidget {
 class _AddAMealScreenState extends State<AddAMealScreen> {
   void initState() {
     super.initState();
+    bool todayDate = (selectedDate.toString().substring(0, 10) ==
+            DateTime.now().toString().substring(0, 10))
+        ? true
+        : false;
+    mealTimeLists =
+        (todayDate == true) ? Today_mealTimeLists : NotToday_mealTimeLists;
+    print(mealTimeLists);
     selectedMeal = selectedMeal;
     selectedMealTime = selectedMealTime;
-    print(selectedMeal);
+    // print(selectedMeal);
   }
 
   void StateReload() {
     print("State reload");
+    bool todayDate = (selectedDate.toString().substring(0, 10) ==
+            DateTime.now().toString().substring(0, 10))
+        ? true
+        : false;
+    mealTimeLists =
+        (todayDate == true) ? Today_mealTimeLists : NotToday_mealTimeLists;
     setState(() {});
   }
 
@@ -151,7 +179,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 onPressed: (val) async {
                   selectedDate = val;
                   print(val);
-                  setState(() {});
+                  StateReload();
                 },
               ),
             ],

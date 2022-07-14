@@ -64,12 +64,13 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
               M.selectedMeal = M.selectedMeal;
               await _firestore
                   .collection('foodLog')
-                  .doc(selectedDate.toString())
+                  .doc(selectedDate.toString().substring(0, 10))
                   .collection(selectedMealTime.toString())
                   .add({
                 'food': resultText,
                 'unit': unit,
-                'amount': amount.toInt()
+                'amount': amount.toInt(),
+                'mealtype': selectedMeal
               });
               Navigator.pop(context, amount);
             },
