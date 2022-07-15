@@ -1,22 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 
-final _firestore = FirebaseFirestore.instance;
-
-List<String> SearchTerms = [];
-List<Map> FoodandUnits = [];
+// final _firestore = FirebaseFirestore.instance;
+//
+// List<String> SearchTerms = [];
+// List<Map> FoodandUnits = [];
 
 class AddNewFoodScreen extends StatefulWidget {
   const AddNewFoodScreen(
-      {required this.AppBarTitle,
-      required this.ReloadState,
+      {required this.appBarTitle,
+      required this.reloadState,
       required this.tileEdit,
       this.editTileDetails});
-  final void Function() ReloadState;
-  final Text AppBarTitle;
+  final void Function() reloadState;
+  final Text appBarTitle;
   final bool tileEdit;
   final void Function(String, String)? editTileDetails;
 
@@ -25,15 +24,6 @@ class AddNewFoodScreen extends StatefulWidget {
 }
 
 class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
-  void getFoodUnit(String foodResult) {
-    for (Map food in FoodandUnits) {
-      if (food['Food'] == foodResult) {
-        unit = food['Units'];
-      }
-    }
-    setState(() {});
-  }
-
   final TextEditingController searchController = TextEditingController();
 
   final CustomSearchHintDelegate delegate =
@@ -43,14 +33,11 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.AppBarTitle,
+        title: widget.appBarTitle,
         actions: [
           MaterialButton(
             onPressed: () async {
-              //M.addMealItems(resultText, amount.toInt().toString() + unit);
-              widget.ReloadState();
-              //print(amount.toInt());
-              //M.selectedMeal = M.selectedMeal;
+              widget.reloadState();
               dateMeals[selectedMealTime] != null
                   ? dateMeals[selectedMealTime].add({
                       "food": result!.name,
@@ -70,15 +57,6 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                     ];
               result = null;
               amount = 1;
-              // await _firestore
-              //     .collection('foodLog')
-              //     .doc(selectedDate.toString())
-              //     .collection(selectedMealTime.toString())
-              //     .add({
-              //   'food': resultText,
-              //   'unit': unit,
-              //   'amount': amount.toInt()
-              // });
               Navigator.pop(context, amount);
             },
             child: const Center(
@@ -102,7 +80,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
           if (result == null) {}
           if (result != null) {
             resultText = result!.name;
-            getFoodUnit(resultText);
+            //getFoodUnit(resultText);
             if (widget.tileEdit == true) {
               widget.editTileDetails!(
                 resultText,
@@ -116,7 +94,6 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
-          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (result != null)
               Row(
@@ -132,7 +109,8 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
                           resultText,
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
                         ),
                       ),
                     ),
@@ -211,7 +189,6 @@ class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
             title: Text(result.name),
           );
         });
-    // TODO: implement buildResults
     throw UnimplementedError();
   }
 
@@ -235,7 +212,6 @@ class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
             title: Text(result.name),
           );
         });
-    // TODO: implement buildSuggestions
     throw UnimplementedError();
   }
 

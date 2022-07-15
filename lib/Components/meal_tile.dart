@@ -9,25 +9,25 @@ class MealTile extends StatelessWidget {
   const MealTile({
     Key? key,
     required this.meal,
-    required this.ReloadState,
-    required this.foodamount,
+    required this.reloadState,
+    //required this.foodAmount,
   }) : super(key: key);
 
   final Map meal;
-  final String foodamount;
-  final void Function() ReloadState;
+  //final String foodAmount;
+  final void Function() reloadState;
 
-  void editTile(String name, String amount) {
-    for (Map meal1 in mealList) {
-      if (meal1['name'] == meal["name"]) {
-        int index = mealList.indexOf(meal1);
-        mealList[index]['name'] = name;
-        mealList[index]['icon'] = Icons.food_bank;
-        mealList[index]['amount'] = amount;
-        break;
-      }
-    }
-  }
+  // void editTile(String name, String amount) {
+  //   for (Map meal1 in mealList) {
+  //     if (meal1['name'] == meal["name"]) {
+  //       int index = mealList.indexOf(meal1);
+  //       mealList[index]['name'] = name;
+  //       mealList[index]['icon'] = Icons.food_bank;
+  //       mealList[index]['amount'] = amount;
+  //       break;
+  //     }
+  //   }
+  // }
 
   void deleteTile() {
     dateMeals[selectedMealTime].remove(meal);
@@ -92,13 +92,13 @@ class MealTile extends StatelessWidget {
                     showModalBottomSheet(
                         context: context,
                         builder: (context) => AddNewFoodScreen(
-                              AppBarTitle: const Text("Add Quantity"),
-                              ReloadState: ReloadState,
+                              appBarTitle: const Text("Add Quantity"),
+                              reloadState: reloadState,
                               tileEdit: true,
                               //editTileDetails: editTile,
                             ));
                     // editTile();
-                    ReloadState();
+                    reloadState();
                   },
                   icon: const Icon(
                     Icons.edit,
@@ -108,7 +108,7 @@ class MealTile extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     deleteTile();
-                    ReloadState();
+                    reloadState();
                   },
                   icon: const Icon(
                     Icons.delete,

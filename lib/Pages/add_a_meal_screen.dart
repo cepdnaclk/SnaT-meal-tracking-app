@@ -16,26 +16,26 @@ double amount = 0.0;
 String iconCode = "";
 FoodModel? result;
 
-final _firestore = FirebaseFirestore.instance;
-List mealList = [];
-String foodAmount = "";
-List todayBreakFastMealItems = [
-  // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
-  // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
-  // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
-];
-List Today_LunchMealItems = [];
-List Today_DinnerMealItems = [];
-List Today_MorningSnacksMealItems = [];
-List Today_EveningSnacksMealItems = [];
-List Today_OtherMealItems = [];
-
-List NotToday_breakFastMealItems = [];
-List NotToday_LunchMealItems = [];
-List NotToday_DinnerMealItems = [];
-List NotToday_MorningSnacksMealItems = [];
-List NotToday_EveningSnacksMealItems = [];
-List NotToday_OtherMealItems = [];
+//final _firestore = FirebaseFirestore.instance;
+//List mealList = [];
+//String foodAmount = "";
+// List todayBreakFastMealItems = [
+//   // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
+//   // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
+//   // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
+// ];
+// List Today_LunchMealItems = [];
+// List Today_DinnerMealItems = [];
+// List Today_MorningSnacksMealItems = [];
+// List Today_EveningSnacksMealItems = [];
+// List Today_OtherMealItems = [];
+//
+// List NotToday_breakFastMealItems = [];
+// List NotToday_LunchMealItems = [];
+// List NotToday_DinnerMealItems = [];
+// List NotToday_MorningSnacksMealItems = [];
+// List NotToday_EveningSnacksMealItems = [];
+// List NotToday_OtherMealItems = [];
 
 List<String> meals = [
   "Cereals and starchy foods",
@@ -54,38 +54,38 @@ List<String> mealTime = [
   "Others"
 ];
 
-List<Map> mealTimeLists = [
-  {"mealtime": "Breakfast", "List": todayBreakFastMealItems},
-  {"mealtime": "Morning Snacks", "List": Today_MorningSnacksMealItems},
-  {"mealtime": "Lunch", "List": Today_LunchMealItems},
-  {"mealtime": "Evening Snacks", "List": Today_EveningSnacksMealItems},
-  {"mealtime": "Dinner", "List": Today_DinnerMealItems},
-  {"mealtime": "Others", "List": Today_OtherMealItems}
-];
-void getFoodData(String selectedMealCategory) async {
-  final foodItems = await _firestore
-      .collection('Standard_food_size')
-      .doc(selectedMealCategory)
-      .collection('Food')
-      .get();
-  SearchTerms = [];
-  FoodandUnits = [];
-  for (var food in foodItems.docs) {
-    SearchTerms.add(food.data()['Food']);
-    FoodandUnits.add(
-        {"Food": food.data()['Food'], "Units": food.data()['Unit']});
-  }
-}
+// List<Map> mealTimeLists = [
+//   {"mealtime": "Breakfast", "List": todayBreakFastMealItems},
+//   {"mealtime": "Morning Snacks", "List": Today_MorningSnacksMealItems},
+//   {"mealtime": "Lunch", "List": Today_LunchMealItems},
+//   {"mealtime": "Evening Snacks", "List": Today_EveningSnacksMealItems},
+//   {"mealtime": "Dinner", "List": Today_DinnerMealItems},
+//   {"mealtime": "Others", "List": Today_OtherMealItems}
+// ];
+// void getFoodData(String selectedMealCategory) async {
+//   final foodItems = await _firestore
+//       .collection('Standard_food_size')
+//       .doc(selectedMealCategory)
+//       .collection('Food')
+//       .get();
+//   SearchTerms = [];
+//   FoodandUnits = [];
+//   for (var food in foodItems.docs) {
+//     SearchTerms.add(food.data()['Food']);
+//     FoodandUnits.add(
+//         {"Food": food.data()['Food'], "Units": food.data()['Unit']});
+//   }
+// }
 
-void addMealItems(String name, String amount) {
-  print("plz" + selectedMealTime.toString());
-  for (Map mealList in mealTimeLists) {
-    if (mealList["mealtime"] == selectedMealTime) {
-      mealList = mealList["List"];
-    }
-  }
-  mealList.add({"name": name, "icon": Icons.rice_bowl, "amount": amount});
-}
+// void addMealItems(String name, String amount) {
+//   print("plz" + selectedMealTime.toString());
+//   for (Map mealList in mealTimeLists) {
+//     if (mealList["mealtime"] == selectedMealTime) {
+//       mealList = mealList["List"];
+//     }
+//   }
+//   mealList.add({"name": name, "icon": Icons.rice_bowl, "amount": amount});
+// }
 
 String? selectedMeal;
 String? selectedMealTime;
@@ -238,9 +238,9 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 if (val == null) {
                   return "Please select a meal time before adding food";
                 }
+                return null;
               },
               decoration: InputDecoration(
-                //labelStyle: textStyle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -272,13 +272,13 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               height: 5,
             ),
             DropdownButtonFormField(
-              validator: (val) {
+              validator: (String? val) {
                 if (val == null) {
                   return "Please select a meal type before adding food";
                 }
+                return null;
               },
               decoration: InputDecoration(
-                //labelStyle: textStyle,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -307,10 +307,10 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                   var val = showModalBottomSheet(
                     context: context,
                     builder: (context) => AddNewFoodScreen(
-                      AppBarTitle: const Text(
+                      appBarTitle: const Text(
                         "Add a New Food",
                       ),
-                      ReloadState: stateReload,
+                      reloadState: stateReload,
                       tileEdit: false,
                     ),
                   );
@@ -338,8 +338,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             for (Map meal in dateMeals[selectedMealTime] ?? [])
               MealTile(
                 meal: meal,
-                ReloadState: stateReload,
-                foodamount: foodAmount,
+                reloadState: stateReload,
               )
           ],
         ),

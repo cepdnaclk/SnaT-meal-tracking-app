@@ -35,10 +35,10 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    bool todayDate = (selectedDate.toString().substring(0, 10) ==
-            DateTime.now().toString().substring(0, 10))
-        ? true
-        : false;
+    // bool todayDate = (selectedDate.toString().substring(0, 10) ==
+    //         DateTime.now().toString().substring(0, 10))
+    //     ? true
+    //     : false;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: ThemeInfo.primaryColor,
@@ -71,29 +71,30 @@ class _HomeViewState extends State<HomeView> {
               height: 20,
             ),
             FutureBuilder(
-                future: _fetchData,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      isDone) {
-                    todayMeals = snapshot.data as Map;
-                    return Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          for (String key in todayMeals.keys)
-                            MealSection(
-                              label: key,
-                              mealItems: todayMeals[key],
-                            ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }),
+              future: _fetchData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    isDone) {
+                  todayMeals = snapshot.data as Map;
+                  return Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        for (String key in todayMeals.keys)
+                          MealSection(
+                            label: key,
+                            mealItems: todayMeals[key],
+                          ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
