@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Components/Tab_Views/home_view.dart';
-import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 
+import '../Components/Tab_Views/home_view.dart';
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
+import '../Models/food_model.dart';
 import '../Theme/theme_info.dart';
 import 'welcome_screen.dart';
 
