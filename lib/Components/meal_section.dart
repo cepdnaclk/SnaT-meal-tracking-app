@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 
 class MealSection extends StatefulWidget {
   const MealSection({Key? key, required this.label, this.mealItems})
@@ -52,7 +51,6 @@ class _MealSectionState extends State<MealSection> {
                     onTap: () {
                       setState(() {});
                       showBreakfast = !showBreakfast;
-                      print(showBreakfast);
                     },
                     child: const Icon(
                       Icons.keyboard_arrow_down_outlined,
@@ -76,28 +74,47 @@ class _MealSectionState extends State<MealSection> {
                 if (showBreakfast)
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/food.jfif",
-                            width: 40,
-                            height: 40,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(widget.mealItems![i]['name']),
-                              Text(widget.mealItems![i]['amount']),
-                            ],
-                          ),
-                          const Spacer(),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.more_vert))
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            // Image.asset(
+                            //   "assets/images/food.jfif",
+                            //   width: 40,
+                            //   height: 40,
+                            // ),
+                            Icon(
+                              IconData(
+                                int.parse(
+                                    '0x${widget.mealItems![i]['iconCode']}'),
+                                fontFamily: "MaterialIcons",
+                              ),
+                              size: 40,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.mealItems![i]['food'],
+                                  style: const TextStyle(fontSize: 20),
+                                ),
+                                Text(widget.mealItems![i]['amount'].toString() +
+                                    ' ' +
+                                    widget.mealItems![i]['unit']),
+                                Text(
+                                  widget.mealItems![i]['type'],
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            // IconButton(
+                            //     onPressed: () {},
+                            //     icon: const Icon(Icons.more_vert))
+                          ],
+                        ),
                       ),
                       const Divider(
                         height: 8,

@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -18,12 +18,9 @@ class MealTile extends StatelessWidget {
   final void Function() ReloadState;
 
   void editTile(String name, String amount) {
-    print(meal['name']);
-    print("hey");
     for (Map meal1 in mealList) {
       if (meal1['name'] == meal["name"]) {
         int index = mealList.indexOf(meal1);
-        print(index);
         mealList[index]['name'] = name;
         mealList[index]['icon'] = Icons.food_bank;
         mealList[index]['amount'] = amount;
@@ -33,18 +30,18 @@ class MealTile extends StatelessWidget {
   }
 
   void deleteTile() {
-    getFoodData1();
-    for (Map meal1 in mealList) {
-      if (meal1['name'] == meal["name"]) {
-        int index = mealList.indexOf(meal1);
-        mealList.removeAt(index);
-        break;
-      }
-    }
+    dateMeals[selectedMealTime].remove(meal);
+    // getFoodData1();
+    // for (Map meal1 in mealList) {
+    //   if (meal1['name'] == meal["name"]) {
+    //     int index = mealList.indexOf(meal1);
+    //     mealList.removeAt(index);
+    //     break;
+    //   }
+    // }
   }
 
   void getFoodData1() async {
-    print(selectedMealTime);
     final foodItems = await _firestore
         .collection('foodLog')
         .doc(selectedDate.toString())
@@ -78,14 +75,15 @@ class MealTile extends StatelessWidget {
             Row(
               children: [
                 Icon(
-                  meal["icon"],
+                  IconData(int.parse('0x' + meal["iconCode"]),
+                      fontFamily: "MaterialIcons"),
                   size: 30,
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Text(
-                  meal["name"],
+                  meal["food"],
                   style: const TextStyle(fontSize: 18),
                 ),
                 const Spacer(),
@@ -94,10 +92,10 @@ class MealTile extends StatelessWidget {
                     showModalBottomSheet(
                         context: context,
                         builder: (context) => AddNewFoodScreen(
-                              AppBarTitle: Text("Add Quantity"),
+                              AppBarTitle: const Text("Add Quantity"),
                               ReloadState: ReloadState,
                               tileEdit: true,
-                              editTileDetails: editTile,
+                              //editTileDetails: editTile,
                             ));
                     // editTile();
                     ReloadState();
@@ -119,9 +117,18 @@ class MealTile extends StatelessWidget {
                 ),
               ],
             ),
-            Text(
-              meal["amount"],
-              style: const TextStyle(fontSize: 18),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  meal["amount"].toString() + ' ' + meal['unit'],
+                  style: const TextStyle(fontSize: 18),
+                ),
+                Text(
+                  meal["type"],
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ],
             )
           ],
         ),
