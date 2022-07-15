@@ -1,10 +1,11 @@
+import "package:camera/camera.dart";
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Theme/theme_info.dart';
-import "package:camera/camera.dart";
-import 'Pages/dashboard_layout.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/LocaleString.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
+
+import 'Pages/dashboard_layout.dart';
 
 List<CameraDescription> cameras = [];
 
