@@ -1,8 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/DrawerView/NotificationView.dart';
 import 'package:mobile_app/Components/DrawerView/SettingsView.dart';
+import 'package:mobile_app/Components/DrawerView/MealHistory.dart';
 
 import '../Theme/theme_info.dart';
+
+final _firestore = FirebaseFirestore.instance;
+User? user = FirebaseAuth.instance.currentUser;
+String? email = user?.email.toString();
+String? name = user?.displayName.toString();
 
 class DashboardDrawer extends StatelessWidget {
   const DashboardDrawer({
@@ -31,15 +39,15 @@ class DashboardDrawer extends StatelessWidget {
           top: 25 + MediaQuery.of(context).padding.top,
         ),
         child: Column(
-          children: const [
+          children: [
             CircleAvatar(
               radius: 52,
               backgroundImage: AssetImage('assets/images/userImage.png'),
             ),
             SizedBox(height: 15),
             ListTile(
-              title: Text('Unknown User'),
-              subtitle: Text('unknown@email.com'),
+              title: Text(name!),
+              subtitle: Text(email!),
             )
           ],
         ),
@@ -61,7 +69,10 @@ class DashboardDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               onTap: () {
-                // Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MealHistory()));
               },
             ),
           ),
@@ -77,8 +88,10 @@ class DashboardDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const SettingsView()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsView()));
               },
             ),
           ),
@@ -110,8 +123,10 @@ class DashboardDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const NotificationView()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationView()));
               },
             ),
           ),

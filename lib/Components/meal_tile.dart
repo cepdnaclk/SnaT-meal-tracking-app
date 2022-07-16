@@ -48,12 +48,13 @@ class MealTile extends StatelessWidget {
         Map<String, dynamic> data =
             documentSnapshot.data()! as Map<String, dynamic>;
         var foodlist = data[selectedMealTime.toString()];
-        print(foodlist);
-        for (var food in foodlist) {
-          if (food['food'] == meal['food']) {
-            int index = foodlist.indexOf(food);
-            foodlist.removeAt(index);
-            break;
+        if (foodlist != null) {
+          for (var food in foodlist) {
+            if (food['food'] == meal['food']) {
+              int index = foodlist.indexOf(food);
+              foodlist.removeAt(index);
+              break;
+            }
           }
         }
         _firestore
