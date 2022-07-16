@@ -1,199 +1,207 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/drop_down.dart';
+import 'package:mobile_app/Models/user_model.dart';
+import 'package:mobile_app/Pages/login_screen.dart';
 import 'package:mobile_app/constants.dart';
 
-class AdditionalSettingsScreen extends StatelessWidget {
-  AdditionalSettingsScreen({Key? key}) : super(key: key);
+import '../Components/count_adder.dart';
+
+class AdditionalSettingsScreen extends StatefulWidget {
+  const AdditionalSettingsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AdditionalSettingsScreen> createState() =>
+      _AdditionalSettingsScreenState();
+}
+
+class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
   String? name;
-  int age = 0;
+
+  double age = 0;
+
   String? gender;
-  int height = 0;
-  int weight = 0;
+
+  double height = 0;
+
+  double weight = 0;
+
+  final _formKey = GlobalKey<FormState>();
+
+  bool showError = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          const Text(
-            "Name:",
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          TextField(
-            cursorColor: Colors.black,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            const SizedBox(
+              height: 50,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Age:",
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          CountAdder(
-            onChanged: (val) {
-              age = val;
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Gender:",
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          DropDownWidget(
-            items: genderList,
-            onChanged: (val) {
-              print(val);
-              gender = val;
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Height (cm) :",
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          CountAdder(
-            onChanged: (val) {
-              height = val;
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            "Weight (kg) :",
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          CountAdder(
-            onChanged: (val) {
-              weight = val;
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CountAdder extends StatefulWidget {
-  const CountAdder({
-    Key? key,
-    required this.onChanged,
-  }) : super(key: key);
-  final Function onChanged;
-
-  @override
-  State<CountAdder> createState() => _CountAdderState();
-}
-
-class _CountAdderState extends State<CountAdder> {
-  int count = 0;
-  TextEditingController countController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    countController.text = count.toString();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      padding: const EdgeInsets.only(left: 5),
-      decoration: BoxDecoration(
-          border: Border.all(width: 1), borderRadius: BorderRadius.circular(5)),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: countController,
+            const Center(
+                child: Text(
+              "Additional Information",
+              style: TextStyle(fontSize: 25),
+            )),
+            const SizedBox(
+              height: 50,
+            ),
+            const Text(
+              "Name:",
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            TextFormField(
               onChanged: (val) {
-                count = int.parse(val);
-                widget.onChanged(count);
+                name = val;
               },
-              keyboardType: TextInputType.number,
+              validator: (val) {
+                if (val == null || val.isEmpty) {
+                  return 'Please enter your name';
+                }
+                return null;
+              },
               cursorColor: Colors.black,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
+              decoration: InputDecoration(
+                hintText: "Enter your name",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
               ),
             ),
-          ),
-          Column(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    count++;
-                    countController.text = count.toString();
-                    widget.onChanged(count);
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: 50,
-                    child: const Icon(Icons.keyboard_arrow_up),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        left: BorderSide(width: 1),
-                        bottom: BorderSide(width: 1),
-                      ),
-                    ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Age:",
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            CountAdder(
+              isInt: true,
+              hasError:
+                  (age <= 0 || age != age.toInt().toDouble()) && showError,
+              onChanged: (val) {
+                age = val;
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Gender:",
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            DropDownWidget(
+              hasError: showError && gender == null,
+              items: genderList,
+              onChanged: (val) {
+                gender = val;
+              },
+            ),
+            if (showError)
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, top: 5),
+                child: Text(
+                  "Please select a gender",
+                  style: TextStyle(
+                    color: Colors.red[700],
+                    fontSize: 11,
                   ),
                 ),
               ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    if (count > 0) {
-                      count--;
-                      countController.text = count.toString();
-                      widget.onChanged(count);
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Height (cm) :",
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            CountAdder(
+              hasError: height <= 0 && showError,
+              isInt: false,
+              onChanged: (val) {
+                height = val;
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Weight (kg) :",
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            CountAdder(
+              hasError: weight <= 0 && showError,
+              isInt: false,
+              onChanged: (val) {
+                weight = val;
+              },
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    if (gender != null &&
+                        height > 0 &&
+                        weight > 0 &&
+                        age > 0 &&
+                        age == age.toInt().toDouble()) {
+                      UserModel currentUser = UserModel();
+                      currentUser.gender = gender;
+                      currentUser.weight = weight;
+                      currentUser.height = height;
+                      currentUser.age = age.toInt();
+
+                      showError = false;
+                      setState(() {});
+                    } else {
+                      showError = true;
                       setState(() {});
                     }
-                  },
-                  child: Container(
-                    width: 50,
-                    child: const Icon(Icons.keyboard_arrow_down),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        left: BorderSide(width: 1),
-                      ),
-                    ),
+                  }
+
+                  if (gender != null &&
+                      height > 0 &&
+                      weight > 0 &&
+                      age > 0 &&
+                      age == age.toInt().toDouble()) {
+                    showError = false;
+                    setState(() {});
+                  } else {
+                    showError = true;
+                    setState(() {});
+                  }
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 18.0),
+                  child: Text(
+                    "Continue",
+                    style: TextStyle(fontSize: 18),
                   ),
-                ),
-              ),
-            ],
-          ),
-        ],
+                )),
+          ],
+        ),
       ),
     );
   }

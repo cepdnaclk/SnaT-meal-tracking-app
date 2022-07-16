@@ -1,54 +1,152 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Components/Tab_Views/home_view.dart';
+import 'package:mobile_app/Models/food_model.dart';
+import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 
-class AddNewFoodScreen extends StatelessWidget {
-  AddNewFoodScreen({Key? key}) : super(key: key);
+// final _firestore = FirebaseFirestore.instance;
+//
+// List<String> SearchTerms = [];
+// List<Map> FoodandUnits = [];
+
+class AddNewFoodScreen extends StatefulWidget {
+  const AddNewFoodScreen(
+      {required this.appBarTitle,
+      required this.reloadState,
+      required this.tileEdit,
+      this.editTileDetails});
+  final void Function() reloadState;
+  final Text appBarTitle;
+  final bool tileEdit;
+  final void Function(String, String)? editTileDetails;
+
+  @override
+  State<AddNewFoodScreen> createState() => _AddNewFoodScreenState();
+}
+
+class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   final TextEditingController searchController = TextEditingController();
-  double amount = 0.0;
+
+  final CustomSearchHintDelegate delegate =
+      CustomSearchHintDelegate(hintText: 'Search your food Here');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add new food"),
+        title: widget.appBarTitle,
         actions: [
-          GestureDetector(
-            onTap: () {},
+          MaterialButton(
+            onPressed: () async {
+              widget.reloadState();
+              dateMeals[selectedMealTime] != null
+                  ? dateMeals[selectedMealTime].add({
+                      "food": result!.name,
+                      'amount': amount.round(),
+                      'unit': result!.unit,
+                      'type': selectedMeal,
+                      'iconCode': result!.iconCode,
+                    })
+                  : dateMeals[selectedMealTime] = [
+                      {
+                        "food": result!.name,
+                        'amount': amount.round(),
+                        'unit': result!.unit,
+                        'type': selectedMeal,
+                        'iconCode': result!.iconCode,
+                      }
+                    ];
+              result = null;
+              amount = 1;
+              Navigator.pop(context, amount);
+            },
             child: const Center(
                 child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Text("Save"),
+              child: Text(
+                "Save",
+                style: TextStyle(color: Colors.white),
+              ),
             )),
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.search),
+        onPressed: () async {
+          result = await showSearch<FoodModel?>(
+            context: context,
+            delegate: delegate,
+          );
+          if (result == null) {}
+          if (result != null) {
+            resultText = result!.name;
+            //getFoodUnit(resultText);
+            if (widget.tileEdit == true) {
+              widget.editTileDetails!(
+                resultText,
+                amount.toInt().toString() + " " + unit,
+              );
+            }
+          }
+          // setState(() {});
+        },
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: searchController,
-                    decoration: const InputDecoration(
-                      hintText: "search",
-                      hintStyle: TextStyle(fontSize: 18),
-                      border: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.blueAccent, width: 1.0),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(32.0),
+            if (result != null)
+              Row(
+                children: [
+                  Center(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      color: Colors.teal,
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          resultText,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
                         ),
                       ),
                     ),
                   ),
-                ),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.search,
-                      size: 30,
-                    ))
+                ],
+              ),
+            Row(
+              children: const [
+                // Expanded(
+                //   child: TextField(
+                //     onTap: () {
+                //       // showSearch(
+                //       //     context: context, delegate: CustomSearchDelegate());
+                //     },
+                //     controller: searchController,
+                //     decoration: const InputDecoration(
+                //       hintText: "search",
+                //       hintStyle: TextStyle(fontSize: 18),
+                //       border: OutlineInputBorder(
+                //         borderSide:
+                //             BorderSide(color: Colors.blueAccent, width: 1.0),
+                //         borderRadius: BorderRadius.all(
+                //           Radius.circular(32.0),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // IconButton(
+                //     onPressed: () {
+                //       // CustomSearchDelegate();
+                //     },
+                //     icon: const Icon(
+                //       Icons.search,
+                //       size: 30,
+                //     ))
               ],
             ),
             const SizedBox(
@@ -66,6 +164,88 @@ class AddNewFoodScreen extends StatelessWidget {
   }
 }
 
+class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
+  CustomSearchHintDelegate({
+    required String hintText,
+  }) : super(
+          searchFieldLabel: hintText,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+        );
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<FoodModel> matchQuery = [];
+    for (FoodModel fruit in foodsData[selectedMeal]!) {
+      if (fruit.name.toLowerCase() == (query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+    }
+    return ListView.builder(
+        itemCount: matchQuery.length,
+        itemBuilder: (context, index) {
+          FoodModel result = matchQuery[index];
+          return ListTile(
+            title: Text(result.name),
+          );
+        });
+    throw UnimplementedError();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<FoodModel> matchQuery = [];
+    for (FoodModel fruit in foodsData[selectedMeal]!) {
+      if (fruit.name.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+    }
+    return ListView.builder(
+        itemCount: matchQuery.length,
+        itemBuilder: (context, index) {
+          FoodModel result = matchQuery[index];
+          return ListTile(
+            onTap: () {
+              showResults(context);
+              Navigator.pop(context, result);
+            },
+            title: Text(result.name),
+          );
+        });
+    throw UnimplementedError();
+  }
+
+  // @override
+  // PreferredSizeWidget buildBottom(BuildContext context) {
+  //   return const PreferredSize(
+  //       preferredSize: Size.fromHeight(56.0), child: Text('bottom'));
+  // }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: const Icon(Icons.arrow_back));
+    throw UnimplementedError();
+  }
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            close(context, null);
+          })
+    ];
+    // TODO: implement buildActions
+    throw UnimplementedError();
+  }
+}
+
 class SliderWidget extends StatefulWidget {
   const SliderWidget({
     Key? key,
@@ -78,7 +258,7 @@ class SliderWidget extends StatefulWidget {
 }
 
 class _SliderWidgetState extends State<SliderWidget> {
-  double amount = 50;
+  double amount = 1;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -89,25 +269,27 @@ class _SliderWidgetState extends State<SliderWidget> {
               "Amount",
               style: TextStyle(fontSize: 18),
             ),
-            Spacer(),
+            const Spacer(),
             Text(
-              amount.toInt().toString(),
+              amount.toInt().toString() + " ",
               style: const TextStyle(fontSize: 16),
             ),
-            const Text(
-              " kCals",
-              style: TextStyle(fontSize: 16),
+            Text(
+              unit,
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
-        Slider(
+        Slider.adaptive(
           value: amount,
+          divisions: 15,
+          max: 15.0,
+          label: "$amount",
           onChanged: (val) {
             amount = val;
             widget.onChanged(val);
             setState(() {});
           },
-          max: 100,
           min: 0,
         ),
       ],

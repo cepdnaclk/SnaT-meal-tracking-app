@@ -1,18 +1,16 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/Tab_Views/chart_view.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Components/Tab_Views/scheduling_view.dart';
 import 'package:mobile_app/Components/Tab_Views/bmi_view.dart';
 import 'package:mobile_app/Components/dashboard_drawer.dart';
-import 'package:mobile_app/Pages/CameraPage.dart';
-//import 'package:mobile_app/Pages/SchedulingView.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
+
+import 'camera/camera_tabview.dart';
 
 class DashboardLayout extends StatefulWidget {
   //const DashboardLayout({Key? key}) : super(key: key);
-  var cameras;
-  DashboardLayout(this.cameras);
+  DashboardLayout();
   @override
   State<DashboardLayout> createState() => _DashboardLayoutState();
 }
@@ -28,6 +26,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
     _tabController = TabController(vsync: this, length: 4);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -35,6 +34,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
       length: 4,
       child: Scaffold(
         appBar: AppBar(
+          elevation: 8.0,
           backgroundColor: ThemeInfo.primaryColor,
           title: const Text("SnaT: Meal Diary"),
         ),
@@ -47,7 +47,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex)
                     {//return CameraScreen(widget.cameras);
-                      return const campage(title: 'camera',);
+                      return tabviewcamera();
                     })
             );
           },
@@ -84,7 +84,7 @@ class _DashboardLayoutState extends State<DashboardLayout>
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
                       'assets/images/bmi_icon.png',
-                      color: Colors.white,
+                      color: ThemeInfo.bottomTabButtonColor,
                       height: 28.0,
                       width: 28.0,
                     ),
