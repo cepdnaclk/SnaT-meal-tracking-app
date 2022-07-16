@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
+User? user = FirebaseAuth.instance.currentUser;
 
 class MealTile extends StatelessWidget {
   const MealTile({
@@ -30,33 +32,55 @@ class MealTile extends StatelessWidget {
   // }
 
   void deleteTile() {
+    getFoodData1();
     dateMeals[selectedMealTime].remove(meal);
-    // getFoodData1();
-    // for (Map meal1 in mealList) {
-    //   if (meal1['name'] == meal["name"]) {
-    //     int index = mealList.indexOf(meal1);
-    //     mealList.removeAt(index);
-    //     break;
-    //   }
-    // }
   }
 
   void getFoodData1() async {
-    final foodItems = await _firestore
+    await _firestore
+        .collection("users")
+        .doc(user!.uid)
         .collection('foodLog')
-        .doc(selectedDate.toString())
-        .collection(selectedMealTime.toString())
-        .get();
-    for (var food in foodItems.docs) {
-      if (food.data()['food'] == meal["name"]) {
-        await _firestore
+        .doc(selectedDate.toString().substring(0, 10))
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+            documentSnapshot.data()! as Map<String, dynamic>;
+        var foodlist = data[selectedMealTime.toString()];
+        print(foodlist);
+        for (var food in foodlist) {
+          if (food['food'] == meal['food']) {
+            int index = foodlist.indexOf(food);
+            foodlist.removeAt(index);
+            break;
+          }
+        }
+        _firestore
+            .collection("users")
+            .doc(user!.uid)
             .collection('foodLog')
-            .doc(selectedDate.toString())
-            .collection(selectedMealTime.toString())
-            .doc(food.reference.id)
-            .delete();
+            .doc(selectedDate.toString().substring(0, 10))
+            .update(data)
+            .then((value) => print("User Updated"))
+            .catchError((error) => print("Failed to update user: $error"));
+      } else {
+        print('Document does not exist on the database');
       }
-    }
+    });
+    // for (var food in foodItems.docs) {
+    //   print(food);
+    //   if (food.data()['food'] == meal["name"]) {
+    //     await _firestore
+    //         .collection("users")
+    //         .doc(user!.uid)
+    //         .collection('foodLog')
+    //         .doc(selectedDate.toString())
+    //         .collection(selectedMealTime.toString())
+    //         .doc(food.reference.id)
+    //         .delete();
+    //   }
+    // }
   }
 
   @override
@@ -82,9 +106,11 @@ class MealTile extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                Text(
-                  meal["food"],
-                  style: const TextStyle(fontSize: 18),
+                Expanded(
+                  child: Text(
+                    meal["food"],
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 ),
                 const Spacer(),
                 IconButton(
