@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'dart:io';
 import 'dart:typed_data';
+
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'chart_view_components/barChartLegend.dart';
+
 import 'chart_view_components/barchart_model.dart';
-import 'chart_view_components/legend_container.dart';
 import 'chart_view_components/pieChart_model.dart';
 import 'chart_view_components/share_button.dart';
 
@@ -96,8 +96,8 @@ class _ChartViewState extends State<ChartView> {
 
     _seriesData.add(
       charts.Series(
-        domainFn: (WeekReport pollution, _) => pollution.day,
-        measureFn: (WeekReport pollution, _) => pollution.serves,
+        domainFn: (WeekReport weekReport, _) => weekReport.day,
+        measureFn: (WeekReport weekReport, _) => weekReport.serves,
         id: '2017',
         data: data1,
         fillPatternFn: (_, __) => charts.FillPatternType.solid,

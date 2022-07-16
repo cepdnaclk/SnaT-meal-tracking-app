@@ -1,15 +1,15 @@
+import "package:camera/camera.dart";
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/welcome_screen.dart';
-import 'package:mobile_app/Theme/theme_info.dart';
-import "package:camera/camera.dart";
-import 'Pages/dashboard_layout.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/LocaleString.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
+
+import 'Pages/dashboard_layout.dart';
 
 List<CameraDescription> cameras = [];
 
-Future<Null> main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   cameras = await availableCameras();
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       //home: DashboardLayout(),
-      home: WelcomeScreen(),
+      home: DashboardLayout(),
     );
   }
 }

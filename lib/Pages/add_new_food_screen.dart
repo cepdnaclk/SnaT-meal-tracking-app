@@ -1,24 +1,21 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/add_a_meal_screen.dart' as M;
-import 'package:mobile_app/Components/meal_tile.dart' as tile;
+import 'package:mobile_app/Components/Tab_Views/home_view.dart';
+import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-final _firestore = FirebaseFirestore.instance;
-
-String unit = "";
-List<String> SearchTerms = [];
-List<Map> FoodandUnits = [];
+// final _firestore = FirebaseFirestore.instance;
+//
+// List<String> SearchTerms = [];
+// List<Map> FoodandUnits = [];
 
 class AddNewFoodScreen extends StatefulWidget {
-  AddNewFoodScreen(
-      {required this.AppBarTitle,
-      required this.ReloadState,
+  const AddNewFoodScreen(
+      {required this.appBarTitle,
+      required this.reloadState,
       required this.tileEdit,
       this.editTileDetails});
-  final void Function() ReloadState;
-  final Text AppBarTitle;
+  final void Function() reloadState;
+  final Text appBarTitle;
   final bool tileEdit;
   final void Function(String, String)? editTileDetails;
 
@@ -27,77 +24,68 @@ class AddNewFoodScreen extends StatefulWidget {
 }
 
 class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
-  void getFoodUnit(String foodResult) {
-    // print("sdsds" + foodResult);
-    for (Map food in FoodandUnits) {
-      if (food['Food'] == foodResult) {
-        print(food);
-        unit = food['Units'];
-        print(unit);
-      }
-    }
-    setState(() {});
-  }
-
-  void updateFood() {}
-
   final TextEditingController searchController = TextEditingController();
 
   final CustomSearchHintDelegate delegate =
       CustomSearchHintDelegate(hintText: 'Search your food Here');
 
-  double amount = 0.0;
-
-  String resultText = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.AppBarTitle,
+        title: widget.appBarTitle,
         actions: [
           MaterialButton(
             onPressed: () async {
-              M.addMealItems(resultText, amount.toInt().toString() + unit);
-              widget.ReloadState();
-              print(amount.toInt());
-              M.selectedMeal = M.selectedMeal;
-              await _firestore
-                  .collection('foodLog')
-                  .doc(selectedDate.toString())
-                  .collection(selectedMealTime.toString())
-                  .add({
-                'food': resultText,
-                'unit': unit,
-                'amount': amount.toInt()
-              });
+              widget.reloadState();
+              dateMeals[selectedMealTime] != null
+                  ? dateMeals[selectedMealTime].add({
+                      "food": result!.name,
+                      'amount': amount.round(),
+                      'unit': result!.unit,
+                      'type': selectedMeal,
+                      'iconCode': result!.iconCode,
+                    })
+                  : dateMeals[selectedMealTime] = [
+                      {
+                        "food": result!.name,
+                        'amount': amount.round(),
+                        'unit': result!.unit,
+                        'type': selectedMeal,
+                        'iconCode': result!.iconCode,
+                      }
+                    ];
+              result = null;
+              amount = 1;
               Navigator.pop(context, amount);
             },
             child: const Center(
                 child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Text("Save"),
+              child: Text(
+                "Save",
+                style: TextStyle(color: Colors.white),
+              ),
             )),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
+        child: const Icon(Icons.search),
         onPressed: () async {
-          String? result = await showSearch<String?>(
+          result = await showSearch<FoodModel?>(
             context: context,
             delegate: delegate,
           );
-          print('result: $result');
-          if (result == null) {
-            print("Please select a food");
-          }
+          if (result == null) {}
           if (result != null) {
-            resultText = result;
-            getFoodUnit(resultText);
+            resultText = result!.name;
+            //getFoodUnit(resultText);
             if (widget.tileEdit == true) {
               widget.editTileDetails!(
-                  resultText, amount.toInt().toString() + " " + unit);
+                resultText,
+                amount.toInt().toString() + " " + unit,
+              );
             }
           }
           // setState(() {});
@@ -105,19 +93,32 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+            if (result != null)
+              Row(
+                children: [
+                  Center(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      color: Colors.teal,
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          resultText,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              color: Colors.teal,
-              elevation: 10,
-              child: Text(resultText),
-            ),
             Row(
-              children: [
+              children: const [
                 // Expanded(
                 //   child: TextField(
                 //     onTap: () {
@@ -163,7 +164,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   }
 }
 
-class CustomSearchHintDelegate extends SearchDelegate<String?> {
+class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
   CustomSearchHintDelegate({
     required String hintText,
   }) : super(
@@ -174,45 +175,43 @@ class CustomSearchHintDelegate extends SearchDelegate<String?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in SearchTerms) {
-      if (fruit.toLowerCase() == (query.toLowerCase())) {
+    List<FoodModel> matchQuery = [];
+    for (FoodModel fruit in foodsData[selectedMeal]!) {
+      if (fruit.name.toLowerCase() == (query.toLowerCase())) {
         matchQuery.add(fruit);
       }
     }
     return ListView.builder(
         itemCount: matchQuery.length,
         itemBuilder: (context, index) {
-          var result = matchQuery[index];
+          FoodModel result = matchQuery[index];
           return ListTile(
-            title: Text(result),
+            title: Text(result.name),
           );
         });
-    // TODO: implement buildResults
     throw UnimplementedError();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in SearchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+    List<FoodModel> matchQuery = [];
+    for (FoodModel fruit in foodsData[selectedMeal]!) {
+      if (fruit.name.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.add(fruit);
       }
     }
     return ListView.builder(
         itemCount: matchQuery.length,
         itemBuilder: (context, index) {
-          var result = matchQuery[index];
+          FoodModel result = matchQuery[index];
           return ListTile(
             onTap: () {
               showResults(context);
               Navigator.pop(context, result);
             },
-            title: Text(result),
+            title: Text(result.name),
           );
         });
-    // TODO: implement buildSuggestions
     throw UnimplementedError();
   }
 
@@ -229,7 +228,7 @@ class CustomSearchHintDelegate extends SearchDelegate<String?> {
         onPressed: () {
           close(context, null);
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
     throw UnimplementedError();
   }
 
@@ -237,7 +236,7 @@ class CustomSearchHintDelegate extends SearchDelegate<String?> {
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
           onPressed: () {
             close(context, null);
           })
@@ -270,14 +269,14 @@ class _SliderWidgetState extends State<SliderWidget> {
               "Amount",
               style: TextStyle(fontSize: 18),
             ),
-            Spacer(),
+            const Spacer(),
             Text(
               amount.toInt().toString() + " ",
               style: const TextStyle(fontSize: 16),
             ),
             Text(
               unit,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
