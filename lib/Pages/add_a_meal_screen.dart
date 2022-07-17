@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
@@ -15,6 +16,7 @@ String unit = "";
 double amount = 0.0;
 String iconCode = "";
 FoodModel? result;
+User? user = FirebaseAuth.instance.currentUser;
 
 //final _firestore = FirebaseFirestore.instance;
 //List mealList = [];

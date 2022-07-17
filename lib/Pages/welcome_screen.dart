@@ -21,6 +21,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   checkAuthentification() async {
     if (user != null) {
+      print(user);
       Navigator.of(context).push(CustomPageRoute(child: DashboardLayout()));
     } else {
       Navigator.of(context).push(CustomPageRoute(child: const LoginScreen()));
