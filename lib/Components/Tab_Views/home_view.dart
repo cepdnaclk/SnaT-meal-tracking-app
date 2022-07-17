@@ -12,7 +12,8 @@ Map todayMeals = {};
 Map<String, List<FoodModel>> foodsData = {};
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({Key? key, required this.isDone}) : super(key: key);
+  final bool isDone;
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -20,25 +21,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late Future<Map> _fetchData;
-  bool isDone = false;
   @override
   void initState() {
     super.initState();
-    getData();
-    _fetchData = FirebaseServices.fetchData();
-  }
 
-  getData() async {
-    isDone = await FirebaseServices.getFoodsData();
-    setState(() {});
+    _fetchData = FirebaseServices.fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    // bool todayDate = (selectedDate.toString().substring(0, 10) ==
-    //         DateTime.now().toString().substring(0, 10))
-    //     ? true
-    //     : false;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: ThemeInfo.primaryColor,
@@ -74,7 +65,7 @@ class _HomeViewState extends State<HomeView> {
               future: _fetchData,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
-                    isDone) {
+                    widget.isDone) {
                   todayMeals = snapshot.data as Map;
                   return Expanded(
                     child: ListView(

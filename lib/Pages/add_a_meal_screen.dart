@@ -8,6 +8,7 @@ import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
 import '../Models/food_model.dart';
 import '../Theme/theme_info.dart';
+import '../constants.dart';
 import 'welcome_screen.dart';
 
 String resultText = "";
@@ -15,44 +16,6 @@ String unit = "";
 double amount = 0.0;
 String iconCode = "";
 FoodModel? result;
-
-//final _firestore = FirebaseFirestore.instance;
-//List mealList = [];
-//String foodAmount = "";
-// List todayBreakFastMealItems = [
-//   // {"name": "Rice & Curry", "icon": Icons.rice_bowl, "amount": "2 cups"},
-//   // {"name": "Bread", "icon": Icons.food_bank, "amount": "1 portion"},
-//   // {"name": "Tea", "icon": Icons.emoji_food_beverage, "amount": "1 cup"}
-// ];
-// List Today_LunchMealItems = [];
-// List Today_DinnerMealItems = [];
-// List Today_MorningSnacksMealItems = [];
-// List Today_EveningSnacksMealItems = [];
-// List Today_OtherMealItems = [];
-//
-// List NotToday_breakFastMealItems = [];
-// List NotToday_LunchMealItems = [];
-// List NotToday_DinnerMealItems = [];
-// List NotToday_MorningSnacksMealItems = [];
-// List NotToday_EveningSnacksMealItems = [];
-// List NotToday_OtherMealItems = [];
-
-List<String> meals = [
-  "Cereals and starchy foods",
-  "Vegetables",
-  "Fruits",
-  "Pulses meat fish",
-  "Beverages",
-  "Milk and milk products"
-];
-List<String> mealTime = [
-  "Breakfast",
-  "Morning Snacks",
-  "Lunch",
-  "Evening Snacks",
-  "Dinner",
-  "Others"
-];
 
 // List<Map> mealTimeLists = [
 //   {"mealtime": "Breakfast", "List": todayBreakFastMealItems},
@@ -109,8 +72,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
     selectedMeal = selectedMeal;
     selectedMealTime = selectedMealTime;
     dateMeals = todayMeals;
-    print(selectedMeal);
-    print(selectedDate.toString().substring(0, 10));
   }
 
   void stateReload() {
@@ -126,14 +87,12 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
         .doc(selectedDate.toString().substring(0, 10))
         .get()
         .then((value) {
-      print(value.data());
       dateMeals = value.data() ?? {};
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(dateMeals);
     return Form(
       key: _mealFormKey,
       child: Scaffold(
@@ -215,7 +174,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                   onPressed: (val) async {
                     selectedDate = val;
                     await getDateMeals();
-                    print(val);
                     setState(() {});
                   },
                 ),
@@ -302,8 +260,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             ElevatedButton(
               onPressed: () async {
                 if (_mealFormKey.currentState!.validate()) {
-                  print(selectedMeal);
-                  //getFoodData(selectedMeal!);
                   var val = showModalBottomSheet(
                     context: context,
                     builder: (context) => AddNewFoodScreen(
@@ -314,7 +270,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                       tileEdit: false,
                     ),
                   );
-                  print(val);
                 }
               },
               child: const Padding(
