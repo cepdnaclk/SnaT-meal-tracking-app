@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffe2fbf8),
+      backgroundColor: ThemeInfo.loginBGColor,
       body: Stack(
         children: [
           Column(

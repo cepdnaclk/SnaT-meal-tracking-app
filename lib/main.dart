@@ -32,6 +32,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: ThemeInfo.primaryColor,
         primarySwatch: Colors.teal,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: ThemeInfo.appAndBottomBarColor),
+        appBarTheme: AppBarTheme(
+          color: ThemeInfo.appAndBottomBarColor,
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: ThemeInfo.appAndBottomBarColor,
+        ),
       ),
       //home: DashboardLayout(),
       home: WelcomeScreen(),
