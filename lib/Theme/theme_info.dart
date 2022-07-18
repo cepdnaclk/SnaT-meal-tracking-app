@@ -8,6 +8,9 @@ class ThemeInfo {
   static Color chartExpectedColor = Colors.green;
   static Color chartExceededColor = Colors.red;
   static Color chartTrackColor = const Color(0xffD4D4D4);
+  static Color textFieldBorderColor = const Color(0xff2ea29f);
+  static Color additionSettingBGColor = const Color(0xffb4f2ec);
+  static Color textFieldFillColor = Colors.white;
 
   // Gradients
   static List<Color> weekChartGradient = [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 
 class CountAdder extends StatefulWidget {
   const CountAdder({
@@ -36,10 +37,13 @@ class _CountAdderState extends State<CountAdder> {
           height: 60,
           padding: const EdgeInsets.only(left: 5),
           decoration: BoxDecoration(
+              color: ThemeInfo.textFieldFillColor,
               border: Border.all(
                   width: 1,
-                  color: widget.hasError ? Colors.red[700]! : Colors.black),
-              borderRadius: BorderRadius.circular(5)),
+                  color: widget.hasError
+                      ? Colors.red[700]!
+                      : ThemeInfo.textFieldBorderColor),
+              borderRadius: BorderRadius.circular(10)),
           child: Row(
             children: [
               Expanded(
@@ -70,11 +74,16 @@ class _CountAdderState extends State<CountAdder> {
                       },
                       child: Container(
                         width: 50,
-                        child: const Icon(Icons.keyboard_arrow_up),
-                        decoration: const BoxDecoration(
+                        child: Icon(Icons.keyboard_arrow_up,
+                            color: ThemeInfo.textFieldBorderColor),
+                        decoration: BoxDecoration(
                           border: Border(
-                            left: BorderSide(width: 1),
-                            bottom: BorderSide(width: 1),
+                            left: BorderSide(
+                                width: 1,
+                                color: ThemeInfo.textFieldBorderColor),
+                            bottom: BorderSide(
+                                width: 1,
+                                color: ThemeInfo.textFieldBorderColor),
                           ),
                         ),
                       ),
@@ -92,10 +101,13 @@ class _CountAdderState extends State<CountAdder> {
                       },
                       child: Container(
                         width: 50,
-                        child: const Icon(Icons.keyboard_arrow_down),
-                        decoration: const BoxDecoration(
+                        child: Icon(Icons.keyboard_arrow_down,
+                            color: ThemeInfo.textFieldBorderColor),
+                        decoration: BoxDecoration(
                           border: Border(
-                            left: BorderSide(width: 1),
+                            left: BorderSide(
+                                width: 1,
+                                color: ThemeInfo.textFieldBorderColor),
                           ),
                         ),
                       ),

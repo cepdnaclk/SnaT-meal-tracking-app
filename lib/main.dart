@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/LocaleString.dart';
+import 'package:mobile_app/Pages/additional_settings_screen.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 

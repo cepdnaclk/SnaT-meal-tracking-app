@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../Theme/theme_info.dart';
+
 class DropDownWidget extends StatefulWidget {
   const DropDownWidget(
       {Key? key,
@@ -26,32 +28,41 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     return FormField<String>(
       validator: widget.validator,
       builder: (FormFieldState<String> state) {
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: widget.hasError ? Colors.red[700]! : Colors.black),
-            borderRadius: BorderRadius.circular(5),
+        return DropdownButtonFormField<String>(
+          iconEnabledColor: ThemeInfo.textFieldBorderColor,
+          decoration: InputDecoration(
+            fillColor: ThemeInfo.textFieldFillColor,
+            filled: true,
+            hintText: '',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: ThemeInfo.textFieldBorderColor),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: ThemeInfo.textFieldBorderColor),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: ThemeInfo.textFieldBorderColor),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
           ),
-          child: DropdownButtonFormField<String>(
-            decoration: const InputDecoration.collapsed(hintText: ''),
-            hint: Text(widget.hintText),
-            value: selectedMeal,
-            isDense: true,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedMeal = newValue;
-                widget.onChanged(selectedMeal);
-                state.didChange(newValue);
-              });
-            },
-            items: widget.items.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
+          hint: Text(widget.hintText),
+          value: selectedMeal,
+          isDense: true,
+          onChanged: (String? newValue) {
+            setState(() {
+              selectedMeal = newValue;
+              widget.onChanged(selectedMeal);
+              state.didChange(newValue);
+            });
+          },
+          items: widget.items.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
         );
       },
     );
