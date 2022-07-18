@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
-import 'dart:math';
 
 // final _firestore = FirebaseFirestore.instance;
 //

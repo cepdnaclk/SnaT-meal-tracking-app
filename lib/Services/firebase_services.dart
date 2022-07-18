@@ -40,11 +40,16 @@ class FirebaseServices {
   }
 
   static Future<bool> getFoodsData() async {
+    meals = [];
+    limits = {};
     await FirebaseFirestore.instance
         .collection("Standard_food_size")
         .get()
         .then((value1) async {
-      for (DocumentSnapshot doc in value1.docs) {
+      for (DocumentSnapshot<Map?> doc in value1.docs) {
+        meals.add(doc.id);
+        limits[doc.id] = [doc.data()!['limit'][0], doc.data()!['limit'][1]];
+        print(limits);
         List<FoodModel> array = [];
         await FirebaseFirestore.instance
             .collection("Standard_food_size")
@@ -67,7 +72,9 @@ class FirebaseServices {
         });
         foodsData[doc.id] = array;
       }
-    }).catchError((e) {});
+    }).catchError((e) {
+      print(e);
+    });
     return true;
   }
 
