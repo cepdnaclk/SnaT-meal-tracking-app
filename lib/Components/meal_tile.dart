@@ -148,7 +148,12 @@ class MealTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  meal["amount"].toString() + ' ' + meal['unit'],
+                  (meal["amount"].toInt().toDouble() == meal["amount"]
+                              ? meal["amount"].toInt()
+                              : meal["amount"])
+                          .toString() +
+                      ' ' +
+                      meal['unit'],
                   style: const TextStyle(fontSize: 18),
                 ),
                 Text(

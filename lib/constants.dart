@@ -5,12 +5,15 @@ String introduction =
     "Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. "
     "Duis vulputate commodo lectus, ac blandit";
 
+String weekChartText = "Total intake for this week";
+String dailyChartText = "Total intake for today";
+
 // Images
 
 String loginImage = "assets/images/login.jpg";
 String disappointedImage = "assets/images/sad2.gif";
 String sadImage = "assets/images/sad1.gif";
-String happyImage = "assets/images/neutral3.gif";
+String happyImage = "assets/images/happy0.gif";
 
 // General Variables
 

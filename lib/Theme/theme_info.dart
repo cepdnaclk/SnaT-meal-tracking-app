@@ -11,6 +11,9 @@ class ThemeInfo {
   static Color textFieldBorderColor = const Color(0xff2ea29f);
   static Color additionSettingBGColor = const Color(0xffb4f2ec);
   static Color textFieldFillColor = Colors.white;
+  static Color appAndBottomBarColor = const Color(0xff2ea29f);
+  static Color primaryBGColor = const Color(0xffe2faf8);
+  static Color loginBGColor = const Color(0xffe2faf8);
 
   // Gradients
   static List<Color> weekChartGradient = [

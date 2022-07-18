@@ -36,6 +36,8 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
   @override
   void initState() {
     super.initState();
+    selectedDate = DateTime.now();
+
     selectedMeal = selectedMeal;
     selectedMealTime = selectedMealTime;
     dateMeals = todayMeals;
@@ -69,21 +71,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           actions: [
             GestureDetector(
               onTap: () async {
-                /* dateMeals[selectedMealTime] != null
-                    ? dateMeals[selectedMealTime].add({
-                        'amount': amount.round(),
-                        'food': resultText,
-                        'unit': unit,
-                        'mealtype': selectedMeal,
-                      })
-                    : dateMeals[selectedMealTime] = [
-                        {
-                          'amount': amount.round(),
-                          'food': resultText,
-                          'unit': unit,
-                          'mealtype': selectedMeal,
-                        }
-                      ];*/
                 await FirebaseFirestore.instance
                     .collection("users")
                     .doc(user!.uid)

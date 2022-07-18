@@ -9,7 +9,7 @@ import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 // List<String> SearchTerms = [];
 // List<Map> FoodandUnits = [];
 double amount = 1;
-String amount1 = "";
+String amount1 = "1";
 
 class AddNewFoodScreen extends StatefulWidget {
   const AddNewFoodScreen(
@@ -40,6 +40,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
         actions: [
           MaterialButton(
             onPressed: () async {
+              print(amount1);
               amount = double.parse(amount1);
               assert(amount is double);
               print("amount val");
@@ -64,6 +65,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                     ];
               result = null;
               amount = 1;
+              amount1 = "1";
               Navigator.pop(context, amount);
             },
             child: const Center(
@@ -354,7 +356,7 @@ class NumberInput extends StatelessWidget {
       decoration: InputDecoration(
         label: Text(label),
         errorText: error,
-        icon: Icon(Icons.rice_bowl),
+        icon: const Icon(Icons.rice_bowl),
       ),
     );
   }
