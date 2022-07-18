@@ -1,24 +1,21 @@
-
 import 'dart:async';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/Services/IamageStoreService.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import '../../Theme/theme_info.dart';
+import '../../constants.dart';
 import '../add_a_meal_screen.dart';
-
-
 
 class campage extends StatefulWidget {
   const campage({Key? key, required this.title}) : super(key: key);
@@ -35,8 +32,8 @@ class _campageState extends State<campage> {
   String? path;
   XFile? new_IMAGE;
   String? filePath;
-  bool saved= true;
-  late String MealTime ="Others";
+  bool saved = true;
+  late String MealTime = "Others";
   bool mealtimeselected = false;
 
   final imageStorage staorage = imageStorage();
@@ -46,8 +43,13 @@ class _campageState extends State<campage> {
   // method for pick image from Gallery
   Future pickImage() async {
     try {
-      var image = await picker.pickImage(source: ImageSource.gallery,maxHeight: 400,maxWidth: 400,imageQuality: 80,preferredCameraDevice: CameraDevice.rear);
-      new_IMAGE=image  as XFile;
+      var image = await picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: 400,
+          maxWidth: 400,
+          imageQuality: 80,
+          preferredCameraDevice: CameraDevice.rear);
+      new_IMAGE = image as XFile;
       // var path2 = image!.path;
       print("===============================");
       // giving access to save only .jpg and pgg format
@@ -55,7 +57,7 @@ class _campageState extends State<campage> {
       print(filename);
       String jpg = ".jpg";
       String png = ".png";
-      if(!(filename.contains(jpg)| filename.contains(png))){
+      if (!(filename.contains(jpg) | filename.contains(png))) {
         image = null;
         saved = false;
         Fluttertoast.showToast(
@@ -66,178 +68,191 @@ class _campageState extends State<campage> {
       final String dirPath = extDir!.path.toString();
       await Directory(dirPath).create(recursive: true);
       filePath = '$dirPath/'; // taking image  path
-      if(image == null) return;
+      if (image == null) return;
       final imageTemp = File(image.path);
       await GallerySaver.saveImage(image.path);
       setState(() => this.image = imageTemp);
-    }
-    on PlatformException catch(e) {
+    } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
+
   // pick Image from camera
   Future pickImageC() async {
     try {
-
-      var image = await picker.pickImage(source: ImageSource.camera,maxHeight: 470,maxWidth: 470,imageQuality: 80,preferredCameraDevice: CameraDevice.rear);
-      new_IMAGE=image as XFile;
+      var image = await picker.pickImage(
+          source: ImageSource.camera,
+          maxHeight: 470,
+          maxWidth: 470,
+          imageQuality: 80,
+          preferredCameraDevice: CameraDevice.rear);
+      new_IMAGE = image as XFile;
       final Directory? extDir = await getExternalStorageDirectory();
       final String dirPath = extDir!.path.toString();
       await Directory(dirPath).create(recursive: true);
-      filePath = '$dirPath/';// path for image
-      if(image == null) return;
+      filePath = '$dirPath/'; // path for image
+      if (image == null) return;
       final imageTemp = File(image.path);
       await GallerySaver.saveImage(image.path);
       setState(() => this.image = imageTemp);
-    }
-    on PlatformException catch(e) {
+    } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
+
   // for save the image
-  Future<void> saveimages(String filePath,XFile image) async{
-    if (mealtimeselected == true){
+  Future<void> saveimages(String filePath, XFile image) async {
+    if (mealtimeselected == true) {
       Fluttertoast.showToast(
-        msg:"Please wait",
+        msg: "Please wait",
       );
-      final now = DateTime.now();// date and time of the moment
+      final now = DateTime.now(); // date and time of the moment
       print(filePath);
-      String filepath = '$filePath/'+now.toString()+'.png';// make now as image name
-      final File newImage = await File(image.path).copy('$filePath/'+now.toString()+'.png');
-      imageurlFromFireStore = await staorage.uploadFile(filepath, now.toString()+".png");
+      String filepath =
+          '$filePath/' + now.toString() + '.png'; // make now as image name
+      final File newImage =
+          await File(image.path).copy('$filePath/' + now.toString() + '.png');
+      imageurlFromFireStore =
+          await staorage.uploadFile(filepath, now.toString() + ".png");
       print(imageurlFromFireStore);
 
-      await staorage.setImageUrl(selectedDate.toString().split(' ')[0], MealTime, imageurlFromFireStore).then((value) => Fluttertoast.showToast(
-        msg: "The image saved",
-      ),
-      );
+      await staorage
+          .setImageUrl(selectedDate.toString().split(' ')[0], MealTime,
+              imageurlFromFireStore)
+          .then(
+            (value) => Fluttertoast.showToast(
+              msg: "The image saved",
+            ),
+          );
 
-      if(image == null) return;
+      if (image == null) return;
       setState(() {
         image = (newImage as XFile?)!;
       });
-    }
-    else{
+    } else {
       Fluttertoast.showToast(
-        msg:"Please select a meal time",
+        msg: "Please select a meal time",
       );
     }
-
   }
+
   void StateReload() {
     print("==============================");
     print("State reload");
     setState(() {});
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: null,
-        floatingActionButton: FloatingActionButton(
-          heroTag: "btn1",
-          child: const Icon(Icons.save),
-          backgroundColor: ThemeInfo.primaryColor,
-          onPressed: (){
-          if(saved) {
-            if(new_IMAGE!=null){ saveimages(filePath!, new_IMAGE!); // working
-            saved=false;
+      appBar: null,
+      floatingActionButton: FloatingActionButton(
+        heroTag: "btn1",
+        child: const Icon(Icons.save),
+        backgroundColor: ThemeInfo.primaryColor,
+        onPressed: () {
+          if (saved) {
+            if (new_IMAGE != null) {
+              saveimages(filePath!, new_IMAGE!); // working
+              saved = false;
             }
-        }
-          },
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MaterialButton(// Gallery
-                        elevation: 0,
-                        hoverElevation: 0,
-                        focusElevation: 0,
-                        highlightElevation: 0,
-                        textColor: Colors.black,
-                        //color: Colors.white,
-                        child: const Text(
-                            "Pick from Gallery",
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.bold , fontSize: 15 ,
-                            )
-                        ),
-                        onPressed: () {
-                          saved=true;
-                          pickImage();
-                        }
+          }
+        },
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              MaterialButton(
+                  // Gallery
+                  elevation: 0,
+                  hoverElevation: 0,
+                  focusElevation: 0,
+                  highlightElevation: 0,
+                  textColor: Colors.black,
+                  //color: Colors.white,
+                  child: const Text("Pick from Gallery",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      )),
+                  onPressed: () {
+                    saved = true;
+                    pickImage();
+                  }),
+              MaterialButton(
+                  // for camera
+                  elevation: 0,
+                  hoverElevation: 0,
+                  focusElevation: 0,
+                  highlightElevation: 0,
+                  textColor: Colors.black,
+                  child: const Text("Pick from Camera",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      )),
+                  onPressed: () {
+                    saved = true;
+                    pickImageC();
+                  }),
+            ]),
+            FormField<String>(
+              builder: (FormFieldState<String> state) {
+                return InputDecorator(
+                  decoration: InputDecoration(
+                    //labelStyle: textStyle,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
-                    MaterialButton( // for camera
-                        elevation: 0,
-                        hoverElevation: 0,
-                        focusElevation: 0,
-                        highlightElevation: 0,
-                        textColor: Colors.black,
-                        child: const Text(
-                            "Pick from Camera",
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.bold , fontSize: 15 ,
-                            )
-                        ),
-                        onPressed: () {
-                          saved=true;
-                          pickImageC();
-                        }
-                    ),
-                ]
-              ),
-              FormField<String>(
-                builder: (FormFieldState<String> state) {
-                  return InputDecorator(
-                    decoration: InputDecoration(
-                      //labelStyle: textStyle,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    isEmpty: selectedMealTime == '',
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        hint: const Text('Please select a meal time'),
-                        value: selectedMealTime,
-                        isDense: true,
-                        onChanged: (String? newValue) {
-                          setState(() {
-
-                            mealtimeselected =true;
-                            selectedMealTime = newValue;
-                            MealTime = newValue!;
-                            print(selectedMealTime);
-                            // getFoodData(selectedMeal!);
-                            state.didChange(newValue);
-                            StateReload();
-                            Fluttertoast.showToast(
-                              msg:MealTime,
-                            );
-                          });
-                        },
-                        items: mealTime.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
+                  ),
+                  isEmpty: selectedMealTime == '',
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      hint: const Text('Please select a meal time'),
+                      value: selectedMealTime,
+                      isDense: true,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          mealtimeselected = true;
+                          selectedMealTime = newValue;
+                          MealTime = newValue!;
+                          print(selectedMealTime);
+                          // getFoodData(selectedMeal!);
+                          state.didChange(newValue);
+                          StateReload();
+                          Fluttertoast.showToast(
+                            msg: MealTime,
                           );
-                        }).toList(),
-                      ),
+                        });
+                      },
+                      items: mealTime.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
-                  );
-                },
-              ),
-              const SizedBox(height: 2,),
-              image != null ? Image.file(image!): const Icon(Icons.food_bank,size: 380,color:Color.fromARGB(100, 125, 156, 139) ,),
-             // image != null ? Image.file(image!): ,
-            ],
-          ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 2,
+            ),
+            image != null
+                ? Image.file(image!)
+                : const Icon(
+                    Icons.food_bank,
+                    size: 380,
+                    color: Color.fromARGB(100, 125, 156, 139),
+                  ),
+            // image != null ? Image.file(image!): ,
+          ],
         ),
+      ),
     );
   }
-
 }
-
-

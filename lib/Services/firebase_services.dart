@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobile_app/Pages/welcome_screen.dart';
 
+import '../Components/Tab_Views/chart_view.dart';
 import '../Components/Tab_Views/home_view.dart';
 import '../Models/food_model.dart';
+import '../Pages/welcome_screen.dart';
+import '../constants.dart';
 
 class FirebaseServices {
   final _auth = FirebaseAuth.instance;
@@ -88,5 +90,63 @@ class FirebaseServices {
       };
     }).catchError((e) {});
     return meals;
+  }
+
+  static fetchStats() async {
+    todayStat = {};
+    weekStat = [];
+    DateTime today = DateTime.now();
+    for (int i = 0; i < 7; i++) {
+      weekStat.add({
+        'date': today.subtract(Duration(days: i)).toString().substring(0, 10)
+      });
+    }
+    for (String meal in meals) {
+      todayStat[meal] = 0;
+      for (int i = 0; i < 7; i++) {
+        weekStat[i][meal] = 0;
+      }
+    }
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .collection('foodLog')
+        .doc(DateTime.now().toString().substring(0, 10))
+        .get()
+        .then((value) {
+      Map data = value.data() != null ? value.data() as Map : {};
+      data.forEach((key, value) {
+        for (Map food in value) {
+          todayStat[food['type']] = todayStat[food['type']] + food['amount'];
+        }
+      });
+    }).catchError((e) {});
+
+    for (int i = 0; i < 7; i++) {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid)
+          .collection('foodLog')
+          .doc(weekStat[i]['date'])
+          .get()
+          .then((value) {
+        Map data = value.data() != null ? value.data() as Map : {};
+        data.forEach((key, value) {
+          for (Map food in value) {
+            weekStat[i][food['type']] =
+                weekStat[i][food['type']] + food['amount'];
+          }
+        });
+      }).catchError((e) {});
+      int count = 0;
+      weekStat[i].forEach((key, value) {
+        if (key != 'date' && value > 0) {
+          count++;
+        }
+      });
+      weekStat[i]['count'] = count;
+    }
+    return true;
   }
 }
