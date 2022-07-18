@@ -69,10 +69,8 @@ class DashboardDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   )),
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MealHistory()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MealHistory()));
               },
             ),
           ),
