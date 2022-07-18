@@ -27,13 +27,11 @@ class _ChartViewState extends State<ChartView> {
     await FirebaseServices.fetchStats();
     int i = 0;
     for (String meal in meals) {
-      print(meal);
       Color valueColor = todayStat[meal] < limits[meal]![0]
           ? ThemeInfo.chartBelowColor
           : todayStat[meal] > limits[meal]![1]
               ? ThemeInfo.chartExceededColor
               : ThemeInfo.chartExpectedColor;
-      print(valueColor);
       if (valueColor == ThemeInfo.chartExceededColor) {
         image = disappointedImage;
       } else if (valueColor == ThemeInfo.chartBelowColor) {
@@ -60,8 +58,6 @@ class _ChartViewState extends State<ChartView> {
           ? data['count'].toDouble()
           : weekMax;
     }
-    print(weekChartData);
-    print(weekMax);
   }
 
   @override

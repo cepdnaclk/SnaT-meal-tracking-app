@@ -26,7 +26,7 @@ class FirebaseServices {
       }
     } on FirebaseAuthException catch (e) {
       print(e.message);
-      throw e;
+      rethrow;
     }
   }
 
@@ -49,7 +49,6 @@ class FirebaseServices {
       for (DocumentSnapshot<Map?> doc in value1.docs) {
         meals.add(doc.id);
         limits[doc.id] = [doc.data()!['limit'][0], doc.data()!['limit'][1]];
-        print(limits);
         List<FoodModel> array = [];
         await FirebaseFirestore.instance
             .collection("Standard_food_size")
@@ -129,9 +128,14 @@ class FirebaseServices {
         for (Map food in value) {
           print(food['amount'].runtimeType);
           int amount = food['unit'] == null || food['unit'] != 'table spoon'
-              ? food['amount']
-              : food['amount'] / 3;
+              ? food['amount'].toInt()
+              : (food['amount'] / 3).toInt();
+          print(amount);
+          print(food['type']);
+          print(todayStat);
+
           todayStat[food['type']] = todayStat[food['type']] + amount;
+          print(todayStat[food['type']]);
         }
       });
     }).catchError((e) {
@@ -150,8 +154,9 @@ class FirebaseServices {
         data.forEach((key, value) {
           for (Map food in value) {
             int amount = food['unit'] == null || food['unit'] != 'table spoon'
-                ? food['amount']
-                : food['amount'] / 3;
+                ? food['amount'].toInt()
+                : (food['amount'] / 3).toInt();
+
             weekStat[i][food['type']] = weekStat[i][food['type']] + amount;
           }
         });
