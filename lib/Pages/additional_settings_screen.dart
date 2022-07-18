@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/drop_down.dart';
 import 'package:mobile_app/Models/user_model.dart';
 import 'package:mobile_app/Pages/login_screen.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/constants.dart';
 
 import '../Components/count_adder.dart';
@@ -32,6 +33,7 @@ class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ThemeInfo.additionSettingBGColor,
       body: Form(
         key: _formKey,
         child: ListView(
@@ -50,7 +52,7 @@ class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
             ),
             const Text(
               "Name:",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 5,
@@ -67,12 +69,20 @@ class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
               },
               cursorColor: Colors.black,
               decoration: InputDecoration(
+                fillColor: ThemeInfo.textFieldFillColor,
+                filled: true,
                 hintText: "Enter your name",
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(color: ThemeInfo.textFieldBorderColor),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(color: ThemeInfo.textFieldBorderColor),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: ThemeInfo.textFieldBorderColor),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
             ),
@@ -81,7 +91,7 @@ class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
             ),
             const Text(
               "Age:",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 5,
@@ -99,7 +109,7 @@ class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
             ),
             const Text(
               "Gender:",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 5,
@@ -127,7 +137,7 @@ class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
             ),
             const Text(
               "Height (cm) :",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 5,
@@ -144,7 +154,7 @@ class _AdditionalSettingsScreenState extends State<AdditionalSettingsScreen> {
             ),
             const Text(
               "Weight (kg) :",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 5,
