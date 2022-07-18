@@ -14,7 +14,6 @@ class ThemeInfo {
   static Color appAndBottomBarColor = const Color(0xff2ea29f);
   static Color primaryBGColor = const Color(0xffe2faf8);
   static Color loginBGColor = const Color(0xffe2faf8);
-
   // Gradients
   static List<Color> weekChartGradient = [
     const Color(0xff38ef7d),
