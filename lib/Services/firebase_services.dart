@@ -40,11 +40,16 @@ class FirebaseServices {
   }
 
   static Future<bool> getFoodsData() async {
+    meals = [];
+    limits = {};
     await FirebaseFirestore.instance
         .collection("Standard_food_size")
         .get()
         .then((value1) async {
-      for (DocumentSnapshot doc in value1.docs) {
+      for (DocumentSnapshot<Map?> doc in value1.docs) {
+        meals.add(doc.id);
+        limits[doc.id] = [doc.data()!['limit'][0], doc.data()!['limit'][1]];
+        print(limits);
         List<FoodModel> array = [];
         await FirebaseFirestore.instance
             .collection("Standard_food_size")
@@ -67,7 +72,9 @@ class FirebaseServices {
         });
         foodsData[doc.id] = array;
       }
-    }).catchError((e) {});
+    }).catchError((e) {
+      print(e);
+    });
     return true;
   }
 
@@ -88,7 +95,9 @@ class FirebaseServices {
         "Dinner": value.data()?['Dinner'] ?? [],
         "Others": value.data()?['Others'] ?? [],
       };
-    }).catchError((e) {});
+    }).catchError((e) {
+      print(e);
+    });
     return meals;
   }
 
@@ -118,10 +127,16 @@ class FirebaseServices {
       Map data = value.data() != null ? value.data() as Map : {};
       data.forEach((key, value) {
         for (Map food in value) {
-          todayStat[food['type']] = todayStat[food['type']] + food['amount'];
+          print(food['amount'].runtimeType);
+          int amount = food['unit'] == null || food['unit'] != 'table spoon'
+              ? food['amount']
+              : food['amount'] / 3;
+          todayStat[food['type']] = todayStat[food['type']] + amount;
         }
       });
-    }).catchError((e) {});
+    }).catchError((e) {
+      print(e);
+    });
 
     for (int i = 0; i < 7; i++) {
       await FirebaseFirestore.instance
@@ -134,8 +149,10 @@ class FirebaseServices {
         Map data = value.data() != null ? value.data() as Map : {};
         data.forEach((key, value) {
           for (Map food in value) {
-            weekStat[i][food['type']] =
-                weekStat[i][food['type']] + food['amount'];
+            int amount = food['unit'] == null || food['unit'] != 'table spoon'
+                ? food['amount']
+                : food['amount'] / 3;
+            weekStat[i][food['type']] = weekStat[i][food['type']] + amount;
           }
         });
       }).catchError((e) {});

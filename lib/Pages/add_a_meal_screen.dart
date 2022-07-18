@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
+import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 
 import '../Components/Tab_Views/home_view.dart';
@@ -10,47 +10,12 @@ import '../Components/meal_tile.dart';
 import '../Models/food_model.dart';
 import '../Theme/theme_info.dart';
 import '../constants.dart';
-import 'welcome_screen.dart';
 
 String resultText = "";
 String unit = "";
 double amount = 0.0;
 String iconCode = "";
 FoodModel? result;
-User? user = FirebaseAuth.instance.currentUser;
-
-// List<Map> mealTimeLists = [
-//   {"mealtime": "Breakfast", "List": todayBreakFastMealItems},
-//   {"mealtime": "Morning Snacks", "List": Today_MorningSnacksMealItems},
-//   {"mealtime": "Lunch", "List": Today_LunchMealItems},
-//   {"mealtime": "Evening Snacks", "List": Today_EveningSnacksMealItems},
-//   {"mealtime": "Dinner", "List": Today_DinnerMealItems},
-//   {"mealtime": "Others", "List": Today_OtherMealItems}
-// ];
-// void getFoodData(String selectedMealCategory) async {
-//   final foodItems = await _firestore
-//       .collection('Standard_food_size')
-//       .doc(selectedMealCategory)
-//       .collection('Food')
-//       .get();
-//   SearchTerms = [];
-//   FoodandUnits = [];
-//   for (var food in foodItems.docs) {
-//     SearchTerms.add(food.data()['Food']);
-//     FoodandUnits.add(
-//         {"Food": food.data()['Food'], "Units": food.data()['Unit']});
-//   }
-// }
-
-// void addMealItems(String name, String amount) {
-//   print("plz" + selectedMealTime.toString());
-//   for (Map mealList in mealTimeLists) {
-//     if (mealList["mealtime"] == selectedMealTime) {
-//       mealList = mealList["List"];
-//     }
-//   }
-//   mealList.add({"name": name, "icon": Icons.rice_bowl, "amount": amount});
-// }
 
 String? selectedMeal;
 String? selectedMealTime;
@@ -262,7 +227,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             ElevatedButton(
               onPressed: () async {
                 if (_mealFormKey.currentState!.validate()) {
-                  var val = showModalBottomSheet(
+                  showModalBottomSheet(
                     context: context,
                     builder: (context) => AddNewFoodScreen(
                       appBarTitle: const Text(

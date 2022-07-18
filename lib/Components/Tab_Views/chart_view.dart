@@ -27,16 +27,16 @@ class _ChartViewState extends State<ChartView> {
     await FirebaseServices.fetchStats();
     int i = 0;
     for (String meal in meals) {
+      print(meal);
       Color valueColor = todayStat[meal] < limits[meal]![0]
           ? ThemeInfo.chartBelowColor
           : todayStat[meal] > limits[meal]![1]
               ? ThemeInfo.chartExceededColor
               : ThemeInfo.chartExpectedColor;
-
+      print(valueColor);
       if (valueColor == ThemeInfo.chartExceededColor) {
         image = disappointedImage;
-      } else if (valueColor == ThemeInfo.chartBelowColor &&
-          image != disappointedImage) {
+      } else if (valueColor == ThemeInfo.chartBelowColor) {
         image = sadImage;
       }
 
@@ -45,6 +45,7 @@ class _ChartViewState extends State<ChartView> {
           meal,
           todayStat[meal].toDouble(),
           valueColor,
+          image: image,
         ),
       );
       todayMax = todayMax < todayStat[meal].toDouble()
@@ -59,6 +60,8 @@ class _ChartViewState extends State<ChartView> {
           ? data['count'].toDouble()
           : weekMax;
     }
+    print(weekChartData);
+    print(weekMax);
   }
 
   @override
@@ -123,26 +126,19 @@ class _ChartViewState extends State<ChartView> {
                                 max: todayMax,
                                 data: todayChartData,
                                 controller: controller,
-                                interval: todayMax > 3
-                                    ? 3
-                                    : todayMax == 0
-                                        ? 1
-                                        : todayMax,
+                                interval: todayMax == 0 ? 1 : todayMax,
                                 showLabel: false,
                               ),
                               ChartWidget(
                                 size: size,
                                 max: meals.length.toDouble(),
                                 gradient: LinearGradient(
-                                    colors: [
-                                      Colors.green[400]!,
-                                      Colors.green[700]!
-                                    ],
+                                    colors: ThemeInfo.weekChartGradient,
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter),
                                 data: weekChartData,
                                 controller: controller,
-                                interval: 3,
+                                interval: meals.length.toDouble(),
                                 showLabel: true,
                               ),
                             ],
@@ -167,9 +163,10 @@ class _ChartViewState extends State<ChartView> {
 }
 
 class ChartData {
-  ChartData(this.x, this.y, this.color);
+  ChartData(this.x, this.y, this.color, {this.image});
 
   final String x;
   final double y;
   final Color color;
+  final String? image;
 }

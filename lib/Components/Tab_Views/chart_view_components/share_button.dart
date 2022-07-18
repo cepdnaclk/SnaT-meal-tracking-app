@@ -7,16 +7,17 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+    return ElevatedButton(
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12),
+        child: Text(
+          'Share',
+          style: TextStyle(fontSize: 14.0),
+        ),
       ),
-      child: const Text(
-        'Share',
-        style: TextStyle(fontSize: 14.0),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.teal.shade900,
       ),
-      color: Colors.teal.shade900,
-      textColor: Colors.white,
       onPressed: press,
     );
   }

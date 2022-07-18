@@ -35,9 +35,9 @@ Map<String, List<int>> limits = {
   "Pulses meat fish": [3, 4],
   "Beverages": [8, 8],
   "Milk and milk products": [1, 2],
-  "Nuts and Oil Seeds": [2, 4],
-  "Fat, Sugar and Salt": [1, 1],
-  "Alcoholic Beverage": [1, 1],
+  "Nuts and Oil": [2, 4],
+  "Fat,Sugar and Salt": [1, 1],
+  "Alcoholic Beverages": [1, 1],
 };
 
 List<String> mealTime = [

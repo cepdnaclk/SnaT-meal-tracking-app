@@ -50,6 +50,7 @@ class NotificationService {
         android: androidNotificationDetails, iOS: iosNotificationDetails);
   }
 
+  /* Show a notification */
   Future<void> showNotification({
     required int id,
     required String title,
@@ -59,10 +60,12 @@ class NotificationService {
     await _notificationService.show(id, title, body, details);
   }
 
+  /* show notification after some time(secs) */
   Future<void> showScheduledNotification(
       {required int id,
       required String title,
       required String body,
+      String? payload,
       required int seconds}) async {
     final details = await _notificationDetails();
     await _notificationService.zonedSchedule(
@@ -80,6 +83,38 @@ class NotificationService {
     );
   }
 
+  Future<void> showDailyNotification(
+      {required int id,
+      required String title,
+      required String body,
+      String? payload,
+      required Time time}) async {
+    final details = await _notificationDetails();
+    await _notificationService.zonedSchedule(
+      id,
+      title,
+      body,
+      _scheduleDaily(time), // daily notification time
+      details,
+      payload: payload,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  static tz.TZDateTime _scheduleDaily(Time time) {
+    final now = tz.TZDateTime.now(tz.local);
+    final scheduleDate = tz.TZDateTime(tz.local, now.year, now.month, now.day,
+        time.hour, time.minute, time.second);
+
+    return scheduleDate.isBefore(now)
+        ? scheduleDate.add(const Duration(days: 1))
+        : scheduleDate;
+  }
+
+  /* test notification with payload */
   Future<void> showNotificationWithPayload(
       {required int id,
       required String title,
@@ -101,7 +136,6 @@ class NotificationService {
     }
   }
 
-  // cancel all notifications
   Future<void> cancelAllNotifications() async {
     await _notificationService.cancelAll();
   }

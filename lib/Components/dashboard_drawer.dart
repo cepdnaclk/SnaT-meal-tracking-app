@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Components/DrawerView/MealHistory.dart';
 import 'package:mobile_app/Components/DrawerView/NotificationView.dart';
 import 'package:mobile_app/Components/DrawerView/SettingsView.dart';
-import 'package:mobile_app/Components/DrawerView/MealHistory.dart';
+import 'package:mobile_app/Pages/login_screen.dart';
+import 'package:mobile_app/Pages/signIn_page.dart';
 
+import '../Pages/welcome_screen.dart';
 import '../Theme/theme_info.dart';
 
 final _firestore = FirebaseFirestore.instance;
-User? user = FirebaseAuth.instance.currentUser;
 String? email = user?.email.toString();
 String? name = user?.displayName.toString();
+Future<void> _signOut() async {
+  await FirebaseAuth.instance.signOut();
+}
 
 class DashboardDrawer extends StatelessWidget {
   const DashboardDrawer({
@@ -137,18 +142,25 @@ class DashboardDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(
-                  iconColor: Colors.blueAccent,
-                  visualDensity: VisualDensity.adaptivePlatformDensity,
-                  leading: const Icon(Icons.logout),
-                  title: const Text('Sign Out',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  onTap: () {
-                    // Navigator.pop(context);
-                  },
-                ),
+                    iconColor: Colors.blueAccent,
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Sign Out',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    onTap: () {
+                      Future logout() async {
+                        await FirebaseAuth.instance.signOut().then((value) =>
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                                (route) => false));
+                      }
+
+                      logout();
+                    }),
               ),
             ],
           )
