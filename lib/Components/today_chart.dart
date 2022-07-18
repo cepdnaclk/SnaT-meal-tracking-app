@@ -69,6 +69,7 @@ class ChartWidget extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               SizedBox(
                 height: size.height * 0.01,
@@ -84,69 +85,83 @@ class ChartWidget extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.02,
               ),
-              if (image != null)
-                SizedBox(
-                  height: size.height * 0.2,
-                  width: size.height * 0.2,
-                  child: Image.asset(
-                    image!,
-                    fit: BoxFit.contain,
+              // if (image != null)
+              //   SizedBox(
+              //     height: size.height * 0.2,
+              //     width: size.height * 0.2,
+              //     child: Image.asset(
+              //       image!,
+              //       fit: BoxFit.contain,
+              //     ),
+              //   ),
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              Flexible(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 250.0,
+                    ),
+                    child: SfCartesianChart(
+                      primaryXAxis: CategoryAxis(
+                          majorGridLines: const MajorGridLines(
+                            width: 0,
+                          ),
+                          labelIntersectAction: AxisLabelIntersectAction.trim,
+                          labelRotation: 0,
+                          labelStyle: const TextStyle(
+                              color: Colors.black,
+                              overflow: TextOverflow.ellipsis)),
+                      primaryYAxis: NumericAxis(
+                          majorGridLines: const MajorGridLines(
+                            width: 0,
+                          ),
+                          minimum: 0,
+                          maximum: max,
+                          interval: interval ?? 1),
+                      tooltipBehavior: _tooltip,
+                      series: <ChartSeries<ChartData, String>>[
+                        ColumnSeries<ChartData, String>(
+                          dataLabelSettings: DataLabelSettings(
+                            isVisible: showLabel,
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          dataSource: data,
+                          xValueMapper: (ChartData data, _) {
+                            return data.x;
+                          },
+                          isTrackVisible: showLabel,
+                          trackColor: ThemeInfo.chartTrackColor,
+                          yValueMapper: (ChartData data, _) => data.y,
+                          dataLabelMapper: (ChartData data, _) =>
+                              data.y == meals.length && showLabel ? "✔" : "",
+                          pointColorMapper: (ChartData data, _) => data.color,
+                          name: 'Gold',
+                          animationDuration: 1000,
+                          gradient: gradient,
+                          markerSettings: MarkerSettings(
+                            isVisible: !showLabel,
+                            shape: DataMarkerType.image,
+                            // Renders the image as marker
+                            image: AssetImage(sadImage),
+                          ),
+                          color: const Color.fromRGBO(8, 142, 255, 1),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              Expanded(
-                child: SfCartesianChart(
-                  primaryXAxis: CategoryAxis(
-                      majorGridLines: const MajorGridLines(
-                        width: 0,
-                      ),
-                      labelIntersectAction: AxisLabelIntersectAction.trim,
-                      labelRotation: 0,
-                      labelStyle: const TextStyle(
-                          color: Colors.black,
-                          overflow: TextOverflow.ellipsis)),
-                  primaryYAxis: NumericAxis(
-                      majorGridLines: const MajorGridLines(
-                        width: 0,
-                      ),
-                      minimum: 0,
-                      maximum: max,
-                      interval: interval ?? 1),
-                  tooltipBehavior: _tooltip,
-                  series: <ChartSeries<ChartData, String>>[
-                    ColumnSeries<ChartData, String>(
-                      dataLabelSettings: const DataLabelSettings(
-                        isVisible: true,
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      dataSource: data,
-                      xValueMapper: (ChartData data, _) {
-                        return data.x;
-                      },
-                      isTrackVisible: showLabel,
-                      trackColor: ThemeInfo.chartTrackColor,
-                      yValueMapper: (ChartData data, _) => data.y,
-                      dataLabelMapper: (ChartData data, _) =>
-                          data.y == meals.length && showLabel ? "✔" : "",
-                      pointColorMapper: (ChartData data, _) => data.color,
-                      name: 'Gold',
-                      animationDuration: 1000,
-                      gradient: gradient,
-                      color: const Color.fromRGBO(8, 142, 255, 1),
-                    ),
-                  ],
-                ),
               ),
               SizedBox(
                 height: size.height * 0.01,
               ),
+
               Button(
                 press: () async {
                   final image = await controller.capture();
