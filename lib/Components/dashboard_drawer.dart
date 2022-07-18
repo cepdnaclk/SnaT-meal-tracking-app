@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Components/DrawerView/MealHistory.dart';
 import 'package:mobile_app/Components/DrawerView/NotificationView.dart';
 import 'package:mobile_app/Components/DrawerView/SettingsView.dart';
-import 'package:mobile_app/Components/DrawerView/MealHistory.dart';
 
+import '../Pages/welcome_screen.dart';
 import '../Theme/theme_info.dart';
 
 final _firestore = FirebaseFirestore.instance;
-User? user = FirebaseAuth.instance.currentUser;
 String? email = user?.email.toString();
 String? name = user?.displayName.toString();
 

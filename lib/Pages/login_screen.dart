@@ -5,6 +5,7 @@ import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Pages/register_page.dart';
 import 'package:mobile_app/Pages/signIn_page.dart';
 import 'package:mobile_app/Pages/signUp_page.dart';
+import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Services/firebase_services.dart';
 
@@ -148,11 +149,11 @@ class LoginScreen extends StatelessWidget {
                     await FirebaseServices().signInWithGoogle();
                     print("Hello");
 
-                    User? user = FirebaseAuth.instance.currentUser;
+                    user = FirebaseAuth.instance.currentUser;
                     String uid;
 
                     if (user != null) {
-                      uid = user.uid;
+                      uid = user!.uid;
                     } else {
                       uid = '';
                     }
