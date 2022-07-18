@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Settings/notification_service.dart';
 
 class NotificationView extends StatefulWidget {
@@ -15,6 +17,7 @@ class _NotificationViewState extends State<NotificationView> {
   void initState() {
     service = NotificationService();
     service.initialize();
+    listenToNotification();
     super.initState();
   }
 
@@ -28,25 +31,39 @@ class _NotificationViewState extends State<NotificationView> {
             ElevatedButton(
               onPressed: () async {
                 await service.showNotification(
-                    id: 0, title: 'title', body: 'somebody');
+                    id: 0, title: 'General Notification', body: 'Just a Notification');
               },
               child: const Text('show notification'),
             ),
             ElevatedButton(
               onPressed: () async {
                 await service.showScheduledNotification(
-                  id: 0,
+                  id: 2,
                   title: 'title',
-                  body: 'somebody',
-                  seconds: 4,
+                  body: 'some body',
+                  seconds: 10,
                 );
               },
               child: const Text('show scheduled notification'),
             ),
             ElevatedButton(
               onPressed: () async {
-                await service.showScheduledNotification(
-                    id: 0, title: 'schedule', body: 'notify',seconds: 100);
+                await service.showDailyNotification(
+                    id: 1,
+                    title: 'daily notification',
+                    body: 'Time is 9.52 a.m.',
+                    time: const Time(9,52,0),
+                );
+              },
+              child: const Text('show daily notification'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await service.showNotificationWithPayload(
+                    id: 3,
+                    title: 'payload notification',
+                    body: 'navigate to home',
+                    payload: 'payload navigation');
               },
               child: const Text('show notification with payload'),
             ),
@@ -60,5 +77,19 @@ class _NotificationViewState extends State<NotificationView> {
         ),
       ),
     );
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => DashboardLayout())));
+    }
   }
 }
