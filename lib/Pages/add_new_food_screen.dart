@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
+import 'dart:math';
 
 // final _firestore = FirebaseFirestore.instance;
 //
 // List<String> SearchTerms = [];
 // List<Map> FoodandUnits = [];
+double amount = 1;
+String amount1 = "";
 
 class AddNewFoodScreen extends StatefulWidget {
   const AddNewFoodScreen(
@@ -37,11 +41,15 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
         actions: [
           MaterialButton(
             onPressed: () async {
+              amount = double.parse(amount1);
+              assert(amount is double);
+              print("amount val");
+              print(amount);
               widget.reloadState();
               dateMeals[selectedMealTime] != null
                   ? dateMeals[selectedMealTime].add({
                       "food": result!.name,
-                      'amount': amount.round(),
+                      'amount': (2 * amount).ceilToDouble() / 2,
                       'unit': result!.unit,
                       'type': selectedMeal,
                       'iconCode': result!.iconCode,
@@ -49,7 +57,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                   : dateMeals[selectedMealTime] = [
                       {
                         "food": result!.name,
-                        'amount': amount.round(),
+                        'amount': (2 * amount).ceilToDouble() / 2,
                         'unit': result!.unit,
                         'type': selectedMeal,
                         'iconCode': result!.iconCode,
@@ -152,10 +160,23 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
             const SizedBox(
               height: 20,
             ),
-            SliderWidget(
-              onChanged: (val) {
-                amount = val;
-              },
+            // new TextField(
+            //   decoration: new InputDecoration(labelText: "Enter your value"),
+            //   keyboardType: TextInputType.number,
+            //   inputFormatters: <TextInputFormatter>[
+            //     FilteringTextInputFormatter.digitsOnly
+            //   ],
+            //   onChanged: ,
+            // ),
+
+            // SliderWidget(
+            //   onChanged: (val) {
+            //     amount = val;
+            //   },
+            // ),
+            NumberInput(
+              label: "Enter the amount",
+              value: 1.toString(),
             )
           ],
         ),
@@ -245,54 +266,100 @@ class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
     throw UnimplementedError();
   }
 }
+//
+// class SliderWidget extends StatefulWidget {
+//   const SliderWidget({
+//     Key? key,
+//     required this.onChanged,
+//   }) : super(key: key);
+//   final Function onChanged;
+//
+//   @override
+//   State<SliderWidget> createState() => _SliderWidgetState();
+// }
+//
+// class _SliderWidgetState extends State<SliderWidget> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Row(
+//           children: [
+//             const Text(
+//               "Amount",
+//               style: TextStyle(fontSize: 18),
+//             ),
+//             const Spacer(),
+//             Text(
+//               amount.toInt().toString() + " ",
+//               style: const TextStyle(fontSize: 16),
+//             ),
+//             Text(
+//               unit,
+//               style: const TextStyle(fontSize: 16),
+//             ),
+//           ],
+//         ),
+//         Slider.adaptive(
+//           value: amount,
+//           divisions: 15,
+//           max: 15.0,
+//           label: "$amount",
+//           onChanged: (val) {
+//             amount = val;
+//             widget.onChanged(val);
+//             setState(() {});
+//           },
+//           min: 0,
+//         ),
+//       ],
+//     );
+//   }
+// }
 
-class SliderWidget extends StatefulWidget {
-  const SliderWidget({
-    Key? key,
-    required this.onChanged,
-  }) : super(key: key);
-  final Function onChanged;
+class NumberInput extends StatelessWidget {
+  NumberInput({
+    required this.label,
+    this.controller,
+    this.value,
+    this.onChanged,
+    this.error,
+    this.icon,
+    this.allowDecimal = true,
+  });
 
-  @override
-  State<SliderWidget> createState() => _SliderWidgetState();
-}
+  final TextEditingController? controller;
+  final String? value;
+  final String label;
+  final Function? onChanged;
+  final String? error;
+  final Widget? icon;
+  final bool allowDecimal;
 
-class _SliderWidgetState extends State<SliderWidget> {
-  double amount = 1;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Text(
-              "Amount",
-              style: TextStyle(fontSize: 18),
-            ),
-            const Spacer(),
-            Text(
-              amount.toInt().toString() + " ",
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              unit,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-        Slider.adaptive(
-          value: amount,
-          divisions: 15,
-          max: 15.0,
-          label: "$amount",
-          onChanged: (val) {
-            amount = val;
-            widget.onChanged(val);
-            setState(() {});
-          },
-          min: 0,
+    return TextFormField(
+      controller: controller,
+      initialValue: value,
+      onChanged: (value) {
+        amount1 = value;
+        print(amount1);
+      },
+      keyboardType: TextInputType.numberWithOptions(decimal: allowDecimal),
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(_getRegexString())),
+        TextInputFormatter.withFunction(
+          (oldValue, newValue) => newValue.copyWith(),
         ),
       ],
+      decoration: InputDecoration(
+        label: Text(label),
+        errorText: error,
+        icon: Icon(Icons.rice_bowl),
+      ),
     );
   }
+
+  String _getRegexString() =>
+      allowDecimal ? r'[0-9]+[,.]{0,1}[0-9]*' : r'[0-9]';
 }

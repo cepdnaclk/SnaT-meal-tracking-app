@@ -41,7 +41,7 @@ class FirebaseServices {
 
   static Future<bool> getFoodsData() async {
     await FirebaseFirestore.instance
-        .collection("Food Data")
+        .collection("Standard_food_size")
         .get()
         .then((value1) async {
       for (DocumentSnapshot doc in value1.docs) {

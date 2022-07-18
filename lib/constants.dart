@@ -23,9 +23,9 @@ List<String> meals = [
   "Pulses meat fish",
   "Beverages",
   "Milk and milk products",
-  "Nuts and Oil Seeds",
-  "Fat, Sugar and Salt",
-  "Alcoholic Beverage",
+  "Nuts and Oil",
+  "Fat,Sugar and Salt",
+  "Alcoholic Beverages",
 ];
 
 Map<String, List<int>> limits = {
