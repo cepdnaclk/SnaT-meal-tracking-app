@@ -100,10 +100,15 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                 // pick the age
                 NumberPicker(
                   value: _age,
+                  axis: Axis.horizontal,
                   minValue: 0,
                   maxValue: 100,
                   onChanged: (value) => setState(() => _age = value),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+
                 Text('Your Age : $_age',
                 style: const TextStyle(
                   fontSize: 20.0,
@@ -111,8 +116,12 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                 ),
                 ),
 
+                const SizedBox(
+                  height: 15,
+                ),
+
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(25),
                   child: SwipeableButtonView(
                       isFinished: _isFinished,
                       onFinish: () async {
