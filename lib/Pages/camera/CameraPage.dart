@@ -242,16 +242,20 @@ class _campageState extends State<campage> {
             const SizedBox(
               height: 2,
             ),
-            image != null
-                ? Image.file(image!)
-                : const Icon(
-                    Icons.food_bank,
-                    size: 380,
-                    color: Color.fromARGB(100, 125, 156, 139),
-                  ),
-            // image != null ? Image.file(image!): ,
+              image != null
+                  ? Image.file(image!) :
+              const Center(
+              heightFactor:2.2,
+                child: Icon(
+                Icons.food_bank,
+                size: 180,
+                color: Color.fromARGB(100, 125, 156, 139),
+                ),
+              ),
+
           ],
         ),
+        //child: raw(),
       ),
     );
   }

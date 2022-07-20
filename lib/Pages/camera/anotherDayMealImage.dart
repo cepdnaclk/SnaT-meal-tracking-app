@@ -241,12 +241,15 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
                 height: 5,
               ),
               image != null
-                  ? Image.file(image!)
-                  : const Icon(
-                      Icons.food_bank,
-                      size: 380,
-                      color: Color.fromARGB(100, 125, 156, 139),
-                    ),
+                  ? Image.file(image!) :
+              const Center(
+                heightFactor:2.2,
+                child: Icon(
+                  Icons.food_bank,
+                  size: 180,
+                  color: Color.fromARGB(100, 125, 156, 139),
+                ),
+              ),
             ],
           ),
         ],

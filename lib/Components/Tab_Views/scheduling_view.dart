@@ -32,6 +32,7 @@ class _TableBasicsExampleState extends State<SchedulingView> {
         firstDay: DateTime(1970),
         lastDay: DateTime(2070),
         focusedDay: _focusedDay,
+
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {
           // Use `selectedDayPredicate` to determine which day is currently selected.
