@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class ThemeInfo {
   //Colors
   static Color primaryColor = const Color(0xff0f5951);
+  static Color secondaryColor = const Color(0xff53a09e);
+  static Color appBarColor = primaryColor;
+  static Color mealSectionCardColor = appBarColor;
+  static Color primaryTextColor = Colors.white;
   static Color bottomTabButtonColor = const Color(0xff2ea29f);
   static Color chartBelowColor = Colors.yellow;
   static Color chartExpectedColor = Colors.green;

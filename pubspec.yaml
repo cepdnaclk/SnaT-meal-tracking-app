@@ -35,7 +35,7 @@ dependencies:
   cloud_firestore: ^3.3.0
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.6
-  camera: ^0.10.0
+  #camera: ^0.10.0
   flutter_3d_choice_chip: ^0.1.4
   swipeable_button_view: ^0.0.2
   page_transition: ^2.0.9

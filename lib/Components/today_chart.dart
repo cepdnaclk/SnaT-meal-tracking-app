@@ -13,19 +13,18 @@ import '../constants.dart';
 import 'Tab_Views/chart_view.dart';
 import 'Tab_Views/chart_view_components/share_button.dart';
 
-class ChartWidget extends StatelessWidget {
-  ChartWidget(
-      {Key? key,
-      required this.size,
-      required this.max,
-      required this.data,
-      this.controller,
-      this.interval,
-      this.dataLabelSettings,
-      required this.showLabel,
-      this.gradient,
-      this.image})
-      : super(key: key);
+class TodayChart extends StatelessWidget {
+  TodayChart({
+    Key? key,
+    required this.size,
+    required this.max,
+    required this.data,
+    this.controller,
+    this.interval,
+    this.dataLabelSettings,
+    required this.showLabel,
+    this.gradient,
+  }) : super(key: key);
   final Size size;
   final double max;
   final List<ChartData> data;
@@ -35,7 +34,6 @@ class ChartWidget extends StatelessWidget {
   final LinearGradient? gradient;
   final DataLabelSettings? dataLabelSettings;
   final bool showLabel;
-  final String? image;
 
   Future saveAndShare(Uint8List bytes) async {
     final directory = await getApplicationDocumentsDirectory();
@@ -66,7 +64,7 @@ class ChartWidget extends StatelessWidget {
           color: Colors.grey.shade300,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10, right: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -88,96 +86,114 @@ class ChartWidget extends StatelessWidget {
               SizedBox(
                 height: size.height * 0.01,
               ),
-              Flexible(
-                child: Center(
-                  child: Column(
-                    children: [
-                      if (!showLabel)
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 25,
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    for (ChartData info in data)
-                                      SizedBox(
-                                          width: 20,
-                                          child: Image.asset(info.image!)),
-                                  ],
-                                ),
+              Center(
+                child: Column(
+                  children: [
+                    if (!showLabel)
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 45,
+                          ),
+                          Expanded(
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  for (ChartData info in data)
+                                    SizedBox(
+                                        width: 20,
+                                        child: Image.asset(info.image!)),
+                                ],
                               ),
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxHeight: 250.0,
-                        ),
-                        child: SfCartesianChart(
-                          primaryXAxis: CategoryAxis(
-                              majorGridLines: const MajorGridLines(
-                                width: 0,
-                              ),
-                              labelIntersectAction:
-                                  AxisLabelIntersectAction.trim,
-                              labelRotation: 0,
-                              labelStyle: const TextStyle(
-                                  color: Colors.black,
-                                  overflow: TextOverflow.ellipsis)),
-                          primaryYAxis: NumericAxis(
-                              majorGridLines: const MajorGridLines(
-                                width: 0,
-                              ),
-                              minimum: 0,
-                              maximum: max,
-                              interval: interval ?? 1),
-                          tooltipBehavior: _tooltip,
-                          series: <ChartSeries<ChartData, String>>[
-                            ColumnSeries<ChartData, String>(
-                              dataLabelSettings: DataLabelSettings(
-                                isVisible: showLabel,
-                                textStyle: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              dataSource: data,
-                              xValueMapper: (ChartData data, _) {
-                                return data.x;
-                              },
-                              isTrackVisible: showLabel,
-                              trackColor: ThemeInfo.chartTrackColor,
-                              yValueMapper: (ChartData data, _) => data.y,
-                              dataLabelMapper: (ChartData data, _) =>
-                                  data.y == meals.length && showLabel
-                                      ? "✔"
-                                      : "",
-                              pointColorMapper: (ChartData data, _) =>
-                                  data.color,
-                              name: 'Gold',
-                              animationDuration: 1000,
-                              gradient: gradient,
-                              color: const Color.fromRGBO(8, 142, 255, 1),
-                            ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxHeight: 250.0,
+                      ),
+                      child: SfCartesianChart(
+                        primaryXAxis: CategoryAxis(
+                            majorGridLines: const MajorGridLines(
+                              width: 0,
+                            ),
+                            labelIntersectAction: AxisLabelIntersectAction.trim,
+                            labelRotation: 0,
+                            labelStyle: const TextStyle(
+                                color: Colors.black,
+                                overflow: TextOverflow.ellipsis)),
+                        primaryYAxis: NumericAxis(
+                            title: AxisTitle(text: "Servings"),
+                            majorGridLines: const MajorGridLines(
+                              width: 0,
+                            ),
+                            minimum: 0,
+                            maximum: max,
+                            interval: interval ?? 1),
+                        tooltipBehavior: _tooltip,
+                        series: <ChartSeries<ChartData, String>>[
+                          ColumnSeries<ChartData, String>(
+                            dataLabelSettings: DataLabelSettings(
+                              isVisible: showLabel,
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            dataSource: data,
+                            xValueMapper: (ChartData data, _) {
+                              return data.x.toString().substring(0, 3);
+                            },
+                            isTrackVisible: showLabel,
+                            trackColor: ThemeInfo.chartTrackColor,
+                            yValueMapper: (ChartData data, _) => data.y,
+                            dataLabelMapper: (ChartData data, _) =>
+                                data.y == meals.length && showLabel ? "✔" : "",
+                            pointColorMapper: (ChartData data, _) => data.color,
+                            name: 'Gold',
+                            animationDuration: 1000,
+                            gradient: gradient,
+                            color: const Color.fromRGBO(8, 142, 255, 1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.01,
+              Expanded(
+                //height: 30,
+                child: Wrap(
+                  clipBehavior: Clip.hardEdge,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  //alignment: WrapAlignment.center,
+                  children: [
+                    for (ChartData info in data)
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 2,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.black,
+                            )),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 1),
+                        child: Text(
+                            "${info.x.toString().substring(0, 3)} - ${info.x}"),
+                      )
+                  ],
+                ),
               ),
               Button(
                 press: () async {

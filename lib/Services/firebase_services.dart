@@ -109,7 +109,9 @@ class FirebaseServices {
         'date': today.subtract(Duration(days: i)).toString().substring(0, 10)
       });
     }
+    print(meals);
     for (String meal in meals) {
+      print(meal);
       todayStat[meal] = 0;
       for (int i = 0; i < 7; i++) {
         weekStat[i][meal] = 0;
@@ -126,16 +128,10 @@ class FirebaseServices {
       Map data = value.data() != null ? value.data() as Map : {};
       data.forEach((key, value) {
         for (Map food in value) {
-          print(food['amount'].runtimeType);
           int amount = food['unit'] == null || food['unit'] != 'table spoon'
               ? food['amount'].toInt()
-              : (food['amount'] / 3).toInt();
-          print(amount);
-          print(food['type']);
-          print(todayStat);
-
+              : (food['amount'] / 3).round();
           todayStat[food['type']] = todayStat[food['type']] + amount;
-          print(todayStat[food['type']]);
         }
       });
     }).catchError((e) {
@@ -155,9 +151,11 @@ class FirebaseServices {
           for (Map food in value) {
             int amount = food['unit'] == null || food['unit'] != 'table spoon'
                 ? food['amount'].toInt()
-                : (food['amount'] / 3).toInt();
+                : (food['amount'] / 3).round();
 
             weekStat[i][food['type']] = weekStat[i][food['type']] + amount;
+            print(i);
+            if (i == 0) print(weekStat[0]);
           }
         });
       }).catchError((e) {});

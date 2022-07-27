@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 
 class MealSection extends StatefulWidget {
   const MealSection({Key? key, required this.label, this.mealItems})
@@ -13,11 +15,19 @@ class MealSection extends StatefulWidget {
 class _MealSectionState extends State<MealSection> {
   bool showBreakfast = false;
 
+  double turns = 0.0;
+
+  void _changeRotation() {
+    showBreakfast = !showBreakfast;
+    setState(() => showBreakfast ? turns += 1.0 / 2.0 : turns -= 1.0 / 2.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Material(
-        elevation: 1,
+        elevation: 5,
+        borderRadius: BorderRadius.circular(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,35 +36,28 @@ class _MealSectionState extends State<MealSection> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      offset: const Offset(2.0, 2.0),
-                      color: Colors.grey.shade500,
-                      blurRadius: 15,
-                      spreadRadius: 1),
-                  const BoxShadow(
-                      offset: Offset(-4.0, -4.0),
-                      color: Colors.white,
-                      blurRadius: 15,
-                      spreadRadius: 1),
-                ],
-                color: Colors.teal,
+                color: ThemeInfo.mealSectionCardColor,
               ),
               child: Row(
                 children: [
                   Text(
                     widget.label,
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: ThemeInfo.primaryTextColor,
+                    ),
                   ),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () {
-                      setState(() {});
-                      showBreakfast = !showBreakfast;
-                    },
-                    child: const Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      size: 30,
+                    onTap: _changeRotation,
+                    child: AnimatedRotation(
+                      turns: turns,
+                      duration: const Duration(milliseconds: 200),
+                      child: Icon(
+                        Icons.keyboard_arrow_down_outlined,
+                        size: 30,
+                        color: ThemeInfo.primaryTextColor,
+                      ),
                     ),
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Components/today_chart.dart';
+import 'package:mobile_app/Components/week_chart.dart';
 import 'package:mobile_app/Services/firebase_services.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/constants.dart';
@@ -36,6 +37,8 @@ class _ChartViewState extends State<ChartView> {
         image = disappointedImage;
       } else if (valueColor == ThemeInfo.chartBelowColor) {
         image = sadImage;
+      } else {
+        image = happyImage;
       }
 
       todayChartData.add(
@@ -116,8 +119,7 @@ class _ChartViewState extends State<ChartView> {
                           height: size.height * 0.67,
                           child: TabBarView(
                             children: [
-                              ChartWidget(
-                                image: image,
+                              TodayChart(
                                 size: size,
                                 max: todayMax,
                                 data: todayChartData,
@@ -125,7 +127,7 @@ class _ChartViewState extends State<ChartView> {
                                 interval: todayMax == 0 ? 1 : todayMax,
                                 showLabel: false,
                               ),
-                              ChartWidget(
+                              WeekChart(
                                 size: size,
                                 max: meals.length.toDouble(),
                                 gradient: LinearGradient(
