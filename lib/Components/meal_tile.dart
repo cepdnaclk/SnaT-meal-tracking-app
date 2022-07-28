@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import 'package:mobile_app/Pages/add_new_food_screen.dart';
 
@@ -12,24 +13,12 @@ class MealTile extends StatelessWidget {
     Key? key,
     required this.meal,
     required this.reloadState,
-    //required this.foodAmount,
+    required this.index,
   }) : super(key: key);
 
   final Map meal;
-  //final String foodAmount;
   final void Function() reloadState;
-
-  // void editTile(String name, String amount) {
-  //   for (Map meal1 in mealList) {
-  //     if (meal1['name'] == meal["name"]) {
-  //       int index = mealList.indexOf(meal1);
-  //       mealList[index]['name'] = name;
-  //       mealList[index]['icon'] = Icons.food_bank;
-  //       mealList[index]['amount'] = amount;
-  //       break;
-  //     }
-  //   }
-  // }
+  final int index;
 
   void deleteTile() {
     getFoodData1();
@@ -47,12 +36,12 @@ class MealTile extends StatelessWidget {
       if (documentSnapshot.exists) {
         Map<String, dynamic> data =
             documentSnapshot.data()! as Map<String, dynamic>;
-        var foodlist = data[selectedMealTime.toString()];
-        if (foodlist != null) {
-          for (var food in foodlist) {
+        var foodList = data[selectedMealTime.toString()];
+        if (foodList != null) {
+          for (var food in foodList) {
             if (food['food'] == meal['food']) {
-              int index = foodlist.indexOf(food);
-              foodlist.removeAt(index);
+              int index = foodList.indexOf(food);
+              foodList.removeAt(index);
               break;
             }
           }
@@ -116,6 +105,17 @@ class MealTile extends StatelessWidget {
                 const Spacer(),
                 IconButton(
                   onPressed: () async {
+                    editedMeal = meal;
+                    editedIndex = index;
+                    FoodModel food = FoodModel(
+                        name: meal['food'],
+                        unit: meal['unit'],
+                        mealType: meal['type'],
+                        iconCode: meal["iconCode"]);
+
+                    result = food;
+                    resultText = meal["food"];
+                    amount1 = meal["amount"].toString();
                     showModalBottomSheet(
                         context: context,
                         builder: (context) => AddNewFoodScreen(

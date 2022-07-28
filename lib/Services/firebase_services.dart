@@ -109,9 +109,7 @@ class FirebaseServices {
         'date': today.subtract(Duration(days: i)).toString().substring(0, 10)
       });
     }
-    print(meals);
     for (String meal in meals) {
-      print(meal);
       todayStat[meal] = 0;
       for (int i = 0; i < 7; i++) {
         weekStat[i][meal] = 0;
@@ -154,8 +152,6 @@ class FirebaseServices {
                 : (food['amount'] / 3).round();
 
             weekStat[i][food['type']] = weekStat[i][food['type']] + amount;
-            print(i);
-            if (i == 0) print(weekStat[0]);
           }
         });
       }).catchError((e) {});

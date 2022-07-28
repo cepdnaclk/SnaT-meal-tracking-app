@@ -9,7 +9,6 @@ import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 // List<String> SearchTerms = [];
 // List<Map> FoodandUnits = [];
 double amount = 1;
-String amount1 = "1";
 
 class AddNewFoodScreen extends StatefulWidget {
   const AddNewFoodScreen(
@@ -33,6 +32,11 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
       CustomSearchHintDelegate(hintText: 'Search your food Here');
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -40,32 +44,44 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
         actions: [
           MaterialButton(
             onPressed: () async {
-              print(amount1);
               amount = double.parse(amount1);
-              assert(amount is double);
-              print("amount val");
-              print(amount);
               widget.reloadState();
-              dateMeals[selectedMealTime] != null
-                  ? dateMeals[selectedMealTime].add({
-                      "food": result!.name,
-                      'amount': (2 * amount).ceilToDouble() / 2,
-                      'unit': result!.unit,
-                      'type': selectedMeal,
-                      'iconCode': result!.iconCode,
-                    })
-                  : dateMeals[selectedMealTime] = [
-                      {
+              if (editedMeal.isNotEmpty) {
+                dateMeals[selectedMealTime]
+                    .replaceRange(editedIndex, editedIndex + 1, [
+                  {
+                    "food": result!.name,
+                    'amount': (2 * amount).ceilToDouble() / 2,
+                    'unit': result!.unit,
+                    'type': result!.mealType,
+                    'iconCode': result!.iconCode,
+                  }
+                ]);
+              } else {
+                dateMeals[selectedMealTime] != null
+                    ? dateMeals[selectedMealTime].add({
                         "food": result!.name,
                         'amount': (2 * amount).ceilToDouble() / 2,
                         'unit': result!.unit,
-                        'type': selectedMeal,
+                        'type': result!.mealType,
                         'iconCode': result!.iconCode,
-                      }
-                    ];
+                      })
+                    : dateMeals[selectedMealTime] = [
+                        {
+                          "food": result!.name,
+                          'amount': (2 * amount).ceilToDouble() / 2,
+                          'unit': result!.unit,
+                          'type': result!.mealType,
+                          'iconCode': result!.iconCode,
+                        }
+                      ];
+              }
               result = null;
+              resultText = '';
               amount = 1;
               amount1 = "1";
+              editedMeal = {};
+              editedIndex = 0;
               Navigator.pop(context, amount);
             },
             child: const Center(
@@ -104,7 +120,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            if (result != null)
+            if (resultText != "")
               Row(
                 children: [
                   Center(
@@ -344,7 +360,6 @@ class NumberInput extends StatelessWidget {
       initialValue: value,
       onChanged: (value) {
         amount1 = value;
-        print(amount1);
       },
       keyboardType: TextInputType.numberWithOptions(decimal: allowDecimal),
       inputFormatters: <TextInputFormatter>[

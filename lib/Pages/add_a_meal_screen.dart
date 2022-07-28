@@ -16,11 +16,13 @@ String unit = "";
 double amount = 0.0;
 String iconCode = "";
 FoodModel? result;
+String amount1 = "1";
+Map editedMeal = {};
+int editedIndex = 0;
 
 String? selectedMeal;
 String? selectedMealTime;
 DateTime selectedDate = DateTime.now();
-List foodArray = [];
 Map dateMeals = {};
 
 class AddAMealScreen extends StatefulWidget {
@@ -43,8 +45,18 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
     dateMeals = todayMeals;
   }
 
+  @override
+  void dispose() {
+    selectedMeal = null;
+    selectedMealTime = null;
+    selectedDate = DateTime.now();
+    dateMeals = {};
+    resultText = '';
+    result = null;
+    super.dispose();
+  }
+
   void stateReload() {
-    print("State reload");
     setState(() {});
   }
 
@@ -62,6 +74,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int i = 0;
     return Form(
       key: _mealFormKey,
       child: Scaffold(
@@ -88,7 +101,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                         .collection("foodLog")
                         .doc(selectedDate.toString().substring(0, 10))
                         .set({selectedMealTime!: dateMeals[selectedMealTime]});
-                    print('done');
                   }
                 });
                 widget.onChanged();
@@ -244,10 +256,11 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             const SizedBox(
               height: 5,
             ),
-            for (Map meal in dateMeals[selectedMealTime] ?? [])
+            for (int i = 0; i < (dateMeals[selectedMealTime] ?? []).length; i++)
               MealTile(
-                meal: meal,
+                meal: dateMeals[selectedMealTime][i],
                 reloadState: stateReload,
+                index: i,
               )
           ],
         ),
