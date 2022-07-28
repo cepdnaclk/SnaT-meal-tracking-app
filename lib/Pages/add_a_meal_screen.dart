@@ -11,15 +11,9 @@ import '../Models/food_model.dart';
 import '../Theme/theme_info.dart';
 import '../constants.dart';
 
-String resultText = "";
-String unit = "";
-double amount = 0.0;
-String iconCode = "";
 FoodModel? result;
 String amount1 = "1";
-Map editedMeal = {};
-int editedIndex = 0;
-
+int? editedIndex;
 String? selectedMeal;
 String? selectedMealTime;
 DateTime selectedDate = DateTime.now();
@@ -39,7 +33,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
   void initState() {
     super.initState();
     selectedDate = DateTime.now();
-
     selectedMeal = selectedMeal;
     selectedMealTime = selectedMealTime;
     dateMeals = todayMeals;
@@ -51,8 +44,8 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
     selectedMealTime = null;
     selectedDate = DateTime.now();
     dateMeals = {};
-    resultText = '';
     result = null;
+    amount1 = "1";
     super.dispose();
   }
 
@@ -74,7 +67,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return Form(
       key: _mealFormKey,
       child: Scaffold(
@@ -178,7 +170,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               onChanged: (String? val) {
                 selectedMealTime = val;
                 result = null;
-                amount = 1;
                 setState(() {});
               },
               hint: const Text('Please select a meal time'),
@@ -216,7 +207,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               onChanged: (String? val) {
                 selectedMeal = val;
                 result = null;
-                amount = 1;
               },
               hint: const Text('Please select a meal type'),
             ),

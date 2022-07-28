@@ -4,22 +4,17 @@ import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 
-// final _firestore = FirebaseFirestore.instance;
-//
-// List<String> SearchTerms = [];
-// List<Map> FoodandUnits = [];
-double amount = 1;
 
 class AddNewFoodScreen extends StatefulWidget {
-  const AddNewFoodScreen(
-      {required this.appBarTitle,
-      required this.reloadState,
-      required this.tileEdit,
-      this.editTileDetails});
+  const AddNewFoodScreen({
+    Key? key,
+    required this.appBarTitle,
+    required this.reloadState,
+    required this.tileEdit,
+  }) : super(key: key);
   final void Function() reloadState;
   final Text appBarTitle;
   final bool tileEdit;
-  final void Function(String, String)? editTileDetails;
 
   @override
   State<AddNewFoodScreen> createState() => _AddNewFoodScreenState();
@@ -44,11 +39,12 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
         actions: [
           MaterialButton(
             onPressed: () async {
-              amount = double.parse(amount1);
+              double amount = double.parse(amount1);
               widget.reloadState();
-              if (editedMeal.isNotEmpty) {
+              print(editedIndex);
+              if (editedIndex != null) {
                 dateMeals[selectedMealTime]
-                    .replaceRange(editedIndex, editedIndex + 1, [
+                    .replaceRange(editedIndex, editedIndex! + 1, [
                   {
                     "food": result!.name,
                     'amount': (2 * amount).ceilToDouble() / 2,
@@ -77,11 +73,9 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                       ];
               }
               result = null;
-              resultText = '';
               amount = 1;
               amount1 = "1";
-              editedMeal = {};
-              editedIndex = 0;
+              editedIndex = null;
               Navigator.pop(context, amount);
             },
             child: const Center(
@@ -102,25 +96,13 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
             context: context,
             delegate: delegate,
           );
-          if (result == null) {}
-          if (result != null) {
-            resultText = result!.name;
-            //getFoodUnit(resultText);
-            if (widget.tileEdit == true) {
-              widget.editTileDetails!(
-                resultText,
-                amount.toInt().toString() + " " + unit,
-              );
-            }
-          }
-          // setState(() {});
         },
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            if (resultText != "")
+            if (result != null)
               Row(
                 children: [
                   Center(
@@ -133,7 +115,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          resultText,
+                          result!.name,
                           style: const TextStyle(
                               color: Colors.white, fontSize: 18),
                         ),
@@ -142,58 +124,14 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                   ),
                 ],
               ),
-            Row(
-              children: const [
-                // Expanded(
-                //   child: TextField(
-                //     onTap: () {
-                //       // showSearch(
-                //       //     context: context, delegate: CustomSearchDelegate());
-                //     },
-                //     controller: searchController,
-                //     decoration: const InputDecoration(
-                //       hintText: "search",
-                //       hintStyle: TextStyle(fontSize: 18),
-                //       border: OutlineInputBorder(
-                //         borderSide:
-                //             BorderSide(color: Colors.blueAccent, width: 1.0),
-                //         borderRadius: BorderRadius.all(
-                //           Radius.circular(32.0),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // IconButton(
-                //     onPressed: () {
-                //       // CustomSearchDelegate();
-                //     },
-                //     icon: const Icon(
-                //       Icons.search,
-                //       size: 30,
-                //     ))
-              ],
-            ),
             const SizedBox(
               height: 20,
             ),
-            // new TextField(
-            //   decoration: new InputDecoration(labelText: "Enter your value"),
-            //   keyboardType: TextInputType.number,
-            //   inputFormatters: <TextInputFormatter>[
-            //     FilteringTextInputFormatter.digitsOnly
-            //   ],
-            //   onChanged: ,
-            // ),
-
-            // SliderWidget(
-            //   onChanged: (val) {
-            //     amount = val;
-            //   },
-            // ),
             NumberInput(
               label: "Enter the amount",
-              value: 1.toString(),
+              value: (double.parse(amount1).toInt() == double.parse(amount1)
+                  ? double.parse(amount1).toInt().toString()
+                  : amount1),
             )
           ],
         ),
@@ -227,7 +165,6 @@ class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
             title: Text(result.name),
           );
         });
-    throw UnimplementedError();
   }
 
   @override
@@ -250,18 +187,10 @@ class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
             title: Text(result.name),
           );
         });
-    throw UnimplementedError();
   }
-
-  // @override
-  // PreferredSizeWidget buildBottom(BuildContext context) {
-  //   return const PreferredSize(
-  //       preferredSize: Size.fromHeight(56.0), child: Text('bottom'));
-  // }
 
   @override
   Widget? buildLeading(BuildContext context) {
-    // TODO: implement buildLeading
     return IconButton(
         onPressed: () {
           close(context, null);
@@ -279,63 +208,12 @@ class CustomSearchHintDelegate extends SearchDelegate<FoodModel?> {
             close(context, null);
           })
     ];
-    // TODO: implement buildActions
-    throw UnimplementedError();
   }
 }
-//
-// class SliderWidget extends StatefulWidget {
-//   const SliderWidget({
-//     Key? key,
-//     required this.onChanged,
-//   }) : super(key: key);
-//   final Function onChanged;
-//
-//   @override
-//   State<SliderWidget> createState() => _SliderWidgetState();
-// }
-//
-// class _SliderWidgetState extends State<SliderWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Row(
-//           children: [
-//             const Text(
-//               "Amount",
-//               style: TextStyle(fontSize: 18),
-//             ),
-//             const Spacer(),
-//             Text(
-//               amount.toInt().toString() + " ",
-//               style: const TextStyle(fontSize: 16),
-//             ),
-//             Text(
-//               unit,
-//               style: const TextStyle(fontSize: 16),
-//             ),
-//           ],
-//         ),
-//         Slider.adaptive(
-//           value: amount,
-//           divisions: 15,
-//           max: 15.0,
-//           label: "$amount",
-//           onChanged: (val) {
-//             amount = val;
-//             widget.onChanged(val);
-//             setState(() {});
-//           },
-//           min: 0,
-//         ),
-//       ],
-//     );
-//   }
-// }
 
 class NumberInput extends StatelessWidget {
-  NumberInput({
+  const NumberInput({
+    Key? key,
     required this.label,
     this.controller,
     this.value,
@@ -343,7 +221,7 @@ class NumberInput extends StatelessWidget {
     this.error,
     this.icon,
     this.allowDecimal = true,
-  });
+  }) : super(key: key);
 
   final TextEditingController? controller;
   final String? value;
