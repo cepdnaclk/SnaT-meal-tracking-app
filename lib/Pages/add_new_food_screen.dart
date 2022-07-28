@@ -4,7 +4,6 @@ import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 
-
 class AddNewFoodScreen extends StatefulWidget {
   const AddNewFoodScreen({
     Key? key,
