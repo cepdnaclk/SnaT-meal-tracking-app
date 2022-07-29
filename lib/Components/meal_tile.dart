@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Models/food_model.dart';
+import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
-import 'package:mobile_app/Pages/add_new_food_screen.dart';
+
+import '../Models/food_model.dart';
+import '../Pages/add_new_food_screen.dart';
+
+enum Menu { itemOne, itemTwo, itemThree, itemFour }
 
 class MealTile extends StatelessWidget {
   const MealTile({
@@ -17,92 +21,102 @@ class MealTile extends StatelessWidget {
 
   void deleteTile() {
     dateMeals[selectedMealTime].remove(meal);
+    print("hiiiii");
+    print(dateMeals[selectedMealTime]);
+    print(todayMeals[selectedMealTime]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 2),
-      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+      padding: const EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 7,
+      ),
       decoration: BoxDecoration(
-          border: Border.all(
-        color: Colors.black,
-      )),
-      child: MaterialButton(
-        onPressed: () {},
-        child: Column(
+        border: Border(
+          bottom: BorderSide(width: 1.5, color: Colors.grey[300]!),
+        ),
+      ),
+      child: SizedBox(
+        height: 75,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Icon(
-                  IconData(int.parse('0x' + meal["iconCode"]),
-                      fontFamily: "MaterialIcons"),
-                  size: 30,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Text(
-                    meal["food"],
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () async {
-                    editedIndex = index;
-                    FoodModel food = FoodModel(
-                        name: meal['food'],
-                        unit: meal['unit'],
-                        mealType: meal['type'],
-                        iconCode: meal["iconCode"]);
-                    result = food;
-                    amount1 = meal["amount"].toString();
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => AddNewFoodScreen(
-                        reloadState: reloadState,
-                        appBarTitle: const Text("Add Quantity"),
-                        tileEdit: true,
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.edit,
-                    size: 30,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    deleteTile();
-                    reloadState();
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                    size: 30,
-                  ),
-                ),
-              ],
+            ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset("assets/images/${meal['type']}.png")),
+            const SizedBox(
+              width: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  (meal["amount"].toInt().toDouble() == meal["amount"]
-                              ? meal["amount"].toInt()
-                              : meal["amount"])
-                          .toString() +
-                      ' ' +
-                      meal['unit'],
-                  style: const TextStyle(fontSize: 18),
-                ),
-                Text(
-                  meal["type"],
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ],
-            )
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    meal["food"],
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    (meal["amount"].toInt().toDouble() == meal["amount"]
+                                ? meal["amount"].toInt()
+                                : meal["amount"])
+                            .toString() +
+                        ' ' +
+                        meal['unit'],
+                    style: const TextStyle(fontSize: 15, color: Colors.black54),
+                  ),
+                  Text(
+                    meal["type"],
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(fontSize: 12),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return <PopupMenuEntry<Menu>>[
+                  PopupMenuItem<Menu>(
+                    value: Menu.itemOne,
+                    onTap: () {
+                      editedIndex = index;
+                      FoodModel food = FoodModel(
+                          name: meal['food'],
+                          unit: meal['unit'],
+                          mealType: meal['type'],
+                          iconCode: meal["iconCode"]);
+                      result = food;
+                      amount1 = meal["amount"].toString();
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => AddNewFoodScreen(
+                          reloadState: reloadState,
+                          appBarTitle: const Text("Add Quantity"),
+                          tileEdit: true,
+                        ),
+                      );
+                    },
+                    child: const Text('Edit'),
+                  ),
+                  PopupMenuItem<Menu>(
+                    value: Menu.itemTwo,
+                    onTap: () {
+                      deleteTile();
+                      Navigator.pop(context);
+                      reloadState();
+                    },
+                    child: const Text('Delete'),
+                  ),
+                ];
+              },
+              position: PopupMenuPosition.under,
+            ),
           ],
         ),
       ),

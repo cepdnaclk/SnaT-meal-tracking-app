@@ -78,6 +78,7 @@ class FirebaseServices {
   }
 
   static Future<Map> fetchData() async {
+    print("getting");
     Map meals = {};
     await FirebaseFirestore.instance
         .collection("users")

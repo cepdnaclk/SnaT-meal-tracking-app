@@ -4,7 +4,6 @@ import 'package:mobile_app/Pages/add_new_food_screen.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 
-import '../Components/Tab_Views/home_view.dart';
 import '../Components/date_time_widget.dart';
 import '../Components/meal_tile.dart';
 import '../Models/food_model.dart';
@@ -35,7 +34,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
     selectedDate = DateTime.now();
     selectedMeal = selectedMeal;
     selectedMealTime = selectedMealTime;
-    dateMeals = todayMeals;
+    getDateMeals();
   }
 
   @override
@@ -63,6 +62,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
         .then((value) {
       dateMeals = value.data() ?? {};
     });
+    setState(() {});
   }
 
   @override
@@ -107,32 +107,31 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
           ],
         ),
         body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           children: [
             const SizedBox(
               height: 20,
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Date and time:",
-                  style: TextStyle(fontSize: 20),
+                  "Date and time",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 DateTimeWidget(
                   iconPic: const Icon(
-                    Icons.calendar_today,
+                    Icons.calendar_today_sharp,
                   ),
                   selectedDate: selectedDate,
-                  text: DateTimeService.dateConverter(selectedDate),
+                  text: DateTimeService.getDateString(selectedDate),
                   onPressed: (val) async {
                     selectedDate = val;
-                    await getDateMeals();
-                    setState(() {});
+                    getDateMeals();
                   },
                 ),
               ],
@@ -140,16 +139,18 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Center(
-              child: Text(
-                "Meal Time",
-                style: TextStyle(fontSize: 20),
+            const Text(
+              "Meal Time",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(
               height: 5,
             ),
             DropdownButtonFormField(
+              value: selectedMealTime,
               validator: (val) {
                 if (val == null) {
                   return "Please select a meal time before adding food";
@@ -175,18 +176,17 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               hint: const Text('Please select a meal time'),
             ),
             const SizedBox(
-              height: 5,
+              height: 20,
             ),
-            const Center(
-              child: Text(
-                "Meal Type",
-                style: TextStyle(fontSize: 20),
-              ),
+            const Text(
+              "Meal Type",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             const SizedBox(
               height: 5,
             ),
             DropdownButtonFormField(
+              value: selectedMeal,
               validator: (String? val) {
                 if (val == null) {
                   return "Please select a meal type before adding food";
@@ -211,7 +211,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               hint: const Text('Please select a meal type'),
             ),
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
             ElevatedButton(
               onPressed: () async {
@@ -240,12 +240,23 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               height: 40,
             ),
             const Text(
-              "Meal items:",
-              style: TextStyle(fontSize: 20),
+              "Meal items",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             const SizedBox(
               height: 5,
             ),
+            if (dateMeals[selectedMealTime] == null ||
+                dateMeals[selectedMealTime].isEmpty)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 18.0),
+                  child: Text(
+                    "No food items added 🙁",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
             for (int i = 0; i < (dateMeals[selectedMealTime] ?? []).length; i++)
               MealTile(
                 meal: dateMeals[selectedMealTime][i],

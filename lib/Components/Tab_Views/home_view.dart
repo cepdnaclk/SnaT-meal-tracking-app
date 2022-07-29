@@ -38,13 +38,15 @@ class _HomeViewState extends State<HomeView> {
             CustomPageRoute(
               child: AddAMealScreen(
                 onChanged: () {
-                  setState(() {});
+                  print("setting");
+                  setState(() {
+                    _fetchData = FirebaseServices.fetchData();
+                  });
                 },
               ),
               transition: "scale",
             ),
           );
-          setState(() {});
         },
         child: const Icon(Icons.add),
       ),
@@ -64,6 +66,7 @@ class _HomeViewState extends State<HomeView> {
             FutureBuilder(
               future: _fetchData,
               builder: (context, snapshot) {
+                print("rebuilding");
                 if (snapshot.connectionState == ConnectionState.done &&
                     widget.isDone) {
                   todayMeals = snapshot.data as Map;

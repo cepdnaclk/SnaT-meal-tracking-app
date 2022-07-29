@@ -31,6 +31,14 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   }
 
   @override
+  void dispose() {
+    result = null;
+    amount1 = "1";
+    editedIndex = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

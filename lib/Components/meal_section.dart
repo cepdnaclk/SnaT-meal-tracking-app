@@ -32,25 +32,25 @@ class _MealSectionState extends State<MealSection> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: ThemeInfo.mealSectionCardColor,
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    widget.label,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: ThemeInfo.primaryTextColor,
+            GestureDetector(
+              onTap: _changeRotation,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: ThemeInfo.mealSectionCardColor,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.label,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: ThemeInfo.primaryTextColor,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: _changeRotation,
-                    child: AnimatedRotation(
+                    const Spacer(),
+                    AnimatedRotation(
                       turns: turns,
                       duration: const Duration(milliseconds: 200),
                       child: Icon(
@@ -59,8 +59,8 @@ class _MealSectionState extends State<MealSection> {
                         color: ThemeInfo.primaryTextColor,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             if (showBreakfast)
@@ -72,58 +72,67 @@ class _MealSectionState extends State<MealSection> {
                 Column(
                   children: [],
                 ),
-            if (widget.mealItems!.isNotEmpty)
+            if (showBreakfast && widget.mealItems!.isNotEmpty)
               for (int i = 0; i < widget.mealItems!.length; i++)
-                if (showBreakfast)
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            // Image.asset(
-                            //   "assets/images/food.jfif",
-                            //   width: 40,
-                            //   height: 40,
-                            // ),
-                            Icon(
-                              IconData(
-                                int.parse(
-                                    '0x${widget.mealItems![i]['iconCode']}'),
-                                fontFamily: "MaterialIcons",
-                              ),
-                              size: 40,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.mealItems![i]['food'],
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                                Text(widget.mealItems![i]['amount'].toString() +
-                                    ' ' +
-                                    widget.mealItems![i]['unit']),
-                                Text(
-                                  widget.mealItems![i]['type'],
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            // IconButton(
-                            //     onPressed: () {},
-                            //     icon: const Icon(Icons.more_vert))
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        height: 8,
-                      ),
-                    ],
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(width: 1.5, color: Colors.grey[300]!),
+                    ),
                   ),
+                  child: SizedBox(
+                    height: 50,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                                "assets/images/${widget.mealItems![i]['type']}.png")),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                widget.mealItems![i]["food"],
+                                style: const TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                (widget.mealItems![i]["amount"]
+                                                    .toInt()
+                                                    .toDouble() ==
+                                                widget.mealItems![i]["amount"]
+                                            ? widget.mealItems![i]["amount"]
+                                                .toInt()
+                                            : widget.mealItems![i]["amount"])
+                                        .toString() +
+                                    ' ' +
+                                    widget.mealItems![i]['unit'],
+                                style: const TextStyle(
+                                    fontSize: 13, color: Colors.black54),
+                              ),
+                              Text(
+                                widget.mealItems![i]["type"],
+                                textAlign: TextAlign.right,
+                                style: const TextStyle(fontSize: 11),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
             if (showBreakfast)
               const SizedBox(
                 height: 5,
