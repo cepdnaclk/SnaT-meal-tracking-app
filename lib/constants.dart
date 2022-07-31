@@ -1,4 +1,6 @@
 // Text
+import 'package:flutter/material.dart';
+
 String appName = "SnaT";
 String introduction =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
@@ -7,6 +9,36 @@ String introduction =
 
 String weekChartText = "Total intake for this week";
 String dailyChartText = "Total intake for today";
+
+// Add new meal Screen
+String addNewMealTitle = "Add new meal";
+String saveButton = "Save";
+String dateAndTime = "Date";
+String mealTime = "Meal Time";
+String mealTimeDropdownHint = "Please select a meal time";
+String mealTimeDropdownErrorMessage =
+    "Please select a meal time before adding food.";
+String mealType = "Meal Type";
+String mealTypeDropdownHint = "Please select a meal type";
+String mealTypeDropdownErrorMessage =
+    "Please select a meal type before adding food.";
+String addFoodButton = "Add a New Food";
+String mealItems = "Meal items";
+String noFoodMessage = "No food items added 🙁";
+
+// Add a new food screen
+String addNewFoodTitle = "Add a New Food";
+String servingAmountText = "Enter the amount";
+
+// Icons
+
+// Add new meal Screen
+IconData datePickerIcon = Icons.calendar_today_sharp;
+
+// Add new meal Screen
+IconData searchIcon = Icons.search;
+
+//
 
 // Images
 
@@ -43,7 +75,7 @@ Map<String, List<int>> limits = {
   "Alcoholic Beverages": [1, 1],
 };
 
-List<String> mealTime = [
+List<String> mealTimes = [
   "Breakfast",
   "Morning Snacks",
   "Lunch",

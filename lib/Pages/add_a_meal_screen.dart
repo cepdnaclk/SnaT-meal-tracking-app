@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/add_new_food_screen.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Services/DateTime.dart';
 
@@ -9,6 +8,7 @@ import '../Components/meal_tile.dart';
 import '../Models/food_model.dart';
 import '../Theme/theme_info.dart';
 import '../constants.dart';
+import 'add_new_food_screen.dart';
 
 FoodModel? result;
 String amount1 = "1";
@@ -28,6 +28,9 @@ class AddAMealScreen extends StatefulWidget {
 
 class _AddAMealScreenState extends State<AddAMealScreen> {
   final _mealFormKey = GlobalKey<FormState>();
+  bool hasTimeError = false;
+  bool hasMealError = false;
+
   @override
   void initState() {
     super.initState();
@@ -67,11 +70,13 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("hello");
     return Form(
       key: _mealFormKey,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text("Add new meal"),
+          title: Text(addNewMealTitle),
           backgroundColor: ThemeInfo.primaryColor,
           actions: [
             GestureDetector(
@@ -98,16 +103,16 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 widget.onChanged();
                 Navigator.pop(context);
               },
-              child: const Center(
+              child: Center(
                   child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: Text("Save"),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Text(saveButton),
               )),
             )
           ],
         ),
         body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           children: [
             const SizedBox(
               height: 20,
@@ -116,17 +121,16 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Date and time",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                Text(
+                  dateAndTime,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 DateTimeWidget(
-                  iconPic: const Icon(
-                    Icons.calendar_today_sharp,
-                  ),
+                  iconPic: Icon(datePickerIcon),
                   selectedDate: selectedDate,
                   text: DateTimeService.getDateString(selectedDate),
                   onPressed: (val) async {
@@ -139,9 +143,9 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              "Meal Time",
-              style: TextStyle(
+            Text(
+              mealTime,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
@@ -149,111 +153,162 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
             const SizedBox(
               height: 5,
             ),
-            DropdownButtonFormField(
-              value: selectedMealTime,
-              validator: (val) {
-                if (val == null) {
-                  return "Please select a meal time before adding food";
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[100],
+              ),
+              child: DropdownButtonFormField(
+                value: selectedMealTime,
+                style: TextStyle(
+                    color: ThemeInfo.dropDownValueColor, fontSize: 18),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                items: mealTimes.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? val) {
+                  selectedMealTime = val;
+                  result = null;
+                  setState(() {});
+                },
+                hint: Text(mealTimeDropdownHint),
+              ),
+            ),
+            if (hasTimeError)
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  mealTimeDropdownErrorMessage,
+                  style:
+                      TextStyle(color: ThemeInfo.errorTextColor, fontSize: 12),
                 ),
               ),
-              items: mealTime.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? val) {
-                selectedMealTime = val;
-                result = null;
-                setState(() {});
-              },
-              hint: const Text('Please select a meal time'),
-            ),
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              "Meal Type",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+            Text(
+              mealType,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             const SizedBox(
               height: 5,
             ),
-            DropdownButtonFormField(
-              value: selectedMeal,
-              validator: (String? val) {
-                if (val == null) {
-                  return "Please select a meal type before adding food";
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[100],
+              ),
+              child: DropdownButtonFormField(
+                value: selectedMeal,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                style: TextStyle(
+                    color: ThemeInfo.dropDownValueColor, fontSize: 18),
+                items: meals.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? val) {
+                  selectedMeal = val;
+                  result = null;
+                },
+                hint: Text(mealTypeDropdownHint),
+              ),
+            ),
+            if (hasMealError)
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  mealTypeDropdownErrorMessage,
+                  style:
+                      TextStyle(color: ThemeInfo.errorTextColor, fontSize: 12),
                 ),
               ),
-              items: meals.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? val) {
-                selectedMeal = val;
-                result = null;
-              },
-              hint: const Text('Please select a meal type'),
-            ),
             const SizedBox(
               height: 30,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                if (_mealFormKey.currentState!.validate()) {
+            GestureDetector(
+              onTap: () async {
+                if (selectedMealTime != null && selectedMeal != null) {
+                  hasTimeError = false;
+                  hasMealError = false;
+                  setState(() {});
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => AddNewFoodScreen(
-                      appBarTitle: const Text(
-                        "Add a New Food",
+                      appBarTitle: Text(
+                        addFoodButton,
                       ),
                       reloadState: stateReload,
                       tileEdit: false,
                     ),
                   );
+                } else if (selectedMeal != null && selectedMealTime == null) {
+                  hasTimeError = true;
+                  hasMealError = false;
+                  setState(() {});
+                } else if (selectedMeal == null && selectedMealTime != null) {
+                  hasTimeError = false;
+                  hasMealError = true;
+                  setState(() {});
+                } else {
+                  hasTimeError = true;
+                  hasMealError = true;
+                  setState(() {});
                 }
+                print(hasTimeError);
+                print(hasMealError);
               },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0),
-                child: Text(
-                  "Add a food",
-                  style: TextStyle(fontSize: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.teal,
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                child: Center(
+                  child: Text(
+                    addFoodButton,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ),
             const SizedBox(
               height: 40,
             ),
-            const Text(
-              "Meal items",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+            Text(
+              mealItems,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
             const SizedBox(
               height: 5,
             ),
             if (dateMeals[selectedMealTime] == null ||
                 dateMeals[selectedMealTime].isEmpty)
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 18.0),
+                  padding: const EdgeInsets.symmetric(vertical: 18.0),
                   child: Text(
-                    "No food items added 🙁",
-                    style: TextStyle(fontSize: 20),
+                    noFoodMessage,
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ),
               ),

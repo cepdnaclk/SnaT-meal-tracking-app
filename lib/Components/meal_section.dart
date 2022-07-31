@@ -46,7 +46,7 @@ class _MealSectionState extends State<MealSection> {
                       widget.label,
                       style: TextStyle(
                         fontSize: 20,
-                        color: ThemeInfo.primaryTextColor,
+                        color: ThemeInfo.secondaryTextColor,
                       ),
                     ),
                     const Spacer(),
@@ -56,7 +56,7 @@ class _MealSectionState extends State<MealSection> {
                       child: Icon(
                         Icons.keyboard_arrow_down_outlined,
                         size: 30,
-                        color: ThemeInfo.primaryTextColor,
+                        color: ThemeInfo.secondaryTextColor,
                       ),
                     ),
                   ],

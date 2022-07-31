@@ -227,7 +227,7 @@ class _campageState extends State<campage> {
                           );
                         });
                       },
-                      items: mealTime.map((String value) {
+                      items: mealTimes.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),

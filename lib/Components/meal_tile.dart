@@ -67,7 +67,8 @@ class MealTile extends StatelessWidget {
                                 : meal["amount"])
                             .toString() +
                         ' ' +
-                        meal['unit'],
+                        meal['unit'].replaceRange(
+                            0, 1, meal['unit'].substring(0, 1).toUpperCase()),
                     style: const TextStyle(fontSize: 15, color: Colors.black54),
                   ),
                   Text(

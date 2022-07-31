@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_app/Components/Tab_Views/home_view.dart';
+import 'package:mobile_app/Components/count_adder.dart';
 import 'package:mobile_app/Models/food_model.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
+import 'package:mobile_app/constants.dart';
 
 class AddNewFoodScreen extends StatefulWidget {
   const AddNewFoodScreen({
@@ -41,7 +44,9 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: ThemeInfo.appBarColor,
         title: widget.appBarTitle,
         actions: [
           MaterialButton(
@@ -96,50 +101,98 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.search),
+      /*floatingActionButton: FloatingActionButton(
+        child: Icon(searchIcon),
+        backgroundColor: ThemeInfo.appAndBottomBarColor,
         onPressed: () async {
           result = await showSearch<FoodModel?>(
             context: context,
             delegate: delegate,
           );
         },
-      ),
+      ),*/
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            if (result != null)
-              Row(
-                children: [
-                  Center(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      color: Colors.teal,
-                      elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          result!.name,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 18),
-                        ),
-                      ),
+            GestureDetector(
+              onTap: () async {
+                result = await showSearch<FoodModel?>(
+                  context: context,
+                  delegate: delegate,
+                );
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                decoration: BoxDecoration(
+                  color: ThemeInfo.dropdownColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      result == null ? "Search food" : result!.name,
+                      style: TextStyle(
+                          color: result == null
+                              ? Colors.grey[600]
+                              : ThemeInfo.primaryTextColor,
+                          fontSize: 18),
                     ),
-                  ),
-                ],
+                    const Spacer(),
+                    Icon(
+                      searchIcon,
+                      size: 25,
+                    ),
+                  ],
+                ),
               ),
+            ),
             const SizedBox(
               height: 20,
             ),
-            NumberInput(
+            if (result != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Add servings",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 3,
+                          child: CountAdder(
+                            onChanged: (val) {
+                              amount1 = val.toString();
+                            },
+                            isInt: false,
+                            height: 50,
+                            initialValue: double.parse(amount1),
+                          )),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      if (result != null)
+                        Text(
+                          result!.unit.replaceRange(
+                              0, 1, result!.unit.substring(0, 1).toUpperCase()),
+                          style: const TextStyle(fontSize: 17),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            /*NumberInput(
               label: "Enter the amount",
               value: (double.parse(amount1).toInt() == double.parse(amount1)
                   ? double.parse(amount1).toInt().toString()
                   : amount1),
-            )
+            )*/
           ],
         ),
       ),

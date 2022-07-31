@@ -8,11 +8,15 @@ class CountAdder extends StatefulWidget {
     required this.isInt,
     this.validator,
     this.hasError = false,
+    this.height,
+    this.initialValue,
   }) : super(key: key);
   final Function onChanged;
   final bool isInt;
-  final validator;
+  final Function? validator;
+  final double? height;
   final bool hasError;
+  final double? initialValue;
 
   @override
   State<CountAdder> createState() => _CountAdderState();
@@ -25,7 +29,8 @@ class _CountAdderState extends State<CountAdder> {
   @override
   void initState() {
     super.initState();
-    //countController.text = count.toInt().toString();
+    countController.text = (widget.initialValue ?? count.toInt()).toString();
+    count = widget.initialValue ?? count;
   }
 
   @override
@@ -34,7 +39,7 @@ class _CountAdderState extends State<CountAdder> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: 60,
+          height: widget.height ?? 60,
           padding: const EdgeInsets.only(left: 5),
           decoration: BoxDecoration(
               color: ThemeInfo.textFieldFillColor,
@@ -50,9 +55,12 @@ class _CountAdderState extends State<CountAdder> {
                 child: TextFormField(
                   controller: countController,
                   onChanged: (val) {
-                    count = double.tryParse(val) ?? 0.0;
+                    count = (double.tryParse(val) ?? 0.0) < 0
+                        ? 0.0
+                        : (double.tryParse(val) ?? 0.0);
                     widget.onChanged(count);
                   },
+                  textAlign: TextAlign.end,
                   keyboardType: TextInputType.number,
                   cursorColor: Colors.black,
                   decoration: const InputDecoration(
@@ -61,6 +69,9 @@ class _CountAdderState extends State<CountAdder> {
                     border: InputBorder.none,
                   ),
                 ),
+              ),
+              const SizedBox(
+                width: 2,
               ),
               Column(
                 children: [
@@ -92,7 +103,8 @@ class _CountAdderState extends State<CountAdder> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        if (count > 0) {
+                        print(count >= 1);
+                        if (count > 1) {
                           count--;
                           countController.text = count.toString();
                           widget.onChanged(count);
@@ -102,7 +114,9 @@ class _CountAdderState extends State<CountAdder> {
                       child: Container(
                         width: 50,
                         child: Icon(Icons.keyboard_arrow_down,
-                            color: ThemeInfo.textFieldBorderColor),
+                            color: count > 1
+                                ? ThemeInfo.textFieldBorderColor
+                                : ThemeInfo.disabledColor),
                         decoration: BoxDecoration(
                           border: Border(
                             left: BorderSide(
