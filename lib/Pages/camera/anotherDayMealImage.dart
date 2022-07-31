@@ -21,7 +21,7 @@ import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
 import '../../constants.dart';
 import '../add_a_meal_screen.dart';
-
+//delete----------------------------------------------------------------------------------------------------------------
 class mealIamgeAnotherDay extends StatefulWidget {
   const mealIamgeAnotherDay({Key? key}) : super(key: key);
 
@@ -129,16 +129,16 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Select Date & Mealtime"),
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 60.2,
-        toolbarOpacity: 0.8,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
-        ),
-        elevation: 0.00,
+        // titleSpacing: 00.0,
+        // centerTitle: true,
+        // toolbarHeight: 60.2,
+        // toolbarOpacity: 0.8,
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //       bottomRight: Radius.circular(25),
+        //       bottomLeft: Radius.circular(25)),
+        // ),
+        // elevation: 0.00,
         backgroundColor: ThemeInfo.primaryColor,
       ),
       floatingActionButton: FloatingActionButton(

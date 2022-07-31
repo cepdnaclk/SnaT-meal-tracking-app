@@ -157,7 +157,47 @@ class imageStorage {
     print("\n deletefromfirebase finished \n ");
     return urldelete;
   }
+  //--------------------------------------------------------------------------------------------------------------------------
+  Future<List<String>> allImagesListofADate(List<String> datelist , List<String> mealTimes) async {
+    List<String> urlList = [];
+    // List<String> mealTimes = [
+    //   "Breakfast",
+    //   "Morning Snacks",
+    //   "Lunch",
+    //   "Evening Snacks",
+    //   "Dinner",
+    //   "Others"
+    // ];
+    if (mealTimes.isEmpty){
+      mealTimes = [
+      "Breakfast",
+      "Morning Snacks",
+      "Lunch",
+      "Evening Snacks",
+      "Dinner",
+      "Others"
+    ];
+    }
+    for (var date in datelist) {
+      for (var mealTime in mealTimes) {
+        final urls = await _firestore
+            .collection('user_Images')
+            .doc(id)
+            .collection('ImageURls')
+            .doc(date)
+            .collection(mealTime)
+            .get()
+            .catchError((error) => print("Failed to delete user: $error"));
 
+        for (var url in urls.docs) {
+          print(url.data()['url']);
+          urlList.add(url.data()['url'].toString());
+        }
+      }
+    }
+    return urlList;
+  }
+  //-------------------------------------------------------------------------------------------------------------------------
   // delete image with the stored url after a month
   Future<void> deleteAfterExpire() async {
     var date = DateTime.now();
