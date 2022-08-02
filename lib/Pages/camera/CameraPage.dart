@@ -213,6 +213,17 @@ class _campageState extends State<campage> {
             const SizedBox(
               height: 20,
             ),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+              children:const [
+                Text(
+                  "Date and time:",
+                  style: TextStyle(fontSize: 20,),
+                ),
+              ]
+            ),
+
             DateTimeWidget(
               iconPic: const Icon(
                 Icons.calendar_today,
@@ -221,9 +232,9 @@ class _campageState extends State<campage> {
               text: DateTimeService.dateConverter(selectedDate),
               onPressed: (val) async {
                 selectedDate = val;
-                dateSelected = val.toSring();
+                //dateSelected = val.toSring();
                 print(selectedDate);
-                print(dateSelected);
+                //print(dateSelected);
                 setState(() {});
               },
             ),

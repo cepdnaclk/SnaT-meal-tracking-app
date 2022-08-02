@@ -27,7 +27,7 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 3);
+    _tabController = TabController(vsync: this, length: 2);
   }
 
 
@@ -35,7 +35,7 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 3,
+      length: 2,
       child: Scaffold(
           appBar:AppBar(
             backgroundColor: ThemeInfo.primaryColor,
@@ -51,24 +51,6 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
                 },
               ),
             title: Text('Meal Gallery'),
-            // actions: <Widget>[
-            //   Padding(
-            //       padding: EdgeInsets.only(right: 20.0),
-            //       child: GestureDetector(
-            //         onTap: () {
-            //           Navigator.of(context).push(MaterialPageRoute(
-            //             builder: (contex)
-            //             {//return CameraScreen(widget.cameras);
-            //               return const mealIamgeAnotherDay();
-            //             })
-            //         );
-            //           },
-            //         child: const Icon(
-            //             Icons.calendar_today
-            //         ),
-            //       )
-            //   ),
-            // ],
         ),
 
         drawer: const DashboardDrawer(),
@@ -90,9 +72,7 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
               Tab(
                 icon: Icon(Icons.find_in_page),
               ),
-              Tab(
-                icon: Icon(Icons.grid_on_outlined),
-              ),
+
             ],
           ),
         ),
@@ -101,7 +81,7 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
           controller: _tabController,
           children: const [
             campage(title: 'camera',),
-            selectDateShowImage(),
+            //selectDateShowImage(),
             Daterange(),
           ],
         ),

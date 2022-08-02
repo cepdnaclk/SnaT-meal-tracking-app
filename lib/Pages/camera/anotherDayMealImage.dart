@@ -173,9 +173,9 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
                 text: DateTimeService.dateConverter(selectedDate),
                 onPressed: (val) async {
                   selectedDate = val;
-                  dateSelected = val.toSring();
+                  //dateSelected = val.toSring();
                   print(selectedDate);
-                  print(dateSelected);
+                  //print(dateSelected);
                   setState(() {});
                 },
               ),

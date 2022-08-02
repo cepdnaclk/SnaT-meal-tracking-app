@@ -33,7 +33,7 @@ class _selectDateShowImageState extends State<selectDateShowImage> {
 
   void StateReload() {
     print("State reload");
-    staorage.deleteAfterExpire();
+    //staorage.deleteAfterExpire();
     setState(() {});
   }
 

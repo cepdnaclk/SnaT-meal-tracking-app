@@ -98,12 +98,12 @@ class listAccordingToDate extends StatelessWidget {
                         Card(
                             child: InkWell(
                               onTap: () {// view individual image
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (contex)
-                                    {
-                                      return showimage(snapshot.data[index],date,meaTime);
-                                    })
-                                );
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (contex)
+                                //     {
+                                //       return showimage(snapshot.data[index],date,meaTime);
+                                //     })
+                                // );
                               },
                               onLongPress: () {},
                               child: Image.network(

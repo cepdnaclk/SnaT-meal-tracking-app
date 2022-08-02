@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 //import 'package:photo_view/photo_view_gallery.dart';
 import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
+import 'camera_tabview.dart';
+import 'list_of_images.dart';
 import 'oneImageViewFromGrid.dart';
 import 'one_image_view_page.dart';
 
@@ -26,7 +28,50 @@ class ScrollViewlistAccordingToDates extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: title,
       home: Scaffold(
-          appBar: null,
+          appBar:AppBar(
+            title: Text("Image List"),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.line_weight_sharp),
+                tooltip: 'list Icon',
+                onPressed: () async {
+                  // String urlDelete = await staorage.deletefromfirebase(date,mealtime,imageurl);
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (contex) { //return CameraScreen(widget.cameras);
+                  //       return listAccordingToDate(date, mealtime,urlDelete);
+                  //     })
+                  // );
+                  //staorage.delete(imageurl);
+
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.grid_view),
+                tooltip: 'grid Icon',
+                onPressed: () async {
+                  Navigator.of(context).push(MaterialPageRoute(
+                          builder: (contex) { //return CameraScreen(widget.cameras);
+                            return gridview(dates,mealTimes);
+                          })
+                      );
+                },
+              ),
+            ],
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              tooltip: 'back',
+              onPressed: () {Navigator.of(context).push(MaterialPageRoute(
+                  builder: (contex)
+                  {//return CameraScreen(widget.cameras);
+                    return const tabviewcamera();
+                  })
+              );
+              },
+            ),
+
+            elevation: 0.00,
+            backgroundColor: ThemeInfo.primaryColor,
+          ),
           body: FutureBuilder(
             future: staorage.allImagesListofADate(dates,mealTimes),
             //getpaths(),
@@ -59,7 +104,7 @@ class ScrollViewlistAccordingToDates extends StatelessWidget {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (contex)
                                     {
-                                      return oneimageviewfromgrid(snapshot.data[index]);
+                                      return showimage(snapshot.data[index],dates,mealTimes);
                                     })
                                 );
                               },
