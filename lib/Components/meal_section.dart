@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
@@ -70,7 +69,7 @@ class _MealSectionState extends State<MealSection> {
             if (widget.mealItems!.isEmpty)
               if (showBreakfast)
                 Column(
-                  children: [],
+                  children: const [],
                 ),
             if (showBreakfast && widget.mealItems!.isNotEmpty)
               for (int i = 0; i < widget.mealItems!.length; i++)

@@ -36,7 +36,7 @@ class _campageState extends State<campage> {
   String? filePath;
   bool saved = true;
   late String dateSelected = "";
-  late String MealTime = "Others";
+  late String MealTime = "Other Meals";
   bool mealtimeselected = false;
 
   final imageStorage staorage = imageStorage();
@@ -115,19 +115,19 @@ class _campageState extends State<campage> {
       String filepath =
           '$filePath/' + now.toString() + '.png'; // make now as image name
       final File newImage =
-      await File(image.path).copy('$filePath/' + now.toString() + '.png');
+          await File(image.path).copy('$filePath/' + now.toString() + '.png');
       imageurlFromFireStore =
-      await staorage.uploadFile(filepath, now.toString() + ".png");
+          await staorage.uploadFile(filepath, now.toString() + ".png");
       print(imageurlFromFireStore);
 
       await staorage
           .setImageUrl(selectedDate.toString().split(' ')[0], MealTime,
-          imageurlFromFireStore)
+              imageurlFromFireStore)
           .then(
             (value) => Fluttertoast.showToast(
-          msg: "The image saved",
-        ),
-      );
+              msg: "The image saved",
+            ),
+          );
 
       if (image == null) return;
       setState(() {
@@ -163,8 +163,7 @@ class _campageState extends State<campage> {
           }
         },
       ),
-      body:
-      Padding(
+      body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           //children:
@@ -174,7 +173,7 @@ class _campageState extends State<campage> {
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               MaterialButton(
-                // Gallery
+                  // Gallery
 
                   elevation: 10,
                   hoverElevation: 100,
@@ -193,7 +192,7 @@ class _campageState extends State<campage> {
                     pickImage();
                   }),
               MaterialButton(
-                // for camera
+                  // for camera
                   elevation: 10,
                   hoverElevation: 100,
                   focusElevation: 50,
@@ -216,14 +215,14 @@ class _campageState extends State<campage> {
             Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-              children:const [
-                Text(
-                  "Date and time:",
-                  style: TextStyle(fontSize: 20,),
-                ),
-              ]
-            ),
-
+                children: const [
+                  Text(
+                    "Date and time:",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ]),
             DateTimeWidget(
               iconPic: const Icon(
                 Icons.calendar_today,
@@ -285,16 +284,15 @@ class _campageState extends State<campage> {
               height: 20,
             ),
             image != null
-                ? Image.file(image!) :
-            const Center(
-              heightFactor:2.2,
-              child: Icon(
-                Icons.food_bank,
-                size: 180,
-                color: Color.fromARGB(100, 125, 156, 139),
-              ),
-            ),
-
+                ? Image.file(image!)
+                : const Center(
+                    heightFactor: 2.2,
+                    child: Icon(
+                      Icons.food_bank,
+                      size: 180,
+                      color: Color.fromARGB(100, 125, 156, 139),
+                    ),
+                  ),
           ],
           //   ),
           //   //child: raw(),

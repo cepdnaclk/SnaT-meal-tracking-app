@@ -21,6 +21,7 @@ import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
 import '../../constants.dart';
 import '../add_a_meal_screen.dart';
+
 //delete----------------------------------------------------------------------------------------------------------------
 class mealIamgeAnotherDay extends StatefulWidget {
   const mealIamgeAnotherDay({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _mealIamgeAnotherDayState extends State<mealIamgeAnotherDay> {
   XFile? new_IMAGE;
   String? filePath;
   bool saved = true;
-  late String MealTime = "Others";
+  late String MealTime = "Other Meals";
   late String dateSelected = "";
   final imageStorage staorage = imageStorage();
   final ImagePicker picker = ImagePicker();

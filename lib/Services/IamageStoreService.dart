@@ -122,7 +122,9 @@ class imageStorage {
     reversedList = List.from(files.reversed);
     return reversedList;
   }
-  Future<List<String>> takeMealTimeAndDateFromUrl(String urlserch, List<String> datelist) async{
+
+  Future<List<String>> takeMealTimeAndDateFromUrl(
+      String urlserch, List<String> datelist) async {
     print("+======+");
     print(datelist);
     List<String> details = [];
@@ -133,7 +135,7 @@ class imageStorage {
       "Lunch",
       "Evening Snacks",
       "Dinner",
-      "Others"
+      "Other Meals"
     ];
     for (var date in datelist) {
       for (var mealTime in mealTimes) {
@@ -147,10 +149,10 @@ class imageStorage {
             .catchError((error) => print("Failed to delete user: $error"));
 
         for (var url in urls.docs) {
-          if(url.data()['url'].toString() == urlserch.toString()){
+          if (url.data()['url'].toString() == urlserch.toString()) {
             details.add(date);
             details.add(mealTime);
-          }else{
+          } else {
             print("no");
           }
           //print(url.data()['url']);
@@ -200,8 +202,10 @@ class imageStorage {
     print("\n deletefromfirebase finished \n ");
     return urldelete;
   }
+
   //--------------------------------------------------------------------------------------------------------------------------
-  Future<List<String>> allImagesListofADate(List<String> datelist , List<String> mealTimes) async {
+  Future<List<String>> allImagesListofADate(
+      List<String> datelist, List<String> mealTimes) async {
     List<String> urlList = [];
     // List<String> mealTimes = [
     //   "Breakfast",
@@ -211,15 +215,15 @@ class imageStorage {
     //   "Dinner",
     //   "Others"
     // ];
-    if (mealTimes.isEmpty){
+    if (mealTimes.isEmpty) {
       mealTimes = [
-      "Breakfast",
-      "Morning Snacks",
-      "Lunch",
-      "Evening Snacks",
-      "Dinner",
-      "Others"
-    ];
+        "Breakfast",
+        "Morning Snacks",
+        "Lunch",
+        "Evening Snacks",
+        "Dinner",
+        "Other Meals"
+      ];
     }
     for (var date in datelist) {
       for (var mealTime in mealTimes) {

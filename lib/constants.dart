@@ -81,5 +81,5 @@ List<String> mealTimes = [
   "Lunch",
   "Evening Snacks",
   "Dinner",
-  "Others"
+  "Other Meals"
 ];

@@ -93,7 +93,7 @@ class FirebaseServices {
         "Lunch": value.data()?['Lunch'] ?? [],
         "Evening Snacks": value.data()?['Evening Snacks'] ?? [],
         "Dinner": value.data()?['Dinner'] ?? [],
-        "Others": value.data()?['Others'] ?? [],
+        "Other Meals": value.data()?['Other Meals'] ?? [],
       };
     }).catchError((e) {
       print(e);
