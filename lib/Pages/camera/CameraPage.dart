@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+//import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,6 +13,8 @@ import 'package:mobile_app/Services/IamageStoreService.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../Components/date_time_widget.dart';
+import '../../Services/DateTime.dart';
 import '../../Theme/theme_info.dart';
 import '../../constants.dart';
 import '../add_a_meal_screen.dart';
@@ -32,6 +35,7 @@ class _campageState extends State<campage> {
   XFile? new_IMAGE;
   String? filePath;
   bool saved = true;
+  late String dateSelected = "";
   late String MealTime = "Others";
   bool mealtimeselected = false;
 
@@ -101,6 +105,7 @@ class _campageState extends State<campage> {
 
   // for save the image
   Future<void> saveimages(String filePath, XFile image) async {
+    print("++++++++++" + mealtimeselected.toString());
     if (mealtimeselected == true) {
       Fluttertoast.showToast(
         msg: "Please wait",
@@ -110,19 +115,19 @@ class _campageState extends State<campage> {
       String filepath =
           '$filePath/' + now.toString() + '.png'; // make now as image name
       final File newImage =
-          await File(image.path).copy('$filePath/' + now.toString() + '.png');
+      await File(image.path).copy('$filePath/' + now.toString() + '.png');
       imageurlFromFireStore =
-          await staorage.uploadFile(filepath, now.toString() + ".png");
+      await staorage.uploadFile(filepath, now.toString() + ".png");
       print(imageurlFromFireStore);
 
       await staorage
           .setImageUrl(selectedDate.toString().split(' ')[0], MealTime,
-              imageurlFromFireStore)
+          imageurlFromFireStore)
           .then(
             (value) => Fluttertoast.showToast(
-              msg: "The image saved",
-            ),
-          );
+          msg: "The image saved",
+        ),
+      );
 
       if (image == null) return;
       setState(() {
@@ -158,21 +163,28 @@ class _campageState extends State<campage> {
           }
         },
       ),
-      body: Center(
-        child: Column(
+      body:
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ListView(
+          //children:
+
+          // Center(
+          //   child: Column(
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               MaterialButton(
-                  // Gallery
-                  elevation: 0,
-                  hoverElevation: 0,
-                  focusElevation: 0,
+                // Gallery
+
+                  elevation: 10,
+                  hoverElevation: 100,
+                  focusElevation: 50,
                   highlightElevation: 0,
-                  textColor: Colors.black,
+                  color: ThemeInfo.primaryColor,
                   //color: Colors.white,
                   child: const Text("Pick from Gallery",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                       )),
@@ -181,15 +193,15 @@ class _campageState extends State<campage> {
                     pickImage();
                   }),
               MaterialButton(
-                  // for camera
-                  elevation: 0,
-                  hoverElevation: 0,
-                  focusElevation: 0,
+                // for camera
+                  elevation: 10,
+                  hoverElevation: 100,
+                  focusElevation: 50,
                   highlightElevation: 0,
-                  textColor: Colors.black,
+                  color: ThemeInfo.primaryColor,
                   child: const Text("Pick from Camera",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                       )),
@@ -198,6 +210,37 @@ class _campageState extends State<campage> {
                     pickImageC();
                   }),
             ]),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+              children:const [
+                Text(
+                  "Date and time:",
+                  style: TextStyle(fontSize: 20,),
+                ),
+              ]
+            ),
+
+            DateTimeWidget(
+              iconPic: const Icon(
+                Icons.calendar_today,
+              ),
+              selectedDate: selectedDate,
+              text: DateTimeService.dateConverter(selectedDate),
+              onPressed: (val) async {
+                selectedDate = val;
+                //dateSelected = val.toSring();
+                print(selectedDate);
+                //print(dateSelected);
+                setState(() {});
+              },
+            ),
+            const SizedBox(
+              height: 40,
+            ),
             FormField<String>(
               builder: (FormFieldState<String> state) {
                 return InputDecorator(
@@ -239,21 +282,24 @@ class _campageState extends State<campage> {
               },
             ),
             const SizedBox(
-              height: 2,
+              height: 20,
             ),
             image != null
-                ? Image.file(image!)
-                : const Center(
-                    heightFactor: 2.2,
-                    child: Icon(
-                      Icons.food_bank,
-                      size: 180,
-                      color: Color.fromARGB(100, 125, 156, 139),
-                    ),
-                  ),
+                ? Image.file(image!) :
+            const Center(
+              heightFactor:2.2,
+              child: Icon(
+                Icons.food_bank,
+                size: 180,
+                color: Color.fromARGB(100, 125, 156, 139),
+              ),
+            ),
+
           ],
+          //   ),
+          //   //child: raw(),
+          // ),
         ),
-        //child: raw(),
       ),
     );
   }

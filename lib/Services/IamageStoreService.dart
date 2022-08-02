@@ -122,10 +122,52 @@ class imageStorage {
     reversedList = List.from(files.reversed);
     return reversedList;
   }
+  Future<List<String>> takeMealTimeAndDateFromUrl(String urlserch, List<String> datelist) async{
+    print("+======+");
+    print(datelist);
+    List<String> details = [];
+
+    List<String> mealTimes = [
+      "Breakfast",
+      "Morning Snacks",
+      "Lunch",
+      "Evening Snacks",
+      "Dinner",
+      "Others"
+    ];
+    for (var date in datelist) {
+      for (var mealTime in mealTimes) {
+        final urls = await _firestore
+            .collection('user_Images')
+            .doc(id)
+            .collection('ImageURls')
+            .doc(date)
+            .collection(mealTime)
+            .get()
+            .catchError((error) => print("Failed to delete user: $error"));
+
+        for (var url in urls.docs) {
+          if(url.data()['url'].toString() == urlserch.toString()){
+            details.add(date);
+            details.add(mealTime);
+          }else{
+            print("no");
+          }
+          //print(url.data()['url']);
+          //urlList.add(url.data()['url'].toString());
+        }
+      }
+    }
+    print("=======================");
+    print(details);
+    return details;
+  }
 
   // delete images with url stored in  after push delete button
   Future<String> deletefromfirebase(
       String date, String mealtime, String urldelete) async {
+    print("deletefromfirebase");
+
     final urls = await _firestore
         .collection('user_Images')
         .doc(id)
@@ -138,9 +180,10 @@ class imageStorage {
     print("\n ============ \n urldelete = " + urldelete + "   \n\n");
 
     for (var url in urls.docs) {
-      print("\n url = from urls => " + url.data()['url']);
+      print("a\n");
+      print("\n url = from urls => " + url.data()['url'].toString());
       if (url.data()['url'].toString() == urldelete.toString()) {
-        print(url.data()['url'] + "\n selected \n");
+        print(url.data()['url'].toString() + "\n selected \n");
         await _firestore
             .collection('user_Images')
             .doc(id)
@@ -157,15 +200,19 @@ class imageStorage {
     print("\n deletefromfirebase finished \n ");
     return urldelete;
   }
-
-  // delete image with the stored url after a month
-  Future<void> deleteAfterExpire() async {
-    var date = DateTime.now();
-    var prevMonth = DateTime(date.year, date.month - 1, date.day);
-    String premonthFromToday = prevMonth.toString().split(' ')[0];
-    print(premonthFromToday);
-
-    List<String> mealTimes = [
+  //--------------------------------------------------------------------------------------------------------------------------
+  Future<List<String>> allImagesListofADate(List<String> datelist , List<String> mealTimes) async {
+    List<String> urlList = [];
+    // List<String> mealTimes = [
+    //   "Breakfast",
+    //   "Morning Snacks",
+    //   "Lunch",
+    //   "Evening Snacks",
+    //   "Dinner",
+    //   "Others"
+    // ];
+    if (mealTimes.isEmpty){
+      mealTimes = [
       "Breakfast",
       "Morning Snacks",
       "Lunch",
@@ -173,33 +220,69 @@ class imageStorage {
       "Dinner",
       "Others"
     ];
-    for (var mealTime in mealTimes) {
-      final urls = await _firestore
-          .collection('user_Images')
-          .doc(id)
-          .collection('ImageURls')
-          .doc(premonthFromToday)
-          .collection(mealTime)
-          .get()
-          .catchError((error) => print("Failed to delete user: $error"));
-      try {
+    }
+    for (var date in datelist) {
+      for (var mealTime in mealTimes) {
+        final urls = await _firestore
+            .collection('user_Images')
+            .doc(id)
+            .collection('ImageURls')
+            .doc(date)
+            .collection(mealTime)
+            .get()
+            .catchError((error) => print("Failed to delete user: $error"));
+
         for (var url in urls.docs) {
-          await _firestore
-              .collection('user_Images')
-              .doc(id)
-              .collection('ImageURls')
-              .doc(premonthFromToday)
-              .collection(mealTime)
-              .doc(url.reference.id)
-              .delete()
-              .catchError((error) => print("Failed to delete user: $error"));
-          delete(url);
+          print(url.data()['url']);
+          urlList.add(url.data()['url'].toString());
         }
-      } catch (e) {
-        print(e);
       }
     }
+    return urlList;
   }
+  //-------------------------------------------------------------------------------------------------------------------------
+  // // delete image with the stored url after a month
+  // Future<void> deleteAfterExpire() async {
+  //   var date = DateTime.now();
+  //   var prevMonth = DateTime(date.year, date.month - 1, date.day);
+  //   String premonthFromToday = prevMonth.toString().split(' ')[0];
+  //   print(premonthFromToday);
+  //
+  //   List<String> mealTimes = [
+  //     "Breakfast",
+  //     "Morning Snacks",
+  //     "Lunch",
+  //     "Evening Snacks",
+  //     "Dinner",
+  //     "Others"
+  //   ];
+  //   for (var mealTime in mealTimes) {
+  //     final urls = await _firestore
+  //         .collection('user_Images')
+  //         .doc(id)
+  //         .collection('ImageURls')
+  //         .doc(premonthFromToday)
+  //         .collection(mealTime)
+  //         .get()
+  //         .catchError((error) => print("Failed to delete user: $error"));
+  //     try {
+  //       for (var url in urls.docs) {
+  //         await _firestore
+  //             .collection('user_Images')
+  //             .doc(id)
+  //             .collection('ImageURls')
+  //             .doc(premonthFromToday)
+  //             .collection(mealTime)
+  //             .doc(url.reference.id)
+  //             .delete()
+  //             .catchError((error) => print("Failed to delete user: $error"));
+  //         delete(url);
+  //       }
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   }
+  // }
 
   // delete images from url
   Future<void> delete(String url) async {

@@ -11,12 +11,26 @@ import 'list_of_images.dart';
 
 class showimage extends StatelessWidget {
   var imageurl;
-  String date;
-  String mealtime;
+  late String date;
+  late String mealtime;
   final imageStorage staorage = imageStorage();
   late String docid;
-  showimage(this.imageurl,this.date,this.mealtime) {
+  List <String> datelist;
+  List <String> mealtimes;
+  late List <String> details;
+
+  showimage(this.imageurl,this.datelist,this.mealtimes, {Key? key}) : super(key: key) {
+    print("showimage");
     print(imageurl);
+    mealtimeAndDate();
+
+  }
+  Future<void> mealtimeAndDate() async{
+     details = await staorage.takeMealTimeAndDateFromUrl(imageurl, datelist) ;
+     date = details[0];
+     mealtime = details[1];
+     print(date+"  "+mealtime);
+
   }
 
   @override
@@ -26,7 +40,7 @@ class showimage extends StatelessWidget {
       //title: 'EasyFlutter',
       home: Scaffold(
         appBar:AppBar(
-          title: Text(date +' '+mealtime),
+          title: Text("A MEAL"),
           actions: [
             IconButton(
               icon: const Icon(Icons.delete_outline),
@@ -35,7 +49,7 @@ class showimage extends StatelessWidget {
                 String urlDelete = await staorage.deletefromfirebase(date,mealtime,imageurl);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (contex) { //return CameraScreen(widget.cameras);
-                      return listAccordingToDate(date, mealtime,urlDelete);
+                      return gridview(datelist, mealtimes);
                     })
                 );
                 //staorage.delete(imageurl);
@@ -46,33 +60,62 @@ class showimage extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             tooltip: 'back',
-            onPressed: () {Navigator.of(context).push(MaterialPageRoute(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
                 builder: (contex)
                 {//return CameraScreen(widget.cameras);
-                  return listAccordingToDate(date,mealtime,"");
+                  return gridview(datelist, mealtimes);
                 })
             );
             },
           ),
-          titleSpacing: 00.0,
-          centerTitle: true,
-          toolbarHeight: 60.2,
-          toolbarOpacity: 0.8,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(25),
-                bottomLeft: Radius.circular(25)),
-          ),
           elevation: 0.00,
           backgroundColor: ThemeInfo.primaryColor,
         ),
-        body: Center(
-          child: Image.network(
-            imageurl,
-            height: 400,
-            width: 400,
-          ),
-        ),
+
+
+          body: FutureBuilder(
+            future:mealtimeAndDate(),
+            //getpaths(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                // untill the data is load
+                return const Center(
+                  //child: Text('Waiting'),
+                  child:
+                  CircularProgressIndicator(backgroundColor: Colors.greenAccent,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),),
+                );
+              } else {
+                if (snapshot.hasError) {
+                  // for errors
+                  return Text(snapshot.error.toString());
+                } else {
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Image.network(
+                                  imageurl,
+                                  height: 400,
+                                  width: 400,
+                                ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                        Text(details[0]),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                          Text(details[1])
+
+                  ]
+                  );
+                }
+              }
+            },
+          )
       ),
     );
   }

@@ -1,36 +1,32 @@
-/*
- ALL ABOUT THE MEAL GALLERY
- */
-// importing packeges
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+//import 'package:photo_view/photo_view.dart';
+//import 'package:photo_view/photo_view_gallery.dart';
 import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
-import 'CameraPage.dart';
 import 'camera_tabview.dart';
-import 'listOfImagesFromDates.dart';
+import 'list_of_images.dart';
 import 'oneImageViewFromGrid.dart';
 import 'one_image_view_page.dart';
-class gridview extends StatelessWidget {
 
+class ScrollViewlistAccordingToDates extends StatelessWidget {
   final imageStorage staorage = imageStorage();
   var image_path = <String>[]; // Creates growable list.
   List <String> dates=[];
   List <String>imageList =[];
   List<String> mealTimes = [];
 
-  gridview(List <String> dates , List<String> mealTimes) {
+  ScrollViewlistAccordingToDates(List <String> dates , List<String> mealTimes) {
     this.dates = dates;
     this.mealTimes = mealTimes;
   }
 
   @override
   Widget build(BuildContext context) {
-    //const title = 'Meal Gallery'; // main Title
-
+    const title = 'Meal Gallery'; // main Title
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //title: title,
+      title: title,
       home: Scaffold(
           appBar:AppBar(
             title: Text("Image List"),
@@ -39,11 +35,13 @@ class gridview extends StatelessWidget {
                 icon: const Icon(Icons.line_weight_sharp),
                 tooltip: 'list Icon',
                 onPressed: () async {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (contex) { //return CameraScreen(widget.cameras);
-                        return ScrollViewlistAccordingToDates(dates,mealTimes);
-                      })
-                  );
+                  // String urlDelete = await staorage.deletefromfirebase(date,mealtime,imageurl);
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (contex) { //return CameraScreen(widget.cameras);
+                  //       return listAccordingToDate(date, mealtime,urlDelete);
+                  //     })
+                  // );
+                  //staorage.delete(imageurl);
 
                 },
               ),
@@ -51,7 +49,11 @@ class gridview extends StatelessWidget {
                 icon: const Icon(Icons.grid_view),
                 tooltip: 'grid Icon',
                 onPressed: () async {
-
+                  Navigator.of(context).push(MaterialPageRoute(
+                          builder: (contex) { //return CameraScreen(widget.cameras);
+                            return gridview(dates,mealTimes);
+                          })
+                      );
                 },
               ),
             ],
@@ -79,8 +81,8 @@ class gridview extends StatelessWidget {
                 return const Center(
                   //child: Text('Waiting'),
                   child:
-                  CircularProgressIndicator(backgroundColor: Colors.limeAccent,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.green),),
+                  CircularProgressIndicator(backgroundColor: Colors.greenAccent,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),),
                 );
               } else {
                 if (snapshot.hasError) {
@@ -90,15 +92,15 @@ class gridview extends StatelessWidget {
                   return GridView.builder(
                     gridDelegate: // grid view
                     const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
+                      crossAxisCount: 1,
+                      mainAxisSpacing: 10,
                     ),
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return
                         Card(
                             child: InkWell(
-                              onTap: () {
+                              onTap: () {// view individual image
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (contex)
                                     {
@@ -111,28 +113,26 @@ class gridview extends StatelessWidget {
                                 snapshot.data[index],
                               ),
                             )
-
                         );
-
                     },
                   );
                 }
               }
             },
-          )),
+          )
+      ),
     );
   }
 }
 
-// class MyFileList extends StatefulWidget {
-//   const MyFileList({Key? key}) : super(key: key);
+// class ScrollViewlistAccordingToDates extends StatefulWidget {
 //   @override
 //   State<StatefulWidget> createState() {
-//     return _MyFileList();
+//     return _ScrollViewlist();
 //   }
 // }
-//
-// class _MyFileList extends State<MyFileList> {
+
+// class _ScrollViewlist extends State<ScrollViewlistAccordingToDates> {
 //   //var files;
 //   final imageStorage staorage = imageStorage();
 //   var image_path = <String>[]; // Creates growable list.
@@ -141,20 +141,17 @@ class gridview extends StatelessWidget {
 //   void initState() {
 //     print("====================================================================\n");
 //     print("dsds\n");
-//     staorage.deleteAfterExpire();
 //     super.initState();
 //   }
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     //const title = 'Meal Gallery'; // main Title
-//
+//     const title = 'Meal Gallery'; // main Title
 //     return MaterialApp(
 //       debugShowCheckedModeBanner: false,
-//       //title: title,
+//       title: title,
 //       home: Scaffold(
 //           appBar: null,
-//
 //           body: FutureBuilder(
 //             future: staorage.loadImages(),
 //             //getpaths(),
@@ -164,7 +161,7 @@ class gridview extends StatelessWidget {
 //                 return const Center(
 //                   //child: Text('Waiting'),
 //                   child:
-//                   CircularProgressIndicator(backgroundColor: Colors.limeAccent,
+//                   CircularProgressIndicator(backgroundColor: Colors.red,
 //                     valueColor: AlwaysStoppedAnimation<Color>(Colors.green),),
 //                 );
 //               } else {
@@ -175,36 +172,35 @@ class gridview extends StatelessWidget {
 //                   return GridView.builder(
 //                     gridDelegate: // grid view
 //                     const SliverGridDelegateWithFixedCrossAxisCount(
-//                       crossAxisCount: 2,
-//                       mainAxisSpacing: 20,
+//                       crossAxisCount: 1,
+//                       mainAxisSpacing: 10,
 //                     ),
 //                     itemCount: snapshot.data.length,
 //                     itemBuilder: (BuildContext context, int index) {
 //                       return
 //                         Card(
-//                           child: InkWell(
-//                               onTap: () {
-//                                 // Navigator.of(context).push(MaterialPageRoute(
-//                                 //     builder: (contex)
-//                                 //     {
-//                                 //       return oneimageviewfromgrid(snapshot.data[index]);
-//                                 //     })
-//                                 // );
+//                             child: InkWell(
+//                               onTap: () {// view individual image
+//                                 Navigator.of(context).push(MaterialPageRoute(
+//                                     builder: (contex)
+//                                     {
+//                                       return oneimageviewfromgrid(snapshot.data[index]);
+//                                     })
+//                                 );
 //                               },
 //                               onLongPress: () {},
 //                               child: Image.network(
-//                                   snapshot.data[index],
+//                                 snapshot.data[index],
 //                               ),
-//                           )
-//
+//                             )
 //                         );
-//
 //                     },
 //                   );
 //                 }
 //               }
 //             },
-//           )),
+//           )
+//       ),
 //     );
 //   }
 // }

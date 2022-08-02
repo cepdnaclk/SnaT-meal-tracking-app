@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
 import 'list_of_images.dart';
 
+// delete---------------==================================================================================================
+
 class mealview extends StatelessWidget {
   const mealview({Key? key}) : super(key: key);
 
@@ -42,7 +44,7 @@ class mealview extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     selectDateShowImage(),
-                    MyFileList(),
+                    //MyFileList(),
 
                     //ScrollViewlist(),
                   ],
