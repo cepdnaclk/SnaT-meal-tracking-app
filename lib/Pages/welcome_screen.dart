@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Pages/login_screen.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
@@ -21,33 +18,14 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  checkAuthentication() {
-    if (user != null) {
-      Navigator.of(context)
-          .push(CustomPageRoute(child: const DashboardLayout()));
-    } else {
-      Navigator.of(context).push(CustomPageRoute(child: const LoginScreen()));
-    }
-  }
-
-  late Timer timer;
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      timer.cancel();
-      //Navigator.of(context).push(
-      //    CustomPageRoute(child: LoginScreen(), transition: "slide left"));
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => DashboardLayout()));
-      // checkAuthentication();
-    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
   }
 
   int screenNo = 0;
@@ -132,10 +110,28 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       )
                   ],
                 ),
-                const Center(
-                    child: AppLogoText(
-                  color: Colors.white,
-                )),
+                const Spacer(),
+                Center(
+                    child: screenNo == 2
+                        ? ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                CustomPageRoute(
+                                  child: const LoginScreen(),
+                                ),
+                              );
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(15.0),
+                              child: Text(
+                                "Continue",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ))
+                        : const AppLogoText(
+                            color: Colors.white,
+                          )),
+                const Spacer(),
               ],
             ),
           ),

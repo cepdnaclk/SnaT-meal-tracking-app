@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print(user == null);
     return GetMaterialApp(
       translations: LocalString(),
       locale: const Locale(
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      home: user == null ? const WelcomeScreen() : const DashboardLayout(),
+      home: user != null ? const DashboardLayout() : const WelcomeScreen(),
     );
   }
 }
