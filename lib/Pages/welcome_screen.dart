@@ -36,7 +36,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: ThemeInfo.primaryColor,
+      backgroundColor: ThemeInfo.welcomePageColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -114,6 +114,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 Center(
                     child: screenNo == 2
                         ? ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.white),
                             onPressed: () {
                               Navigator.of(context).push(
                                 CustomPageRoute(
@@ -121,15 +123,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 ),
                               );
                             },
-                            child: const Padding(
-                              padding: EdgeInsets.all(15.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
                               child: Text(
                                 "Continue",
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: ThemeInfo.primaryColor),
                               ),
                             ))
                         : const AppLogoText(
-                            color: Colors.white,
+                            color: Colors.black,
                           )),
                 const Spacer(),
               ],
