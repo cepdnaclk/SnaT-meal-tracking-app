@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:mobile_app/LocaleString.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
+import 'package:mobile_app/Pages/register_page.dart';
 
 //List<CameraDescription> cameras = [];
 
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
       ),
 
       home: WelcomeScreen(),
+      
     );
   }
 }
