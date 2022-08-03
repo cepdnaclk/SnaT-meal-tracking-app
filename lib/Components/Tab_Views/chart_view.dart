@@ -55,7 +55,7 @@ class _ChartViewState extends State<ChartView> {
       i++;
     }
     for (Map data in weekStat.reversed) {
-      weekChartData.add(ChartData(data['date'].toString().substring(5),
+      weekChartData.add(ChartData(data['dayOfWeek'].toString().substring(0, 3),
           data['count'].toDouble(), Colors.green));
       weekMax = weekMax < data['count'].toDouble()
           ? data['count'].toDouble()
