@@ -2,6 +2,7 @@
   show individual images the image url is requied for this
  */
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
 import '../add_a_meal_screen.dart';
@@ -40,7 +41,8 @@ class showimage extends StatelessWidget {
       //title: 'EasyFlutter',
       home: Scaffold(
         appBar:AppBar(
-          title: Text("A MEAL"),
+          title: Text(""
+              "".tr),
           actions: [
             IconButton(
               icon: const Icon(Icons.delete_outline),

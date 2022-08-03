@@ -90,6 +90,8 @@ class userInfor {
     return gender;
   }
 
+
+
   Future<String> getNameFromFirebase() async {
     List<String> namelist = [];
     final urls = await _firestore

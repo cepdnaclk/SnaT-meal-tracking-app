@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 //import 'package:photo_view/photo_view.dart';
 //import 'package:photo_view/photo_view_gallery.dart';
 import '../../Services/IamageStoreService.dart';
@@ -29,7 +30,7 @@ class ScrollViewlistAccordingToDates extends StatelessWidget {
       title: title,
       home: Scaffold(
           appBar:AppBar(
-            title: Text("Image List"),
+            title: Text("Image_List".tr),
             actions: [
               IconButton(
                 icon: const Icon(Icons.line_weight_sharp),

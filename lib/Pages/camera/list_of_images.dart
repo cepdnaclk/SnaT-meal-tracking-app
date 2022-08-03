@@ -4,6 +4,7 @@
 // importing packeges
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
 import 'CameraPage.dart';
@@ -33,7 +34,7 @@ class gridview extends StatelessWidget {
       //title: title,
       home: Scaffold(
           appBar:AppBar(
-            title: Text("Image List"),
+            title: Text("Image_List".tr),
             actions: [
               IconButton(
                 icon: const Icon(Icons.line_weight_sharp),

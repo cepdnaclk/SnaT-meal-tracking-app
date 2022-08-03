@@ -2,6 +2,7 @@
  this is for main tab view to take image part or view meal images
  */
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import '../../Components/Tab_Views/home_view.dart';
@@ -50,7 +51,7 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
                 );
                 },
               ),
-            title: Text('Meal Gallery'),
+            title: Text('Meal_Gallery'.tr),
         ),
 
         drawer: const DashboardDrawer(),

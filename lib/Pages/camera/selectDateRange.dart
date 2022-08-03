@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
@@ -215,8 +216,8 @@ class MyAppState extends State<Daterange> {
                 color: ThemeInfo.primaryColor,
                 //color: Colors.white,
                 child:
-                const Text("Pick date range",
-                    style: TextStyle(
+                 Text("Pick_date_range".tr,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
@@ -228,17 +229,17 @@ class MyAppState extends State<Daterange> {
                 height: 50,
               ),
 
-              const Text(
-                "Start date:",
-                style: TextStyle(fontSize: 24, color: Colors.black),
+               Text(
+                "Start_date:".tr,
+                style: const TextStyle(fontSize: 24, color: Colors.black),
               ),
               const SizedBox(
                 height: 50,
               ),
               // End date
-              const Text(
-                  "End date:",
-                  style: TextStyle(fontSize: 24, color: Colors.black)
+               Text(
+                  "End_date:".tr,
+                  style: const TextStyle(fontSize: 24, color: Colors.black)
               ),
               const SizedBox(
                 height: 50,
@@ -260,8 +261,8 @@ class MyAppState extends State<Daterange> {
               highlightElevation: 0,
               color: ThemeInfo.primaryColor,
               //color: Colors.white,
-              child: const Text("Pick date range",
-                  style: TextStyle(
+              child:  Text("Pick_date_range".tr,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
@@ -273,7 +274,7 @@ class MyAppState extends State<Daterange> {
             ),
             // Start date
             Text(
-              "Start date: ${_selectedDateRange?.start.toString().split(' ')[0]}",
+              "Start_date: ${_selectedDateRange?.start.toString().split(' ')[0]}".tr,
               style: const TextStyle(fontSize: 24, color:  Colors.black),
             ),
             const SizedBox(
@@ -281,7 +282,7 @@ class MyAppState extends State<Daterange> {
             ),
             // End date
             Text(
-                "End date: ${_selectedDateRange?.end.toString().split(' ')[0]}",
+                "End_date: ${_selectedDateRange?.end.toString().split(' ')[0]}".tr,
                 style: const TextStyle(fontSize: 24, color: Colors.black)),
             const SizedBox(
               height: 50,
