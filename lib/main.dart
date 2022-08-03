@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      home: user == null ? const DashboardLayout() : const WelcomeScreen(),
+      home: user != null ? const DashboardLayout() : const WelcomeScreen(),
     );
   }
 }
