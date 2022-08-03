@@ -79,12 +79,6 @@ class _DashboardLayoutState extends State<DashboardLayout>
                   Icons.local_dining,
                 ),
               ),
-              const Tab(
-                icon: Icon(Icons.calendar_today),
-              ),
-              const Tab(
-                icon: Icon(Icons.insert_chart),
-              ),
               Tab(
                   child: Container(
                 // custom bmi icon for tab view
@@ -96,6 +90,12 @@ class _DashboardLayoutState extends State<DashboardLayout>
                   width: 28.0,
                 ),
               )),
+              const Tab(
+                icon: Icon(Icons.calendar_today),
+              ),
+              const Tab(
+                icon: Icon(Icons.insert_chart),
+              ),
             ],
           ),
         ),
@@ -106,9 +106,9 @@ class _DashboardLayoutState extends State<DashboardLayout>
             HomeView(
               isDone: isDone,
             ),
+            const BmiCalcView(),
             const SchedulingView(),
             const ChartView(),
-            const BmiCalcView(),
           ],
         ),
       ),

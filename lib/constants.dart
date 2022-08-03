@@ -1,6 +1,14 @@
 // Text
 import 'package:flutter/material.dart';
 
+List<Map> landingPageItems = [
+  {'image': "assets/images/screen11.png", "text": "Add and edit you meal"},
+  {
+    'image': "assets/images/screen22.png",
+    "text": "Track you daily and weekly progress"
+  },
+  {'image': "assets/images/screen33.png", "text": "Calculate you BMI"},
+];
 String appName = "SnaT";
 String introduction =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
@@ -82,4 +90,14 @@ List<String> mealTimes = [
   "Evening Snacks",
   "Dinner",
   "Other Meals"
+];
+
+List<String> daysInAWeek = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 ];

@@ -170,29 +170,33 @@ class TodayChart extends StatelessWidget {
                 ),
               ),
               Expanded(
-                //height: 30,
-                child: Wrap(
-                  clipBehavior: Clip.hardEdge,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  //alignment: WrapAlignment.center,
-                  children: [
-                    for (ChartData info in data)
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 2,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(
-                              color: Colors.black,
-                            )),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 5, vertical: 1),
-                        child: Text(
-                            "${info.x.toString().substring(0, 3)} - ${info.x}"),
-                      )
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Wrap(
+                    direction: Axis.vertical,
+                    clipBehavior: Clip.hardEdge,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    //alignment: WrapAlignment.center,
+                    children: [
+                      for (ChartData info in data)
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 2,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(
+                                color: Colors.black,
+                              )),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 1),
+                          child: Text(
+                            "${info.x.toString().substring(0, 3)} - ${info.x}",
+                          ),
+                        )
+                    ],
+                  ),
                 ),
               ),
               Button(

@@ -107,15 +107,18 @@ class FirebaseServices {
     DateTime today = DateTime.now();
     for (int i = 0; i < 7; i++) {
       weekStat.add({
-        'date': today.subtract(Duration(days: i)).toString().substring(0, 10)
+        'date': today.subtract(Duration(days: i)).toString().substring(0, 10),
+        'dayOfWeek': daysInAWeek[today.subtract(Duration(days: i)).weekday - 1],
       });
     }
+    print(weekStat);
     for (String meal in meals) {
       todayStat[meal] = 0;
       for (int i = 0; i < 7; i++) {
         weekStat[i][meal] = 0;
       }
     }
+    //print(weekStat);
 
     await FirebaseFirestore.instance
         .collection("users")
@@ -136,7 +139,7 @@ class FirebaseServices {
     }).catchError((e) {
       print(e);
     });
-
+    //print(todayStat);
     for (int i = 0; i < 7; i++) {
       await FirebaseFirestore.instance
           .collection("users")
@@ -155,15 +158,18 @@ class FirebaseServices {
             weekStat[i][food['type']] = weekStat[i][food['type']] + amount;
           }
         });
-      }).catchError((e) {});
+      }).catchError((e) {
+        print(e);
+      });
       int count = 0;
       weekStat[i].forEach((key, value) {
-        if (key != 'date' && value > 0) {
+        if (key != 'date' && key != 'dayOfWeek' && value > 0) {
           count++;
         }
       });
       weekStat[i]['count'] = count;
     }
+    print(weekStat);
     return true;
   }
 }
