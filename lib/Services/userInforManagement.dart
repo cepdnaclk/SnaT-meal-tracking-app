@@ -17,11 +17,83 @@ class userInfor {
     email = user?.email as String;
     id = user!.uid;
   }
+  void setHeightToFirebase(String height) {
+    _firestore
+        .collection('BMI_details')
+        .doc(id)
+        .collection('private_infor')
+        .add({
+      'height': height,
+    });
+  }
+  Future<String> getHeightFromFirebase() async {
+    List<String> heightlist = [];
+    final heights = await _firestore
+        .collection('BMI_details')
+        .doc(id)
+        .collection('private_infor')
+        .get();
+    for (var temheight in heights.docs) {
+      heightlist.add(temheight.data()['height'].toString());
+    }
+    // get last element of the list to get latest version
+    height = heightlist.last;
+    return height;
+  }
+
+  void setWeightToFirebase(String weight) {
+    _firestore
+        .collection('BMI_details')
+        .doc(id)
+        .collection('private_infor')
+        .add({
+      'weight': weight,
+    });
+  }
+
+  Future<String> getWeightFromFirebase() async {
+    List<String> weightlist = [];
+    final weights = await _firestore
+        .collection('BMI_details')
+        .doc(id)
+        .collection('private_infor')
+        .get();
+    for (var temweight in weights.docs) {
+      weightlist.add(temweight.data()['weight'].toString());
+    }
+    weight = weightlist.last;
+    // get last element of the list to get latest version
+    return gender;
+  }
+  void setGenderToFirebase(String gender) {
+    _firestore
+        .collection('BMI_details')
+        .doc(id)
+        .collection('private infor')
+        .add({
+      'gender': gender,
+    });
+  }
+
+  Future<String> getGenderFromFirebase() async {
+    List<String> Genderlist = [];
+    final genders = await _firestore
+        .collection('BMI_details')
+        .doc(id)
+        .collection('private_infor')
+        .get();
+    for (var temgender in genders.docs) {
+      Genderlist.add(temgender.data()['gender'].toString());
+    }
+    gender = Genderlist.last;
+    // get last element of the list to get latest version
+    return gender;
+  }
 
   Future<String> getNameFromFirebase() async {
     List<String> namelist = [];
     final urls = await _firestore
-        .collection('user_Images')
+        .collection('user_details')
         .doc(id)
         .collection('private_infor')
         .get();
@@ -46,7 +118,7 @@ class userInfor {
   Future<String> getIdFromFirebase() async {
     List<String> idlist = [];
     final ids = await _firestore
-        .collection('user_Images')
+        .collection('user_details')
         .doc(id)
         .collection('private_infor')
         .get();
@@ -73,80 +145,10 @@ class userInfor {
     return email;
   }
 
-  void setGenderToFirebase(String gender) {
-    _firestore
-        .collection('user_details')
-        .doc(id)
-        .collection('private infor')
-        .add({
-      'gender': gender,
-    });
-  }
 
-  Future<String> getGenderFromFirebase() async {
-    List<String> Genderlist = [];
-    final genders = await _firestore
-        .collection('user_Images')
-        .doc(id)
-        .collection('private_infor')
-        .get();
-    for (var temgender in genders.docs) {
-      Genderlist.add(temgender.data()['gender'].toString());
-    }
-    gender = Genderlist.last;
-    // get last element of the list to get latest version
-    return gender;
-  }
 
-  void setHeightToFirebase(String height) {
-    _firestore
-        .collection('user_details')
-        .doc(id)
-        .collection('private_infor')
-        .add({
-      'height': height,
-    });
-  }
 
-  Future<String> getHeightFromFirebase() async {
-    List<String> heightlist = [];
-    final heights = await _firestore
-        .collection('user_Images')
-        .doc(id)
-        .collection('private_infor')
-        .get();
-    for (var temheight in heights.docs) {
-      heightlist.add(temheight.data()['height'].toString());
-    }
-    // get last element of the list to get latest version
-    height = heightlist.last;
-    return height;
-  }
 
-  void setWeightToFirebase(String weight) {
-    _firestore
-        .collection('user_details')
-        .doc(id)
-        .collection('private_infor')
-        .add({
-      'weight': weight,
-    });
-  }
-
-  Future<String> getWeightFromFirebase() async {
-    List<String> weightlist = [];
-    final weights = await _firestore
-        .collection('user_Images')
-        .doc(id)
-        .collection('private_infor')
-        .get();
-    for (var temweight in weights.docs) {
-      weightlist.add(temweight.data()['weight'].toString());
-    }
-    weight = weightlist.last;
-    // get last element of the list to get latest version
-    return gender;
-  }
 
   void setBirthDateToFirebase(String birthDate) {
     _firestore
