@@ -317,6 +317,7 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                 meal: dateMeals[selectedMealTime][i],
                 reloadState: stateReload,
                 index: i,
+                context2: context,
               )
           ],
         ),

@@ -83,3 +83,13 @@ List<String> mealTimes = [
   "Dinner",
   "Other Meals"
 ];
+
+List<String> daysInAWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];

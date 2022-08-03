@@ -31,6 +31,8 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   @override
   void initState() {
     super.initState();
+    print("12xs");
+    print(result?.name);
   }
 
   @override

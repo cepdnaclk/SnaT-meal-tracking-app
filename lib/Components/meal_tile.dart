@@ -5,7 +5,7 @@ import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 import '../Models/food_model.dart';
 import '../Pages/add_new_food_screen.dart';
 
-enum Menu { itemOne, itemTwo, itemThree, itemFour }
+enum Menu { itemOne, itemTwo }
 
 class MealTile extends StatelessWidget {
   const MealTile({
@@ -13,11 +13,13 @@ class MealTile extends StatelessWidget {
     required this.meal,
     required this.reloadState,
     required this.index,
+    required this.context2,
   }) : super(key: key);
 
   final Map meal;
   final void Function() reloadState;
   final int index;
+  final BuildContext context2;
 
   void deleteTile() {
     dateMeals[selectedMealTime].remove(meal);
@@ -83,38 +85,42 @@ class MealTile extends StatelessWidget {
             PopupMenuButton(
               itemBuilder: (context) {
                 return <PopupMenuEntry<Menu>>[
-                  PopupMenuItem<Menu>(
+                  const PopupMenuItem<Menu>(
                     value: Menu.itemOne,
-                    onTap: () {
-                      editedIndex = index;
-                      FoodModel food = FoodModel(
-                          name: meal['food'],
-                          unit: meal['unit'],
-                          mealType: meal['type'],
-                          iconCode: meal["iconCode"]);
-                      result = food;
-                      amount1 = meal["amount"].toString();
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => AddNewFoodScreen(
-                          reloadState: reloadState,
-                          appBarTitle: const Text("Add Quantity"),
-                          tileEdit: true,
-                        ),
-                      );
-                    },
-                    child: const Text('Edit'),
+                    child: Text('Edit'),
                   ),
-                  PopupMenuItem<Menu>(
+                  const PopupMenuItem(
                     value: Menu.itemTwo,
-                    onTap: () {
-                      deleteTile();
-                      Navigator.pop(context);
-                      reloadState();
-                    },
-                    child: const Text('Delete'),
+                    child: Text('Delete'),
                   ),
                 ];
+              },
+              onSelected: (Menu val) {
+                switch (val) {
+                  case Menu.itemOne:
+                    editedIndex = index;
+                    FoodModel food = FoodModel(
+                        name: meal['food'],
+                        unit: meal['unit'],
+                        mealType: meal['type'],
+                        iconCode: meal["iconCode"]);
+                    result = food;
+                    amount1 = meal["amount"].toString();
+                    print(amount1);
+                    showModalBottomSheet(
+                      context: context2,
+                      builder: (context2) => AddNewFoodScreen(
+                        reloadState: reloadState,
+                        appBarTitle: const Text("Add Quantity"),
+                        tileEdit: true,
+                      ),
+                    );
+                    break;
+                  case Menu.itemTwo:
+                    deleteTile();
+                    reloadState();
+                    break;
+                }
               },
               position: PopupMenuPosition.under,
             ),

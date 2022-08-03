@@ -107,7 +107,7 @@ class FirebaseServices {
     DateTime today = DateTime.now();
     for (int i = 0; i < 7; i++) {
       weekStat.add({
-        'date': today.subtract(Duration(days: i)).toString().substring(0, 10)
+        'date': daysInAWeek[today.subtract(Duration(days: i)).weekday],
       });
     }
     for (String meal in meals) {
@@ -142,7 +142,7 @@ class FirebaseServices {
           .collection("users")
           .doc(user!.uid)
           .collection('foodLog')
-          .doc(weekStat[i]['date'])
+          .doc(today.subtract(Duration(days: i)).toString().substring(0, 10))
           .get()
           .then((value) {
         Map data = value.data() != null ? value.data() as Map : {};
