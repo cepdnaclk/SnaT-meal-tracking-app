@@ -1,8 +1,8 @@
-//import "package:camera/camera.dart";
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/LocaleString.dart';
+import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
@@ -23,7 +23,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: LocalString(),
-      locale: const Locale('en', 'US'), // default language - en-US
+      locale: const Locale(
+        'en',
+        'US',
+      ), // default language - en-US
       debugShowCheckedModeBanner: false,
       title: 'SnaT',
       theme: ThemeData(
@@ -31,7 +34,8 @@ class MyApp extends StatelessWidget {
         backgroundColor: ThemeInfo.primaryBGColor,
         primarySwatch: Colors.teal,
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: ThemeInfo.appAndBottomBarColor),
+          backgroundColor: ThemeInfo.appAndBottomBarColor,
+        ),
         appBarTheme: AppBarTheme(
           color: ThemeInfo.appAndBottomBarColor,
         ),
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      home: WelcomeScreen(),
+      home: user != null ? const WelcomeScreen() : const DashboardLayout(),
     );
   }
 }

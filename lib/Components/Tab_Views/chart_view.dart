@@ -131,9 +131,10 @@ class _ChartViewState extends State<ChartView> {
                                 size: size,
                                 max: meals.length.toDouble(),
                                 gradient: LinearGradient(
-                                    colors: ThemeInfo.weekChartGradient,
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter),
+                                  colors: ThemeInfo.weekChartGradient,
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
                                 data: weekChartData,
                                 controller: controller,
                                 interval: meals.length.toDouble(),

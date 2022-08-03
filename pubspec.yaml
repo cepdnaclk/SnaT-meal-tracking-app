@@ -54,6 +54,7 @@ dependencies:
   rxdart: ^0.27.4
   syncfusion_flutter_charts: ^20.2.38
   numberpicker: ^2.1.1
+  simple_shadow: ^0.3.0
 
 dev_dependencies:
   flutter_test:
