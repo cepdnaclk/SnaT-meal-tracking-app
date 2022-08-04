@@ -15,10 +15,10 @@ class BmiCalcView extends StatefulWidget {
   const BmiCalcView({Key? key}) : super(key: key);
 
   @override
-  State<BmiCalcView> createState() => _BmiCalcViewState();
+  State<BmiCalcView> createState() => BmiCalcViewState();
 }
 
-class _BmiCalcViewState extends State<BmiCalcView> {
+class BmiCalcViewState extends State<BmiCalcView> {
   userInfor usr = userInfor();
 
   int _gender = 2;
@@ -187,7 +187,9 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                       },
                       onWaitingProcess: () {
                         //Calculate BMI here
-                        calculateBmi();
+                        _height = double.parse(heightController.value.text);
+                        _weight = double.parse(weightController.value.text);
+                        calculateBmi(_height,_weight);
 
                         Future.delayed(const Duration(seconds: 1), () {
                           setState(() {
@@ -208,9 +210,8 @@ class _BmiCalcViewState extends State<BmiCalcView> {
         ));
   }
 
-  void calculateBmi() {
-    _height = double.parse(heightController.value.text);
-    _weight = double.parse(weightController.value.text);
-    _bmiScore = _weight / pow(_height / 100, 2);
+  double calculateBmi(height,weight) {
+    _bmiScore = weight / pow(height / 100, 2);
+    return _bmiScore;
   }
 }

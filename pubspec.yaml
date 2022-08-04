@@ -55,6 +55,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.2.38
   numberpicker: ^2.1.1
   simple_shadow: ^0.3.0
+  test: ^1.21.1
 
 dev_dependencies:
   flutter_test:
