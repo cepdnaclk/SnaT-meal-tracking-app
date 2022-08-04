@@ -61,8 +61,8 @@ class _NotificationViewState extends State<NotificationView> {
               onPressed: () async {
                 await service.showNotificationWithPayload(
                     id: 3,
-                    title: 'payload notification',
-                    body: 'navigate to home',
+                    title: 'You Missed a Meal!',
+                    body: 'Please, Enter Yesterday Breakfast Details!',
                     payload: 'payload navigation');
               },
               child: const Text('show notification with payload'),

@@ -98,26 +98,10 @@ class DashboardDrawer extends StatelessWidget {
               },
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: ListTile(
-              iconColor: Colors.amberAccent,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              leading: const Icon(Icons.camera),
-              title: const Text('Camera',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-              onTap: () {
-                // Navigator.pop(context);
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: ListTile(
-              iconColor: Colors.redAccent,
               visualDensity: VisualDensity.adaptivePlatformDensity,
               leading: const Icon(Icons.notification_add_outlined),
               title: const Text('Notifications',
@@ -133,6 +117,7 @@ class DashboardDrawer extends StatelessWidget {
               },
             ),
           ),
+          const SizedBox(height: 100,),
           Wrap(
             runAlignment: WrapAlignment.end,
             children: [

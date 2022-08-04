@@ -69,7 +69,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                   controller: heightController,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                      hintText: "Your Height(Cm)",
+                      hintText: "Your Height (cm)",
                       filled: true,
                       fillColor: Colors.green[50],
                       border: OutlineInputBorder(
@@ -80,7 +80,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                   height: 15,
                 ),
                 const Text(
-                  'Enter Your Weight in Kg',
+                  'Enter Your Weight (Kg)',
                   style: TextStyle(
                     fontSize: 20.0,
                   ),
