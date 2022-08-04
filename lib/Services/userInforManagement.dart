@@ -26,6 +26,7 @@ class userInfor {
       'height': height,
     });
   }
+
   Future<String> getHeightFromFirebase() async {
     List<String> heightlist = [];
     final heights = await _firestore

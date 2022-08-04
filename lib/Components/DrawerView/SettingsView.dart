@@ -19,7 +19,7 @@ class SettingsView extends StatelessWidget {
         platform: DevicePlatform.iOS,
         sections: [
           SettingsSection(
-            title: Text('common'.tr),
+            title: Text('Common'.tr),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
                 onPressed: (context){
@@ -33,6 +33,22 @@ class SettingsView extends StatelessWidget {
                 initialValue: false,
                 leading: const Icon(Icons.format_paint),
                 title: Text('customTheme'.tr),
+              ),
+            ],
+          ),
+          SettingsSection(
+            title: Text('Notification'.tr),
+            tiles: <SettingsTile>[
+              SettingsTile.navigation(
+                onPressed: (context){},
+                leading: const Icon(Icons.language),
+                title: const Text('Cancel Notifications'),
+              ),
+              SettingsTile.switchTile(
+                onToggle: (value) {},
+                initialValue: false,
+                leading: const Icon(Icons.format_paint),
+                title: const Text('Schedule Daily Notification'),
               ),
             ],
           ),

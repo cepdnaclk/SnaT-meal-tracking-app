@@ -94,7 +94,7 @@ class NotificationService {
       id,
       title,
       body,
-      _scheduleDaily(time), // daily notification time
+      _scheduleDaily(Time(15,31,0)), // daily notification time
       details,
       payload: payload,
       androidAllowWhileIdle: true,
@@ -139,4 +139,9 @@ class NotificationService {
   Future<void> cancelAllNotifications() async {
     await _notificationService.cancelAll();
   }
+
+  Future<void> cancelNotifications(int id) async {
+    await _notificationService.cancel(id);
+  }
+
 }
