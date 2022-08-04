@@ -200,7 +200,7 @@ class _BmiCalcViewState extends State<BmiCalcView> {
                         Icons.arrow_forward_ios_rounded,
                         color: Colors.black,
                       ),
-                      buttonText: 'calc'.tr),
+                      buttonText: 'CALCULATE'),
                 ),
               ],
             ),
