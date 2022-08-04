@@ -95,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
               // ),
               Container(
                 height:150,
-                child: Image(image: AssetImage("assets/images/userDetails.jpg"),
+                child: Image(image: AssetImage("assets/images/register_page.jpg"),
                 fit: BoxFit.contain,
                 ),
               ),
