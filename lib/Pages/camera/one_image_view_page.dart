@@ -31,7 +31,6 @@ class showimage extends StatelessWidget {
      date = details[0];
      mealtime = details[1];
      print(date+"  "+mealtime);
-
   }
 
   @override
