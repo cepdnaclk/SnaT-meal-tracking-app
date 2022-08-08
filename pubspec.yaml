@@ -55,8 +55,12 @@ dependencies:
   syncfusion_flutter_charts: ^20.2.38
   numberpicker: ^2.1.1
   simple_shadow: ^0.3.0
+  camera: ^0.10.0
+  path_provider: ^2.0.11
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 

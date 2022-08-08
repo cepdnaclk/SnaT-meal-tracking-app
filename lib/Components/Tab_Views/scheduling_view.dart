@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SchedulingView extends StatefulWidget {
@@ -8,16 +9,16 @@ class SchedulingView extends StatefulWidget {
   Widget build(BuildContext context) {
     return const Text("Scheduling View");
   }
+
   _TableBasicsExampleState createState() => _TableBasicsExampleState();
 }
 
 class _TableBasicsExampleState extends State<SchedulingView> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime? _selectedDay = DateTime.now();
 
   final kToday = DateTime.now();
-
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +29,19 @@ class _TableBasicsExampleState extends State<SchedulingView> {
       //   //title: Text('TableCalendar - Basics'),
       // ),
       body: TableCalendar(
-
+        calendarStyle: CalendarStyle(
+          todayDecoration: BoxDecoration(
+              color: _focusedDay.toString().substring(0, 11) ==
+                      kToday.toString().substring(0, 11)
+                  ? ThemeInfo.primaryColor
+                  : ThemeInfo.secondaryColor,
+              shape: BoxShape.circle),
+          selectedDecoration: BoxDecoration(
+              color: ThemeInfo.primaryColor, shape: BoxShape.circle),
+        ),
         firstDay: DateTime(1970),
         lastDay: DateTime(2070),
         focusedDay: _focusedDay,
-
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {
           // Use `selectedDayPredicate` to determine which day is currently selected.
@@ -48,11 +57,7 @@ class _TableBasicsExampleState extends State<SchedulingView> {
             setState(() {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
-
             });
-            print(_focusedDay.year,);// wil print the day u select
-            print(_focusedDay.month);// wil print the day u select
-            print(_focusedDay.day);// wil print the day u select
           }
         },
         onFormatChanged: (format) {

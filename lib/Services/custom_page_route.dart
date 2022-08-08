@@ -27,6 +27,12 @@ class CustomPageRoute extends PageRouteBuilder {
             .animate(animation),
         child: child,
       );
+    } else if (transition == "slide up") {
+      return SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, 2), end: Offset.zero)
+            .animate(animation),
+        child: child,
+      );
     } else {
       return ScaleTransition(
         scale: animation,

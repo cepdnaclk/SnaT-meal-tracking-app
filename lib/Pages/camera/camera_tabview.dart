@@ -4,13 +4,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
-import '../../Components/Tab_Views/home_view.dart';
+
 import '../../Components/dashboard_drawer.dart';
 import 'CameraPage.dart';
-import 'anotherDayMealImage.dart';
-import 'meal_view.dart';
-import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
-import 'list_of_images.dart';
 import 'selectDateRange.dart';
 
 class tabviewcamera extends StatefulWidget {
@@ -20,7 +16,8 @@ class tabviewcamera extends StatefulWidget {
   State<tabviewcamera> createState() => _tabviewcameraState();
 }
 
-class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProviderStateMixin{
+class _tabviewcameraState extends State<tabviewcamera>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int currentPageIndex = 0;
 
@@ -30,29 +27,26 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
     _tabController = TabController(vsync: this, length: 2);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
       child: Scaffold(
-          appBar:AppBar(
-            backgroundColor: ThemeInfo.primaryColor,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                tooltip: 'back',
-                onPressed: () {Navigator.of(context).push(MaterialPageRoute(
-                    builder: (contex)
-                    {//return CameraScreen(widget.cameras);
-                      return DashboardLayout();
-                    })
-                );
-                },
-              ),
-            title: Text('Meal Gallery'),
+        appBar: AppBar(
+          backgroundColor: ThemeInfo.primaryColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            tooltip: 'back',
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (contex) {
+                //return CameraScreen(widget.cameras);
+                return const DashboardLayout();
+              }));
+            },
+          ),
+          title: const Text('Meal Gallery'),
         ),
-
         drawer: const DashboardDrawer(),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
@@ -67,12 +61,12 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
               print(val);
             },
             tabs: const [
-              Tab(icon: Icon(Icons.camera_alt),
+              Tab(
+                icon: Icon(Icons.camera_alt),
               ),
               Tab(
                 icon: Icon(Icons.find_in_page),
               ),
-
             ],
           ),
         ),
@@ -80,7 +74,9 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: const [
-            campage(title: 'camera',),
+            campage(
+              title: 'camera',
+            ),
             //selectDateShowImage(),
             Daterange(),
           ],

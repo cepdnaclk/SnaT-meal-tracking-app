@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 //import 'package:photo_view/photo_view.dart';
 //import 'package:photo_view/photo_view_gallery.dart';
 import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
 import 'camera_tabview.dart';
 import 'list_of_images.dart';
-import 'oneImageViewFromGrid.dart';
 import 'one_image_view_page.dart';
 
 class ScrollViewlistAccordingToDates extends StatelessWidget {
   final imageStorage staorage = imageStorage();
   var image_path = <String>[]; // Creates growable list.
-  List <String> dates=[];
-  List <String>imageList =[];
+  List<String> dates = [];
+  List<String> imageList = [];
   List<String> mealTimes = [];
 
-  ScrollViewlistAccordingToDates(List <String> dates , List<String> mealTimes) {
+  ScrollViewlistAccordingToDates(List<String> dates, List<String> mealTimes) {
     this.dates = dates;
     this.mealTimes = mealTimes;
   }
 
   @override
   Widget build(BuildContext context) {
+    print("build 123");
     const title = 'Meal Gallery'; // main Title
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: title,
       home: Scaffold(
-          appBar:AppBar(
+          appBar: AppBar(
             title: Text("Image List"),
             actions: [
               IconButton(
@@ -42,47 +43,45 @@ class ScrollViewlistAccordingToDates extends StatelessWidget {
                   //     })
                   // );
                   //staorage.delete(imageurl);
-
                 },
               ),
               IconButton(
                 icon: const Icon(Icons.grid_view),
                 tooltip: 'grid Icon',
                 onPressed: () async {
-                  Navigator.of(context).push(MaterialPageRoute(
-                          builder: (contex) { //return CameraScreen(widget.cameras);
-                            return gridview(dates,mealTimes);
-                          })
-                      );
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (contex) {
+                    //return CameraScreen(widget.cameras);
+                    return gridview(dates, mealTimes);
+                  }));
                 },
               ),
             ],
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               tooltip: 'back',
-              onPressed: () {Navigator.of(context).push(MaterialPageRoute(
-                  builder: (contex)
-                  {//return CameraScreen(widget.cameras);
-                    return const tabviewcamera();
-                  })
-              );
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (contex) {
+                  //return CameraScreen(widget.cameras);
+                  return const tabviewcamera();
+                }));
               },
             ),
-
             elevation: 0.00,
             backgroundColor: ThemeInfo.primaryColor,
           ),
           body: FutureBuilder(
-            future: staorage.allImagesListofADate(dates,mealTimes),
+            future: staorage.allImagesListofADate(dates, mealTimes),
             //getpaths(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 // untill the data is load
                 return const Center(
                   //child: Text('Waiting'),
-                  child:
-                  CircularProgressIndicator(backgroundColor: Colors.greenAccent,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),),
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.greenAccent,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
                 );
               } else {
                 if (snapshot.hasError) {
@@ -91,36 +90,33 @@ class ScrollViewlistAccordingToDates extends StatelessWidget {
                 } else {
                   return GridView.builder(
                     gridDelegate: // grid view
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       mainAxisSpacing: 10,
                     ),
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return
-                        Card(
-                            child: InkWell(
-                              onTap: () {// view individual image
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (contex)
-                                    {
-                                      return showimage(snapshot.data[index],dates,mealTimes);
-                                    })
-                                );
-                              },
-                              onLongPress: () {},
-                              child: Image.network(
-                                snapshot.data[index],
-                              ),
-                            )
-                        );
+                      return Card(
+                          child: InkWell(
+                        onTap: () {
+                          // view individual image
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (contex) {
+                            return showimage(
+                                snapshot.data[index], dates, mealTimes);
+                          }));
+                        },
+                        onLongPress: () {},
+                        child: Image.network(
+                          snapshot.data[index],
+                        ),
+                      ));
                     },
                   );
                 }
               }
             },
-          )
-      ),
+          )),
     );
   }
 }
