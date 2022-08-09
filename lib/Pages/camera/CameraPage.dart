@@ -21,20 +21,23 @@ import '../../Theme/theme_info.dart';
 import '../../constants.dart';
 import '../add_a_meal_screen.dart';
 
+XFile? takedimage;
+String? filePath;
 class campage extends StatefulWidget {
-  const campage({Key? key, required this.title}) : super(key: key);
-
+  campage(XFile imagepicked, String imagepath, this.title){
+    takedimage =imagepicked;
+    filePath = imagepath;
+  }
   final String title;
-
   @override
   State<campage> createState() => _campageState();
 }
 
 class _campageState extends State<campage> {
   DateTime selectedDate = DateTime.now();
-  File? image;
+  File? image; //= takedimage as File?;
   String? path;
-  XFile? new_IMAGE;
+  XFile? new_IMAGE ;//= takedimage ;
   String? filePath;
   bool saved = true;
   late String dateSelected = "";
@@ -45,65 +48,6 @@ class _campageState extends State<campage> {
   final ImagePicker picker = ImagePicker();
 
   late String imageurlFromFireStore;
-  // method for pick image from Gallery
-  Future pickImage() async {
-    try {
-      var image = await picker.pickImage(
-          source: ImageSource.gallery,
-          maxHeight: 400,
-          maxWidth: 400,
-          imageQuality: 80,
-          preferredCameraDevice: CameraDevice.rear);
-      new_IMAGE = image as XFile;
-      // var path2 = image!.path;
-      print("===============================");
-      // giving access to save only .jpg and pgg format
-      String filename = basename(image.path);
-      print(filename);
-      String jpg = ".jpg";
-      String png = ".png";
-      if (!(filename.contains(jpg) | filename.contains(png))) {
-        image = null;
-        saved = false;
-        Fluttertoast.showToast(
-          msg: "Please_use_only_jpg_and_png_format",
-        );
-      }
-      final Directory? extDir = await getExternalStorageDirectory();
-      final String dirPath = extDir!.path.toString();
-      await Directory(dirPath).create(recursive: true);
-      filePath = '$dirPath/'; // taking image  path
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      await GallerySaver.saveImage(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  // pick Image from camera
-  Future pickImageC() async {
-    try {
-      var image = await picker.pickImage(
-          source: ImageSource.camera,
-          maxHeight: 470,
-          maxWidth: 470,
-          imageQuality: 80,
-          preferredCameraDevice: CameraDevice.rear);
-      new_IMAGE = image as XFile;
-      final Directory? extDir = await getExternalStorageDirectory();
-      final String dirPath = extDir!.path.toString();
-      await Directory(dirPath).create(recursive: true);
-      filePath = '$dirPath/'; // path for image
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      await GallerySaver.saveImage(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
 
   // for save the image
   Future<void> saveimages(String filePath, XFile image) async {
@@ -153,7 +97,7 @@ class _campageState extends State<campage> {
     return Scaffold(
       appBar: null,
       floatingActionButton: FloatingActionButton(
-        heroTag: "btn1",
+        heroTag: "btn2",
         child: const Icon(Icons.save),
         backgroundColor: ThemeInfo.primaryColor,
         onPressed: () {
@@ -168,49 +112,7 @@ class _campageState extends State<campage> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
-          //children:
-
-          // Center(
-          //   child: Column(
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              MaterialButton(
-                  // Gallery
-
-                  elevation: 10,
-                  hoverElevation: 100,
-                  focusElevation: 50,
-                  highlightElevation: 0,
-                  color: ThemeInfo.primaryColor,
-                  //color: Colors.white,
-                  child: Text('Pick_from_Gallery'.tr,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      )),
-                  onPressed: () {
-                    saved = true;
-                    pickImage();
-                  }),
-              MaterialButton(
-                  // for camera
-                  elevation: 10,
-                  hoverElevation: 100,
-                  focusElevation: 50,
-                  highlightElevation: 0,
-                  color: ThemeInfo.primaryColor,
-                  child:  Text('Pick_from_Camera'.tr,
-                      style:  const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      )),
-                  onPressed: () {
-                    saved = true;
-                    pickImageC();
-                  }),
-            ]),
             const SizedBox(
               height: 20,
             ),
@@ -285,8 +187,9 @@ class _campageState extends State<campage> {
             const SizedBox(
               height: 20,
             ),
+            //Image.file(new_IMAGE as File),
             image != null
-                ? Image.file(image!)
+                ? Image.file(takedimage as File) //(image!)
                 : const Center(
                     heightFactor: 2.2,
                     child: Icon(

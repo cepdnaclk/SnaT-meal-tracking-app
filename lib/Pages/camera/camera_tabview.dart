@@ -1,6 +1,7 @@
 /*
  this is for main tab view to take image part or view meal images
  */
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/Pages/dashboard_layout.dart';
@@ -9,6 +10,7 @@ import '../../Components/Tab_Views/home_view.dart';
 import '../../Components/dashboard_drawer.dart';
 import 'CameraPage.dart';
 import 'anotherDayMealImage.dart';
+import 'camera_testing.dart';
 import 'meal_view.dart';
 import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
 import 'list_of_images.dart';
@@ -24,6 +26,7 @@ class tabviewcamera extends StatefulWidget {
 class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProviderStateMixin{
   late TabController _tabController;
   int currentPageIndex = 0;
+
 
   @override
   void initState() {
@@ -81,8 +84,8 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: const [
-            campage(title: 'camera',),
-            //selectDateShowImage(),
+            CameraTest(),
+            //campage(title: 'camera',),
             Daterange(),
           ],
         ),
