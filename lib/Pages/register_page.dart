@@ -74,31 +74,33 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: ThemeInfo.primaryColor,
+      //backgroundColor: ThemeInfo.secondaryColor,
       appBar: AppBar(
-          elevation: 8.0,
+          // elevation: 8.0,
           backgroundColor: ThemeInfo.primaryColor,
           title: const Text("User Details"),
         ),
       body: SafeArea(
         child:SingleChildScrollView(
+          
           child: Column(
+            
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              // SizedBox(height: 10),
               // Text(
               //   'User Details',
               //   style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
               // ),
-              // SizedBox(
-              //   height: 20,
-              // ),
+              
+              
               Container(
                 height:150,
-                child: Image(image: AssetImage("assets/images/userDetails.jpg"),
+                child: Image(image: AssetImage("assets/images/register_page.jpg"),
                 fit: BoxFit.contain,
                 ),
               ),
+              
         
         
               Padding(
@@ -109,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.teal),
+                      borderSide: BorderSide(color: ThemeInfo.primaryColor),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -123,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 14),
         
         
                Padding(
@@ -132,14 +134,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _birthController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.teal),
+                      borderSide: BorderSide(color: ThemeInfo.primaryColor),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    hintText: 'Date of birth',
+                    hintText: 'Date of Birth',
                     fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.calendar_month)
@@ -150,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     var date =  await showDatePicker(
                       context: context, 
                       initialDate: DateTime.now(), 
-                      firstDate: DateTime(1950), 
+                      firstDate: DateTime(1900), 
                       lastDate: DateTime(2101));
                     _birthController.text = date.toString().substring(0,10);
 
@@ -159,18 +161,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),),
          
                 
-                SizedBox(height: 15),
+                SizedBox(height: 14),
         
         
         
         
                Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                
                 child: TextField(
                   controller: _genderController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.teal),
+                      borderSide: BorderSide(color: ThemeInfo.primaryColor),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -188,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
              
                 
-                SizedBox(height: 15),
+                SizedBox(height: 14),
         
         
         
@@ -198,21 +201,21 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _heightController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.teal),
+                      borderSide: BorderSide(color: ThemeInfo.primaryColor),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    hintText: 'Height(cm)',
+                    hintText: 'Height (cm)',
                     fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.height),
                   ),
                 ),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 14),
         
                Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -220,21 +223,21 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _weightController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.teal),
+                      borderSide: BorderSide(color: ThemeInfo.primaryColor),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    hintText: 'Weight(kg)',
+                    hintText: 'Weight (Kg)',
                     fillColor: Colors.teal[100],
                     filled: true,
                     prefixIcon: Icon(Icons.monitor_weight_rounded),
                   ),
                 ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 14),
         
         
               ElevatedButton(
@@ -267,9 +270,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: TextStyle(fontSize: 20 ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: ThemeInfo.bottomTabButtonColor,
+                  primary: ThemeInfo.primaryColor,
                 shape: StadiumBorder(),
                 padding: EdgeInsets.symmetric(vertical: 10),
+                
           )
         )
         

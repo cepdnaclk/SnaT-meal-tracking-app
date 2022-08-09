@@ -112,6 +112,15 @@ class _SignInState extends State<SignIn> {
                             prefixIcon: Icon(Icons.lock)),
                         obscureText: true,
                         onSaved: (input) => _password = input)),
+                        SizedBox(height: 10),
+                GestureDetector(
+                  child: Text(
+                    '                                           Forgot Password?',
+                    textAlign: TextAlign.end,
+                    style: TextStyle(color: Colors.blueAccent,fontSize: 15.0,),
+                    ),
+                  onTap: navigateToSignUp,
+                ),
                 SizedBox(height: 20),
                 ElevatedButton(
                     onPressed: login,
@@ -128,10 +137,11 @@ class _SignInState extends State<SignIn> {
             GestureDetector(
               child: Text(
                 'Create an Account?',
-                style: TextStyle(color: Colors.blueAccent),
+                style: TextStyle(color: Colors.blueAccent,fontSize: 15.0,),
               ),
               onTap: navigateToSignUp,
-            )
+            ),
+            
           ],
         )),
       ),

@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:pretty_gauge/pretty_gauge.dart';
 
 
-class ScoreScreen extends StatelessWidget {
+class ScoreScreen extends StatefulWidget {
   final double bmiScore;
 
   final int age;
-  String? bmiStatus;
-  String? bmiInterpretation;
-  Color? bmiStatusColor;
 
   ScoreScreen({Key? key, required this.bmiScore, required this.age})
       : super(key: key);
+
+  @override
+  State<ScoreScreen> createState() => _ScoreScreenState();
+}
+
+class _ScoreScreenState extends State<ScoreScreen> {
+  String? bmiStatus;
+
+  String? bmiInterpretation;
+
+  Color? bmiStatusColor;
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +54,10 @@ class ScoreScreen extends StatelessWidget {
                         GaugeSegment('Obese', 10.1, Colors.pink),
                       ],
                       valueWidget: Text(
-                        bmiScore.toStringAsFixed(1),
+                        widget.bmiScore.toStringAsFixed(1),
                         style: const TextStyle(fontSize: 40),
                       ),
-                      currentValue: bmiScore.toDouble(),
+                      currentValue: widget.bmiScore.toDouble(),
                       needleColor: Colors.blue,
                     ),
                     const SizedBox(
@@ -90,19 +98,19 @@ class ScoreScreen extends StatelessWidget {
   }
 
   void setBmiInterpretation() {
-    if (bmiScore > 30) {
+    if (widget.bmiScore > 30) {
       bmiStatus = "Obese";
       bmiInterpretation = "Your Health is in Danger!";
       bmiStatusColor = Colors.pink;
-    } else if (bmiScore >= 25) {
+    } else if (widget.bmiScore >= 25) {
       bmiStatus = "Overweight";
       bmiInterpretation = "Consider About Your Health";
       bmiStatusColor = Colors.orange;
-    } else if (bmiScore >= 18.5) {
+    } else if (widget.bmiScore >= 18.5) {
       bmiStatus = "Normal";
       bmiInterpretation = "You are fit";
       bmiStatusColor = Colors.green;
-    } else if (bmiScore < 18.5) {
+    } else if (widget.bmiScore < 18.5) {
       bmiStatus = "Underweight";
       bmiInterpretation = "Try to gain weight";
       bmiStatusColor = Colors.red;

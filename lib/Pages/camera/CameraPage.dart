@@ -8,10 +8,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/Services/IamageStoreService.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:mobile_app/Settings/ChangeAppLanguage.dart';
 
 import '../../Components/date_time_widget.dart';
 import '../../Services/DateTime.dart';
@@ -64,7 +66,7 @@ class _campageState extends State<campage> {
         image = null;
         saved = false;
         Fluttertoast.showToast(
-          msg: "Please use only .jpg and .png format",
+          msg: "Please_use_only_jpg_and_png_format",
         );
       }
       final Directory? extDir = await getExternalStorageDirectory();
@@ -125,7 +127,7 @@ class _campageState extends State<campage> {
               imageurlFromFireStore)
           .then(
             (value) => Fluttertoast.showToast(
-              msg: "The image saved",
+              msg: "The_image_saved",
             ),
           );
 
@@ -135,7 +137,7 @@ class _campageState extends State<campage> {
       });
     } else {
       Fluttertoast.showToast(
-        msg: "Please select a meal time",
+        msg: "Please_select_meal_time".tr,
       );
     }
   }
@@ -181,8 +183,8 @@ class _campageState extends State<campage> {
                   highlightElevation: 0,
                   color: ThemeInfo.primaryColor,
                   //color: Colors.white,
-                  child: const Text("Pick from Gallery",
-                      style: TextStyle(
+                  child: Text('Pick_from_Gallery'.tr,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -198,8 +200,8 @@ class _campageState extends State<campage> {
                   focusElevation: 50,
                   highlightElevation: 0,
                   color: ThemeInfo.primaryColor,
-                  child: const Text("Pick from Camera",
-                      style: TextStyle(
+                  child:  Text('Pick_from_Camera'.tr,
+                      style:  const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -215,10 +217,10 @@ class _campageState extends State<campage> {
             Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children:  [
                   Text(
-                    "Date and time:",
-                    style: TextStyle(
+                    "Date_and_time:".tr,
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
@@ -252,7 +254,7 @@ class _campageState extends State<campage> {
                   isEmpty: selectedMealTime == '',
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      hint: const Text('Please select a meal time'),
+                      hint: Text('Please_select_meal_time'.tr),
                       value: selectedMealTime,
                       isDense: true,
                       onChanged: (String? newValue) {

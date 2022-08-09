@@ -181,7 +181,7 @@ class _SignUpState extends State<SignUp> {
               SizedBox(height:20),
               GestureDetector(
                 child: Text('Already have an account?',style: TextStyle(
-                  color: Colors.blueAccent
+                  color: Colors.blueAccent,fontSize: 15.0,
                 ),),
                 onTap: navigateToSignIn,
               )

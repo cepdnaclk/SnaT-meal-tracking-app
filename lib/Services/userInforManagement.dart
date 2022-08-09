@@ -12,7 +12,27 @@ class userInfor {
   late String birthDate;
 
   final _firestore = FirebaseFirestore.instance;
-
+  static Future<Map> initializeUser() async {
+    Map data = {};
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      data = {
+        'name': value.data()!['name'],
+        'weight': value.data()!['weight'],
+        'height': value.data()!['height'],
+        'gender': value.data()!['gender'],
+        'email': value.data()!['email'],
+        'dateOfBirth': value.data()!['birthDate'],
+      };
+    }).catchError((e) {
+      print(e.toString());
+    });
+    print(data);
+    return data;
+  }
   userInfor() {
     email = user?.email as String;
     id = user!.uid;
@@ -26,6 +46,7 @@ class userInfor {
       'height': height,
     });
   }
+
   Future<String> getHeightFromFirebase() async {
     List<String> heightlist = [];
     final heights = await _firestore
@@ -89,6 +110,8 @@ class userInfor {
     // get last element of the list to get latest version
     return gender;
   }
+
+
 
   Future<String> getNameFromFirebase() async {
     List<String> namelist = [];
