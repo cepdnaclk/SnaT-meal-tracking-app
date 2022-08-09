@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Settings/ChangeAppLanguage.dart';
+import 'package:get/get.dart';
+import 'package:mobile_app/Pages/user_profile.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:get/get.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
@@ -19,20 +19,19 @@ class SettingsView extends StatelessWidget {
         platform: DevicePlatform.iOS,
         sections: [
           SettingsSection(
-            title: Text('Common'.tr),
+            title: const Text('User Profile'),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                onPressed: (context){
-                  var changelanguage = ChangeLanguage().buildLanguageDialog(context);
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserProfilePage(),
+                    ),
+                  );
                 },
-                leading: const Icon(Icons.language),
-                title: Text('language'.tr),
-              ),
-              SettingsTile.switchTile(
-                onToggle: (value) {},
-                initialValue: false,
-                leading: const Icon(Icons.format_paint),
-                title: Text('customTheme'.tr),
+                leading: const Icon(Icons.person),
+                title: const Text('User Information'),
               ),
             ],
           ),
@@ -40,7 +39,7 @@ class SettingsView extends StatelessWidget {
             title: Text('Notification'.tr),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                onPressed: (context){},
+                onPressed: (context) {},
                 leading: const Icon(Icons.language),
                 title: const Text('Cancel Notifications'),
               ),

@@ -5,7 +5,6 @@ import 'package:mobile_app/Components/DrawerView/MealHistory.dart';
 import 'package:mobile_app/Components/DrawerView/NotificationView.dart';
 import 'package:mobile_app/Components/DrawerView/SettingsView.dart';
 import 'package:mobile_app/Pages/login_screen.dart';
-import 'package:mobile_app/Pages/signIn_page.dart';
 
 import '../Pages/welcome_screen.dart';
 import '../Theme/theme_info.dart';
@@ -26,14 +25,12 @@ class DashboardDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       width: 250.0,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            buildHeader(context),
-            buildMenuItems(context),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          buildHeader(context),
+          buildMenuItems(context),
+        ],
       ),
     );
   }
@@ -45,11 +42,11 @@ class DashboardDrawer extends StatelessWidget {
         ),
         child: Column(
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 52,
               backgroundImage: AssetImage('assets/images/userImage.png'),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ListTile(
               title: Text(name!),
               subtitle: Text(email!),
@@ -58,97 +55,100 @@ class DashboardDrawer extends StatelessWidget {
         ),
       );
 
-  Widget buildMenuItems(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: ListTile(
-              iconColor: Colors.greenAccent,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              leading: const Icon(Icons.history_toggle_off_rounded),
-              title: const Text('Meal History',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MealHistory()));
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: ListTile(
-              iconColor: Colors.blueGrey,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              leading: const Icon(Icons.settings_rounded),
-              title: const Text('Settings',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsView()));
-              },
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: ListTile(
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              leading: const Icon(Icons.notification_add_outlined),
-              title: const Text('Notifications',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  )),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NotificationView()));
-              },
-            ),
-          ),
-          const SizedBox(height: 100,),
-          Wrap(
-            runAlignment: WrapAlignment.end,
-            children: [
-              const Divider(
-                color: Colors.blueGrey,
+  Widget buildMenuItems(BuildContext context) => Expanded(
+        child: Column(
+          //mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: ListTile(
+                iconColor: Colors.black,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                contentPadding: EdgeInsets.zero,
+                horizontalTitleGap: 0,
+                leading: const Icon(Icons.history_toggle_off_rounded),
+                title: const Text('Meal History',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    )),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MealHistory()));
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: ListTile(
-                    iconColor: Colors.blueAccent,
-                    visualDensity: VisualDensity.adaptivePlatformDensity,
-                    leading: const Icon(Icons.logout),
-                    title: const Text('Sign Out',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    onTap: () {
-                      Future logout() async {
-                        await FirebaseAuth.instance.signOut().then((value) =>
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => LoginScreen()),
-                                (route) => false));
-                      }
-
-                      logout();
-                    }),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: ListTile(
+                iconColor: Colors.black,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                horizontalTitleGap: 0,
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.settings_rounded),
+                title: const Text('Settings',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    )),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsView()));
+                },
               ),
-            ],
-          )
-        ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: ListTile(
+                iconColor: Colors.black,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                contentPadding: EdgeInsets.zero,
+                horizontalTitleGap: 0,
+                leading: const Icon(Icons.notification_add_outlined),
+                title: const Text('Notifications',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    )),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NotificationView()));
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            const Spacer(),
+            const Divider(
+              color: Colors.blueGrey,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: ListTile(
+                  iconColor: Colors.blueAccent,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Sign Out',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onTap: () {
+                    Future logout() async {
+                      await FirebaseAuth.instance.signOut().then((value) =>
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                              (route) => false));
+                    }
+
+                    logout();
+                  }),
+            )
+          ],
+        ),
       );
 }

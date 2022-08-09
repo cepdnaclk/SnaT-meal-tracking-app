@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Services/userInforManagement.dart';
-
-import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Pages/register_page.dart';
+import 'package:mobile_app/Pages/welcome_screen.dart';
+import 'package:mobile_app/Services/userInforManagement.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -21,12 +20,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   getData() async {
     userData = await userInfor.initializeUser();
-    print("ojg");
-    print(user!.photoURL);
     setState(() {});
   }
+
   navigateToRegisterPage() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+    print(userData);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RegisterPage(
+          userInfo: userData,
+          onSaved: () {
+            getData();
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -89,7 +98,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   height: 30,
                 ),
                 UserInfoSection(
-                  value: user!.displayName!,
+                  value: userData['name'] ?? "",
                   title: "Name",
                 ),
                 UserInfoSection(
