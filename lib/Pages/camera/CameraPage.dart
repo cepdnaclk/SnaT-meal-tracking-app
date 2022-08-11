@@ -5,88 +5,98 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobile_app/Services/IamageStoreService.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:mobile_app/Settings/ChangeAppLanguage.dart';
+import 'package:mobile_app/Models/image_model.dart';
+import 'package:mobile_app/Pages/welcome_screen.dart';
 
 import '../../Components/date_time_widget.dart';
 import '../../Services/DateTime.dart';
+import '../../Services/IamageStoreService.dart';
 import '../../Theme/theme_info.dart';
 import '../../constants.dart';
 import '../add_a_meal_screen.dart';
 
-XFile? takedimage;
-String? filePath;
-class campage extends StatefulWidget {
-  campage(XFile imagepicked, String imagepath, this.title){
-    takedimage =imagepicked;
-    filePath = imagepath;
-  }
+
+
+class CamPage extends StatefulWidget {
+  const CamPage({
+    Key? key,
+    required this.title,
+    required this.takenImage,
+  }) : super(key: key);
   final String title;
+  final ImageModel takenImage;
   @override
-  State<campage> createState() => _campageState();
+  State<CamPage> createState() => _CamPageState();
 }
 
-class _campageState extends State<campage> {
+class _CamPageState extends State<CamPage> {
   DateTime selectedDate = DateTime.now();
+  String? selectedMealTime;
   File? image; //= takedimage as File?;
   String? path;
-  XFile? new_IMAGE ;//= takedimage ;
+  XFile? newImage; //= takedimage ;
   String? filePath;
   bool saved = true;
   late String dateSelected = "";
-  late String MealTime = "Other Meals";
-  bool mealtimeselected = false;
+  late String mealTime;
+  bool mealTimeSelected = false;
+  bool hasTimeError = false;
 
-  final imageStorage staorage = imageStorage();
+  final imageStorage storage = imageStorage();
   final ImagePicker picker = ImagePicker();
 
-  late String imageurlFromFireStore;
+  late String imageUrlFromFireStore;
 
   // for save the image
-  Future<void> saveimages(String filePath, XFile image) async {
-    print("++++++++++" + mealtimeselected.toString());
-    if (mealtimeselected == true) {
+  Future<void> saveImages(ImageModel takenImage) async {
+
+    print("++++++++++" + selectedMealTime.toString());
+    if(selectedMealTime==null){
+      Fluttertoast.showToast(
+        msg: "Please select meal time",
+      );
+    }
+    if (selectedMealTime != null) {
       Fluttertoast.showToast(
         msg: "Please wait",
       );
       final now = DateTime.now(); // date and time of the moment
-      print(filePath);
-      String filepath =
-          '$filePath/' + now.toString() + '.png'; // make now as image name
-      final File newImage =
-          await File(image.path).copy('$filePath/' + now.toString() + '.png');
-      imageurlFromFireStore =
-          await staorage.uploadFile(filepath, now.toString() + ".png");
-      print(imageurlFromFireStore);
+      // print(takenImage.path);
+      // String filepath =
+      //     '$filePath/' + now.toString() + '.png'; // make now as image name
+      // final File newImage = await File(takenImage.path!)
+      //     .copy('$filePath/' + now.toString() + '.png');
+      imageUrlFromFireStore =
+          await storage.uploadFile(takenImage.path!, now.toString() + ".png");
 
-      await staorage
-          .setImageUrl(selectedDate.toString().split(' ')[0], MealTime,
-              imageurlFromFireStore)
+     // String fileName = now.toString() + '.' + takenImage.name!.split(".").last;
+      // imageUrlFromFireStore = await storage.uploadData(
+      //     takenImage.bytes!, 'images/${user!.email}/$fileName');
+      print(imageUrlFromFireStore);
+
+      await storage
+          .setImageUrl(selectedDate.toString().split(' ')[0], selectedMealTime!,
+              imageUrlFromFireStore)
           .then(
             (value) => Fluttertoast.showToast(
-              msg: "The_image_saved",
+              msg: "The image saved",
             ),
           );
 
-      if (image == null) return;
       setState(() {
-        image = (newImage as XFile?)!;
+        /*image = (newImage as XFile?)!;*/
       });
     } else {
       Fluttertoast.showToast(
-        msg: "Please_select_meal_time".tr,
+        msg: "Please select meal time",
       );
     }
   }
 
-  void StateReload() {
+  void stateReload() {
     print("==============================");
     print("State reload");
     setState(() {});
@@ -95,17 +105,21 @@ class _campageState extends State<campage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         heroTag: "btn2",
         child: const Icon(Icons.save),
         backgroundColor: ThemeInfo.primaryColor,
         onPressed: () {
-          if (saved) {
-            if (new_IMAGE != null) {
-              saveimages(filePath!, new_IMAGE!); // working
+          if (selectedMealTime != null) {
+            if (saved) {
+              saveImages(widget.takenImage); // working
               saved = false;
             }
+          } else {
+            setState(() {
+              hasTimeError = true;
+            });
           }
         },
       ),
@@ -119,7 +133,7 @@ class _campageState extends State<campage> {
             Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:  [
+                children: [
                   Text(
                     "Date_and_time:".tr,
                     style: const TextStyle(
@@ -127,6 +141,9 @@ class _campageState extends State<campage> {
                     ),
                   ),
                 ]),
+            const SizedBox(
+              height: 20,
+            ),
             DateTimeWidget(
               iconPic: const Icon(
                 Icons.calendar_today,
@@ -144,7 +161,45 @@ class _campageState extends State<campage> {
             const SizedBox(
               height: 40,
             ),
-            FormField<String>(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[100],
+              ),
+              child: DropdownButtonFormField(
+                value: selectedMealTime,
+                style: TextStyle(
+                    color: ThemeInfo.dropDownValueColor, fontSize: 18),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                items: mealTimes.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? val) {
+                  selectedMealTime = val;
+                  result = null;
+                  setState(() {});
+                },
+                hint: Text(mealTimeDropdownHint),
+              ),
+            ),
+            if (hasTimeError)
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  mealTimeDropdownErrorMessage,
+                  style:
+                      TextStyle(color: ThemeInfo.errorTextColor, fontSize: 12),
+                ),
+              ),
+            /*FormField<String>(
               builder: (FormFieldState<String> state) {
                 return InputDecorator(
                   decoration: InputDecoration(
@@ -161,15 +216,15 @@ class _campageState extends State<campage> {
                       isDense: true,
                       onChanged: (String? newValue) {
                         setState(() {
-                          mealtimeselected = true;
+                          mealTimeSelected = true;
                           selectedMealTime = newValue;
-                          MealTime = newValue!;
+                          mealTime = newValue!;
                           print(selectedMealTime);
                           // getFoodData(selectedMeal!);
                           state.didChange(newValue);
-                          StateReload();
+                          stateReload();
                           Fluttertoast.showToast(
-                            msg: MealTime,
+                            msg: mealTime,
                           );
                         });
                       },
@@ -183,21 +238,23 @@ class _campageState extends State<campage> {
                   ),
                 );
               },
-            ),
+            ),*/
             const SizedBox(
               height: 20,
             ),
+            SizedBox(
+                height: 500, child: Image.memory(widget.takenImage.bytes!)),
             //Image.file(new_IMAGE as File),
-            image != null
-                ? Image.file(takedimage as File) //(image!)
-                : const Center(
-                    heightFactor: 2.2,
-                    child: Icon(
-                      Icons.food_bank,
-                      size: 180,
-                      color: Color.fromARGB(100, 125, 156, 139),
-                    ),
-                  ),
+            // image != null
+            //     ? Image.file(takenImage as File) //(image!)
+            //     : const Center(
+            //         heightFactor: 2.2,
+            //         child: Icon(
+            //           Icons.food_bank,
+            //           size: 180,
+            //           color: Color.fromARGB(100, 125, 156, 139),
+            //         ),
+            //       ),
           ],
           //   ),
           //   //child: raw(),

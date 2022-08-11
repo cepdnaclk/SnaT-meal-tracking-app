@@ -1,17 +1,21 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/Models/image_model.dart';
+import 'package:mobile_app/Services/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../main.dart';
 
 List<ImageModel> galleryImages = [];
 
 class CameraTest extends StatefulWidget {
-  const CameraTest({Key? key}) : super(key: key);
+  const CameraTest({Key? key, required this.resultCallback}) : super(key: key);
+  final Function resultCallback;
 
   @override
   _CameraTestState createState() => _CameraTestState();
@@ -22,7 +26,7 @@ class _CameraTestState extends State<CameraTest> {
   bool showGallery = false;
   double screenHeight = 0;
   double screenWidth = 0;
-  double circleAvatarRadius = 45;
+  double circleAvatarRadius = 35;
   bool showImageToSave = false;
   late ImageModel capturedImage;
   late XFile image;
@@ -37,7 +41,7 @@ class _CameraTestState extends State<CameraTest> {
       }
       setState(() {});
     }).catchError(
-          (Object e) {
+      (Object e) {
         if (e is CameraException) {
           switch (e.code) {
             case 'CameraAccessDenied':
@@ -54,20 +58,41 @@ class _CameraTestState extends State<CameraTest> {
   }
 
   loadImages() async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    List<FileSystemEntity> imageList = dir.listSync();
+    PermissionStatus status =
+        await PermissionManager.checkPermissionForCamera();
+    if (status == PermissionStatus.granted) {
+      Directory cameraDir = Directory("/storage/emulated/0/DCIM/Camera");
+      Directory applicationDir = await getApplicationDocumentsDirectory();
+      List<FileSystemEntity> imageList = applicationDir.listSync();
+      if (await cameraDir.exists()) imageList.addAll(cameraDir.listSync());
 
-    for (FileSystemEntity image in imageList) {
-      print(image.path);
+      for (FileSystemEntity image in imageList) {
+        print(image);
+        if (image.toString().contains("File")) {
+          Uint8List galleryImage = await File(image.path).readAsBytes();
+          ImageModel galleryImageModel = ImageModel(
+              name: image.uri.pathSegments.last,
+              bytes: galleryImage,
+              path: image.path,
+              size: galleryImage.length);
+          galleryImages.add(galleryImageModel);
+        }
+      }
+    } else {
+      Directory applicationDir = await getApplicationDocumentsDirectory();
+      List<FileSystemEntity> imageList = applicationDir.listSync();
 
-      if (image.path.contains(".jpg")) {
-        Uint8List galleryImage = await File(image.path).readAsBytes();
-        ImageModel galleryImageModel = ImageModel(
-            name: image.uri.pathSegments.last,
-            bytes: galleryImage,
-            path: image.path,
-            size: galleryImage.length);
-        galleryImages.add(galleryImageModel);
+      for (FileSystemEntity image in imageList) {
+        print(image);
+        if (image.toString().contains("File")) {
+          Uint8List galleryImage = await File(image.path).readAsBytes();
+          ImageModel galleryImageModel = ImageModel(
+              name: image.uri.pathSegments.last,
+              bytes: galleryImage,
+              path: image.path,
+              size: galleryImage.length);
+          galleryImages.add(galleryImageModel);
+        }
       }
     }
   }
@@ -110,14 +135,17 @@ class _CameraTestState extends State<CameraTest> {
     DateTime time = DateTime.now();
     print(
         time.toIso8601String().substring(2, time.toIso8601String().length - 4));
-    String path = dir.path +
-        "/Img_${time.toIso8601String().substring(2, time.toIso8601String().length - 4).replaceAll("-", "").replaceAll(":", "").replaceAll("T", "").replaceAll(".", "")}." +
-        imageModel.name!.split(".").last;
+    String fileName =
+        "Img_${time.toIso8601String().substring(2, time.toIso8601String().length - 4).replaceAll("-", "").replaceAll(":", "").replaceAll("T", "").replaceAll(".", "")}." +
+            imageModel.name!.split(".").last;
+    String path = dir.path + "/" + fileName;
     File localImageFile = File(path);
+    imageModel.path = path;
+    imageModel.name = fileName;
     await localImageFile.writeAsBytes(imageModel.bytes!).catchError((e) {
       print(e);
     }).whenComplete(
-          () => print("done"),
+      () => print("done"),
     );
   }
 
@@ -141,16 +169,17 @@ class _CameraTestState extends State<CameraTest> {
           children: [
             Positioned.fill(
               child: Container(
-                color: Colors.red,
+                color: Colors.greenAccent,
                 child: CameraPreview(controller),
               ),
             ),
             Positioned(
               bottom: 10,
               left:
-              (MediaQuery.of(context).size.width / 2) - circleAvatarRadius,
-              child: GestureDetector(
-                onTap: () async {
+                  (MediaQuery.of(context).size.width / 2) - circleAvatarRadius,
+              child: CaptureButton(
+                onCaptured: () async {
+                  print("capturing");
                   image = await controller.takePicture();
                   ImageModel imageModel = ImageModel();
                   imageModel.name = image.name;
@@ -162,61 +191,19 @@ class _CameraTestState extends State<CameraTest> {
                     showImageToSave = true;
                   });
                 },
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: circleAvatarRadius,
-                ),
               ),
             ),
             if (showGallery)
-              Positioned.fill(
-                  child: SafeArea(
-                    child: Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  showGallery = false;
-                                });
-                              },
-                              child: const Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 50,
-                              ),
-                            ),
-                          ),
-
-                          const Divider(
-                            thickness: 1,
-                            color: Colors.black54,
-                          ),
-                          // Add code for the image gallery.
-                          Expanded(
-                            child: GridView.count(
-                              mainAxisSpacing: 3,
-                              crossAxisSpacing: 3,
-                              crossAxisCount: 3,
-                              children: [
-                                for (ImageModel image in galleryImages)
-                                  Image.memory(
-                                    image.bytes!,
-                                    fit: BoxFit.fill,
-                                  ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )),
+              GalleryWidget(
+                closingCallback: () {
+                  setState(() {
+                    showGallery = false;
+                  });
+                },
+                imageSelectionCallback: (ImageModel selectedImage) {
+                  widget.resultCallback(selectedImage);
+                },
+              ),
             if (showImageToSave)
               Stack(
                 children: [
@@ -259,9 +246,7 @@ class _CameraTestState extends State<CameraTest> {
                           GestureDetector(
                             onTap: () async {
                               saveImage(capturedImage);
-                              setState(() {
-                                showImageToSave = false;
-                              });
+                              widget.resultCallback(capturedImage);
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -295,7 +280,130 @@ class _CameraTestState extends State<CameraTest> {
   }
 }
 
+class GalleryWidget extends StatefulWidget {
+  const GalleryWidget(
+      {Key? key,
+      required this.closingCallback,
+      required this.imageSelectionCallback})
+      : super(key: key);
+  final Function closingCallback;
+  final Function imageSelectionCallback;
 
+  @override
+  State<GalleryWidget> createState() => _GalleryWidgetState();
+}
+
+class _GalleryWidgetState extends State<GalleryWidget> {
+  ImageModel? selectedImage;
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+        child: SafeArea(
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      widget.closingCallback();
+                    },
+                    child: const Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 50,
+                    ),
+                  ),
+                ),
+                if (selectedImage != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            widget.imageSelectionCallback(selectedImage);
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 5),
+                            child: Text(
+                              "Select",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ))
+                    ],
+                  ),
+              ],
+            ),
+
+            const Divider(
+              thickness: 1,
+              color: Colors.black54,
+            ),
+            // Add code for the image gallery.
+            Expanded(
+              child: GridView.count(
+                mainAxisSpacing: 3,
+                crossAxisSpacing: 3,
+                crossAxisCount: 3,
+                children: [
+                  for (ImageModel image in galleryImages)
+                    GestureDetector(
+                      onTap: () {
+                        selectedImage = image;
+
+                        setState(() {});
+                      },
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Image.memory(
+                              image.bytes!,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          if (selectedImage != null)
+                            Positioned(
+                                top: 5,
+                                left: 5,
+                                child: GestureDetector(
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: selectedImage == image
+                                          ? const Color(0xaa056ae7)
+                                          : Colors.transparent,
+                                      border: Border.all(
+                                          color: Colors.white, width: 2),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: selectedImage == image
+                                        ? const Icon(
+                                            Icons.done,
+                                            color: Colors.white,
+                                          )
+                                        : const SizedBox(),
+                                  ),
+                                ))
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    ));
+  }
+}
 
 // import 'package:camera/camera.dart';
 // import 'package:flutter/material.dart';
@@ -468,3 +576,72 @@ class _CameraTestState extends State<CameraTest> {
 //     );
 //   }
 // }
+
+class CaptureButton extends StatefulWidget {
+  const CaptureButton({
+    Key? key,
+    required this.onCaptured,
+  }) : super(key: key);
+  final Function onCaptured;
+
+  @override
+  State<CaptureButton> createState() => _CaptureButtonState();
+}
+
+class _CaptureButtonState extends State<CaptureButton> {
+  double elevation = 5;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(39),
+          elevation: 10,
+          child: Container(
+            width: 78,
+            height: 78,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 3),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 5,
+          left: 5,
+          child: Material(
+            elevation: elevation,
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(34),
+            child: GestureDetector(
+              onTap: () {
+                widget.onCaptured();
+              },
+              onTapDown: (val) {
+                setState(() {
+                  elevation = 0;
+                });
+              },
+              onTapUp: (val) {
+                late Timer timer1;
+                timer1 =
+                    Timer.periodic(const Duration(milliseconds: 100), (timer) {
+                  timer1.cancel();
+                  setState(() {
+                    elevation = 5;
+                  });
+                });
+              },
+              child: CircleAvatar(
+                backgroundColor:
+                    elevation == 0 ? Colors.grey : const Color(0xffeceae6),
+                radius: 34,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -292,4 +293,17 @@ class imageStorage {
   Future<void> delete(String url) async {
     FirebaseStorage.instance.refFromURL(url).delete();
   }
+
+  Future<String> uploadData(Uint8List data, String path) async {
+    final Reference storageReference = FirebaseStorage.instance.ref(path);
+    try {
+      await storageReference.putData(data).whenComplete(() async {
+        url = await storageReference.getDownloadURL();
+      });
+    } on firebase_core.FirebaseException catch (e) {
+      print(e);
+    }
+    return url;
+  }
+
 }

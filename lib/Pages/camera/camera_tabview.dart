@@ -1,32 +1,31 @@
 /*
  this is for main tab view to take image part or view meal images
  */
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile_app/Pages/camera/CameraPage.dart';
 import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
-import '../../Components/Tab_Views/home_view.dart';
+
 import '../../Components/dashboard_drawer.dart';
-import 'CameraPage.dart';
-import 'anotherDayMealImage.dart';
+import '../../Models/image_model.dart';
 import 'camera_testing.dart';
-import 'meal_view.dart';
-import 'package:mobile_app/Pages/camera/showImagesAccordingToDate.dart';
-import 'list_of_images.dart';
 import 'selectDateRange.dart';
 
-class tabviewcamera extends StatefulWidget {
-  const tabviewcamera({Key? key}) : super(key: key);
+class TabViewCamera extends StatefulWidget {
+  const TabViewCamera({Key? key}) : super(key: key);
 
   @override
-  State<tabviewcamera> createState() => _tabviewcameraState();
+  State<TabViewCamera> createState() => _TabViewCameraState();
 }
 
-class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProviderStateMixin{
+class _TabViewCameraState extends State<TabViewCamera>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int currentPageIndex = 0;
-
+  bool showResult = false;
+  ImageModel? takenImage;
+  String title = '';
 
   @override
   void initState() {
@@ -34,29 +33,26 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
     _tabController = TabController(vsync: this, length: 2);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
       child: Scaffold(
-          appBar:AppBar(
-            backgroundColor: ThemeInfo.primaryColor,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                tooltip: 'back',
-                onPressed: () {Navigator.of(context).push(MaterialPageRoute(
-                    builder: (contex)
-                    {//return CameraScreen(widget.cameras);
-                      return DashboardLayout();
-                    })
-                );
-                },
-              ),
-            title: Text('Meal_Gallery'.tr),
+        appBar: AppBar(
+          backgroundColor: ThemeInfo.primaryColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            tooltip: 'back',
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (contex) {
+                //return CameraScreen(widget.cameras);
+                return const DashboardLayout();
+              }));
+            },
+          ),
+          title: Text('Meal_Gallery'.tr),
         ),
-
         drawer: const DashboardDrawer(),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
@@ -71,21 +67,31 @@ class _tabviewcameraState extends State<tabviewcamera> with SingleTickerProvider
               print(val);
             },
             tabs: const [
-              Tab(icon: Icon(Icons.camera_alt),
+              Tab(
+                icon: Icon(Icons.camera_alt),
               ),
               Tab(
                 icon: Icon(Icons.find_in_page),
               ),
-
             ],
           ),
         ),
         body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _tabController,
-          children: const [
-            CameraTest(),
-            //campage(title: 'camera',),
+          children: [
+            showResult
+                ? CamPage(
+          takenImage: takenImage!,
+          title: title,
+        )
+                :CameraTest(
+              resultCallback: (ImageModel capturedImage) {
+                takenImage = capturedImage;
+                showResult = true;
+                setState(() {});
+              },
+            ) ,
             Daterange(),
           ],
         ),
