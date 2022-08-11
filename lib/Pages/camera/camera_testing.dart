@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobile_app/Models/image_model.dart';
 import 'package:mobile_app/Services/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
@@ -56,19 +57,18 @@ class _CameraTestState extends State<CameraTest> {
     );
     loadImages();
   }
-
   loadImages() async {
     PermissionStatus status =
-        await PermissionManager.checkPermissionForCamera();
+    await PermissionManager.checkPermissionForCamera();
     if (status == PermissionStatus.granted) {
       Directory cameraDir = Directory("/storage/emulated/0/DCIM/Camera");
       Directory applicationDir = await getApplicationDocumentsDirectory();
       List<FileSystemEntity> imageList = applicationDir.listSync();
       if (await cameraDir.exists()) imageList.addAll(cameraDir.listSync());
-
+      galleryImages = [];
       for (FileSystemEntity image in imageList) {
         print(image);
-        if (image.toString().contains("File")) {
+        if (image.path.split('/').last.isImageFileName) {
           Uint8List galleryImage = await File(image.path).readAsBytes();
           ImageModel galleryImageModel = ImageModel(
               name: image.uri.pathSegments.last,
@@ -84,7 +84,7 @@ class _CameraTestState extends State<CameraTest> {
 
       for (FileSystemEntity image in imageList) {
         print(image);
-        if (image.toString().contains("File")) {
+        if (image.path.split('/').last.isImageFileName) {
           Uint8List galleryImage = await File(image.path).readAsBytes();
           ImageModel galleryImageModel = ImageModel(
               name: image.uri.pathSegments.last,
