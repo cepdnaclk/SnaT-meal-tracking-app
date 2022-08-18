@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:mobile_app/Models/image_model.dart';
 import 'package:mobile_app/Services/permission_handler.dart';
@@ -55,29 +56,35 @@ class _CameraTestState extends State<CameraTest> {
         }
       },
     );
-    loadImages();
+    if (galleryImages.isEmpty) loadImages();
   }
+
   loadImages() async {
     PermissionStatus status =
-    await PermissionManager.checkPermissionForCamera();
+        await PermissionManager.checkPermissionForCamera();
     if (status == PermissionStatus.granted) {
       Directory cameraDir = Directory("/storage/emulated/0/DCIM/Camera");
       Directory applicationDir = await getApplicationDocumentsDirectory();
       List<FileSystemEntity> imageList = applicationDir.listSync();
       if (await cameraDir.exists()) imageList.addAll(cameraDir.listSync());
       galleryImages = [];
+      DateTime tic = DateTime.now();
       for (FileSystemEntity image in imageList) {
         print(image);
         if (image.path.split('/').last.isImageFileName) {
-          Uint8List galleryImage = await File(image.path).readAsBytes();
+          File imageFile = File(image.path);
+          /*Uint8List bytes = await imageFile.readAsBytes();
+          Uint8List galleryImage = await testCompressBytes(bytes);*/
           ImageModel galleryImageModel = ImageModel(
-              name: image.uri.pathSegments.last,
-              bytes: galleryImage,
-              path: image.path,
-              size: galleryImage.length);
+            name: image.uri.pathSegments.last,
+            path: image.path,
+            imageFile: imageFile,
+          );
           galleryImages.add(galleryImageModel);
         }
       }
+      DateTime toc = DateTime.now();
+      print(toc.difference(tic).inMilliseconds);
     } else {
       Directory applicationDir = await getApplicationDocumentsDirectory();
       List<FileSystemEntity> imageList = applicationDir.listSync();
@@ -85,16 +92,45 @@ class _CameraTestState extends State<CameraTest> {
       for (FileSystemEntity image in imageList) {
         print(image);
         if (image.path.split('/').last.isImageFileName) {
-          Uint8List galleryImage = await File(image.path).readAsBytes();
+          File imageFile = File(image.path);
+          /*Uint8List bytes = await imageFile.readAsBytes();
+          Uint8List galleryImage = await testCompressBytes(bytes);*/
           ImageModel galleryImageModel = ImageModel(
-              name: image.uri.pathSegments.last,
-              bytes: galleryImage,
-              path: image.path,
-              size: galleryImage.length);
+            name: image.uri.pathSegments.last,
+            //bytes: bytes,
+            path: image.path,
+            imageFile: imageFile,
+            //size: galleryImage.length,
+            //thumbnail: galleryImage,
+          );
           galleryImages.add(galleryImageModel);
         }
       }
     }
+  }
+
+  // 57388 ms
+  Future<Uint8List> testCompressFile(File file) async {
+    Uint8List? result = await FlutterImageCompress.compressWithFile(
+      file.absolute.path,
+      quality: 25,
+      rotate: 0,
+    );
+    //print(file.lengthSync());
+    //print(result!.length);
+    return result!;
+  }
+
+  // 27751 ms
+  Future<Uint8List> testCompressBytes(Uint8List file) async {
+    Uint8List result = await FlutterImageCompress.compressWithList(
+      file,
+      quality: 75,
+      rotate: 0,
+    );
+    print(file.length);
+    print(result.length);
+    return result;
   }
 
   @override
@@ -104,7 +140,7 @@ class _CameraTestState extends State<CameraTest> {
   }
 
   // change the value to increase sensitivity
-  double minDragFactor = 0.4;
+  double minDragFactor = 0.2;
 
   double startingPos = 0;
   double endPos = 0;
@@ -157,131 +193,134 @@ class _CameraTestState extends State<CameraTest> {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     return Material(
-      child: GestureDetector(
-        onVerticalDragUpdate: verticalDragUpdateHandler,
-        onVerticalDragEnd: verticalDragEndHandler,
-        onVerticalDragStart: verticalDragStartHandler,
-        onTapDown: (TapDownDetails tap) async {
-          controller.setFocusPoint(Offset(tap.globalPosition.dx / screenWidth,
-              tap.globalPosition.dy / screenHeight));
-        },
-        child: Stack(
-          children: [
-            Positioned.fill(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onVerticalDragUpdate: verticalDragUpdateHandler,
+              onVerticalDragEnd: verticalDragEndHandler,
+              onVerticalDragStart: verticalDragStartHandler,
+              onTapDown: (TapDownDetails tap) async {
+                controller.setFocusPoint(
+                  Offset(
+                    tap.globalPosition.dx / screenWidth,
+                    tap.globalPosition.dy / screenHeight,
+                  ),
+                );
+              },
               child: Container(
                 color: Colors.greenAccent,
                 child: CameraPreview(controller),
               ),
             ),
-            Positioned(
-              bottom: 10,
-              left:
-                  (MediaQuery.of(context).size.width / 2) - circleAvatarRadius,
-              child: CaptureButton(
-                onCaptured: () async {
-                  print("capturing");
-                  image = await controller.takePicture();
-                  ImageModel imageModel = ImageModel();
-                  imageModel.name = image.name;
-                  imageModel.bytes = await image.readAsBytes();
-                  imageModel.path = image.path;
-                  imageModel.size = await image.length();
-                  capturedImage = imageModel;
-                  setState(() {
-                    showImageToSave = true;
-                  });
-                },
-              ),
+          ),
+          Positioned(
+            bottom: 10,
+            left: (MediaQuery.of(context).size.width / 2) - circleAvatarRadius,
+            child: CaptureButton(
+              onCaptured: () async {
+                print("capturing");
+                image = await controller.takePicture();
+                ImageModel imageModel = ImageModel();
+                imageModel.name = image.name;
+                imageModel.bytes = await image.readAsBytes();
+                imageModel.path = image.path;
+                imageModel.size = await image.length();
+                capturedImage = imageModel;
+                setState(() {
+                  showImageToSave = true;
+                });
+              },
             ),
-            if (showGallery)
-              GalleryWidget(
-                closingCallback: () {
-                  setState(() {
-                    showGallery = false;
-                  });
-                },
-                imageSelectionCallback: (ImageModel selectedImage) {
-                  widget.resultCallback(selectedImage);
-                },
-              ),
-            if (showImageToSave)
-              Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.memory(capturedImage.bytes!),
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    //textDirection: TextDirection.ltr,
-                    child: SizedBox(
-                      width: screenWidth,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              setState(() {
-                                showImageToSave = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(color: Colors.teal),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 25),
-                              child: const Center(
-                                child: Text(
-                                  "   Retake   ",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+          ),
+          if (showGallery)
+            Gallery(
+              closingCallback: () {
+                setState(() {
+                  showGallery = false;
+                });
+              },
+              imageSelectionCallback: (ImageModel selectedImage) {
+                widget.resultCallback(selectedImage);
+              },
+            ),
+          if (showImageToSave)
+            Stack(
+              children: [
+                Positioned.fill(
+                  child: Image.memory(capturedImage.bytes!),
+                ),
+                Positioned(
+                  bottom: 10,
+                  //textDirection: TextDirection.ltr,
+                  child: SizedBox(
+                    width: screenWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              showImageToSave = false;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(color: Colors.teal),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 25),
+                            child: const Center(
+                              child: Text(
+                                "   Retake   ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              saveImage(capturedImage);
-                              widget.resultCallback(capturedImage);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Colors.teal,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 25),
-                              child: const Center(
-                                child: Text(
-                                  "Save Image",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            saveImage(capturedImage);
+                            widget.resultCallback(capturedImage);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.teal,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 25),
+                            child: const Center(
+                              child: Text(
+                                "Select Image",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-          ],
-        ),
+                ),
+              ],
+            ),
+        ],
       ),
     );
   }
 }
 
-class GalleryWidget extends StatefulWidget {
-  const GalleryWidget(
+class Gallery extends StatefulWidget {
+  const Gallery(
       {Key? key,
       required this.closingCallback,
       required this.imageSelectionCallback})
@@ -290,118 +329,357 @@ class GalleryWidget extends StatefulWidget {
   final Function imageSelectionCallback;
 
   @override
-  State<GalleryWidget> createState() => _GalleryWidgetState();
+  State<Gallery> createState() => _GalleryState();
 }
 
-class _GalleryWidgetState extends State<GalleryWidget> {
+class _GalleryState extends State<Gallery> {
   ImageModel? selectedImage;
+  bool showFullScreen = false;
+  int? selectedIndex;
+
+  Future<Uint8List> testCompressBytes(Uint8List file) async {
+    Uint8List result = await FlutterImageCompress.compressWithList(
+      file,
+      quality: 75,
+      rotate: 0,
+    );
+    print(file.length);
+    print(result.length);
+    return result;
+  }
+/*
+  final Map<String, Uint8List?> _cachedMap = {};
+  void precacheAssets(int index) async {
+    // Handle cache before index
+    for (int i = max(0, index - 50); i < 50; i++) {
+      getItemAtIndex(i);
+    }
+    // Handle cache after index
+    for (int i = min(galleryImages.length, index + 50); i < 50 + min(galleryImages.length, index + 50); i++) {
+      getItemAtIndex(i);
+    }
+    _cachedMap.removeWhere((key, value) {
+      int currIndex = assetsList.indexWhere((element) => element.id == key);
+      return currIndex < index - 50 && currIndex > index + 50;
+    });
+  }
+  /// Get the asset from memory or fetch it if it doesn’t exist yet.
+  /// Called in the builder method to display assets, not to precache them.
+  Future<Uint8List?> getItemAtIndex(int index) async {
+    AssetEntity entity = assetsList[index];
+    if (_cachedMap.containsKey(entity.id)) {
+      return _cachedMap[entity.id];
+    }
+    else {
+      Uint8List? thumb = await entity.thumbDataWithOption(
+          ThumbOption.ios(
+              width: width,
+              height: height,
+              deliveryMode: DeliveryMode.highQualityFormat,
+              quality: 90));
+      _cachedMap[entity.id] = thumb;
+      return thumb;
+    }
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(
         child: SafeArea(
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
+      child: Stack(
+        children: [
+          Container(
+            color: Colors.white,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      widget.closingCallback();
-                    },
-                    child: const Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 50,
-                    ),
-                  ),
-                ),
-                if (selectedImage != null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            widget.imageSelectionCallback(selectedImage);
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Text(
-                              "Select",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ))
-                    ],
-                  ),
-              ],
-            ),
-
-            const Divider(
-              thickness: 1,
-              color: Colors.black54,
-            ),
-            // Add code for the image gallery.
-            Expanded(
-              child: GridView.count(
-                mainAxisSpacing: 3,
-                crossAxisSpacing: 3,
-                crossAxisCount: 3,
-                children: [
-                  for (ImageModel image in galleryImages)
-                    GestureDetector(
-                      onTap: () {
-                        selectedImage = image;
-
-                        setState(() {});
-                      },
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Image.memory(
-                              image.bytes!,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          if (selectedImage != null)
-                            Positioned(
-                                top: 5,
-                                left: 5,
-                                child: GestureDetector(
-                                  child: Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: selectedImage == image
-                                          ? const Color(0xaa056ae7)
-                                          : Colors.transparent,
-                                      border: Border.all(
-                                          color: Colors.white, width: 2),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: selectedImage == image
-                                        ? const Icon(
-                                            Icons.done,
-                                            color: Colors.white,
-                                          )
-                                        : const SizedBox(),
-                                  ),
-                                ))
-                        ],
+                Stack(
+                  children: [
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          widget.closingCallback();
+                        },
+                        child: const Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 50,
+                        ),
                       ),
                     ),
-                ],
-              ),
-            )
-          ],
-        ),
+                    if (selectedImage != null)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                              onPressed: () {
+                                widget.imageSelectionCallback(selectedImage);
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 5),
+                                child: Text(
+                                  "Select",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ))
+                        ],
+                      ),
+                  ],
+                ),
+
+                const Divider(
+                  thickness: 1,
+                  color: Colors.black54,
+                ),
+                // Add code for the image gallery.
+                Expanded(
+                  child: GridView.count(
+                    mainAxisSpacing: 3,
+                    crossAxisSpacing: 3,
+                    crossAxisCount: 3,
+                    children: [
+                      for (ImageModel image in galleryImages)
+                        GestureDetector(
+                          onTap: () {
+                            if (selectedImage != null) {
+                              selectedImage = image;
+                              setState(() {});
+                            } else {
+                              setState(() {
+                                selectedIndex = galleryImages.indexOf(image);
+                                showFullScreen = true;
+                              });
+                            }
+                          },
+                          onLongPress: () {
+                            selectedImage = image;
+                            setState(() {});
+                          },
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: GalleryImageThumbnail(
+                                  index: galleryImages.indexOf(image),
+                                ),
+                              ),
+                              if (selectedImage != null)
+                                Positioned(
+                                    top: 5,
+                                    left: 5,
+                                    child: GestureDetector(
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: selectedImage == image
+                                              ? const Color(0xaa056ae7)
+                                              : Colors.transparent,
+                                          border: Border.all(
+                                              color: Colors.white, width: 2),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: selectedImage == image
+                                            ? const Icon(
+                                                Icons.done,
+                                                color: Colors.white,
+                                              )
+                                            : const SizedBox(),
+                                      ),
+                                    ))
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          if (showFullScreen)
+            FullscreenImageViewer(
+                currentIndex: selectedIndex!,
+                imageList: galleryImages,
+                cloeCallback: () {
+                  setState(() {
+                    showFullScreen = false;
+                  });
+                })
+        ],
       ),
     ));
+  }
+}
+
+Map<String, Uint8List> cachedImage = {};
+
+class GalleryImageThumbnail extends StatefulWidget {
+  const GalleryImageThumbnail({Key? key, required this.index})
+      : super(key: key);
+  final int index;
+  @override
+  State<GalleryImageThumbnail> createState() => _GalleryImageThumbnailState();
+}
+
+class _GalleryImageThumbnailState extends State<GalleryImageThumbnail> {
+  int previousIndex = 0;
+  @override
+  initState() {
+    super.initState();
+  }
+
+  Future<Uint8List> getImage(int index) async {
+    if (cachedImage[galleryImages[index].path!] != null) {
+      return cachedImage[galleryImages[index].path!]!;
+    } else {
+      Uint8List thumb = await testCompressFile(galleryImages[index].imageFile!);
+      galleryImages[index].thumbnail = thumb;
+      if (previousIndex < index && index > 50) {
+        galleryImages[index - 51].thumbnail = null;
+        cachedImage.remove(galleryImages[index - 51]);
+      } else if (previousIndex > index && cachedImage.length - 50 > 50) {
+        galleryImages[index + 51].thumbnail = null;
+        cachedImage.remove(galleryImages[index + 51]);
+      }
+      return thumb;
+    }
+  }
+
+  Future<Uint8List> testCompressFile(File file) async {
+    Uint8List? result = await FlutterImageCompress.compressWithFile(
+      file.path,
+      quality: 50,
+      rotate: 0,
+    );
+    return result!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: getImage(widget.index),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Image.memory(
+              snapshot.data as Uint8List,
+              fit: BoxFit.cover,
+            );
+          } else {
+            return Container(
+              color: Colors.grey[200],
+            );
+          }
+        });
+  }
+}
+
+class FullscreenImageViewer extends StatefulWidget {
+  const FullscreenImageViewer(
+      {Key? key,
+      required this.currentIndex,
+      required this.imageList,
+      required this.cloeCallback})
+      : super(key: key);
+  final int currentIndex;
+  final List<ImageModel> imageList;
+  final Function cloeCallback;
+
+  @override
+  State<FullscreenImageViewer> createState() => _FullscreenImageViewerState();
+}
+
+class _FullscreenImageViewerState extends State<FullscreenImageViewer> {
+  late int index;
+
+  @override
+  initState() {
+    DateTime tic = DateTime.now();
+    super.initState();
+    index = widget.currentIndex;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      DateTime toc = DateTime.now();
+      print(toc.difference(tic).inMilliseconds);
+    });
+    print("index0$index");
+  }
+
+  // change the value to increase sensitivity
+  double screenHeight = 0;
+  double screenWidth = 0;
+
+  double minForwardDragFactor = 0.4;
+  double minPreviousDragFactor = -0.4;
+
+  double startingPos = 0;
+  double endPos = 0;
+
+  verticalDragUpdateHandler(DragUpdateDetails drag) {
+    endPos = drag.globalPosition.dx;
+  }
+
+  verticalDragStartHandler(DragStartDetails drag) {
+    startingPos = drag.globalPosition.dx;
+  }
+
+  verticalDragEndHandler(DragEndDetails drag) {
+    double currentDragFactor = (startingPos - endPos) / screenWidth;
+    print(startingPos);
+    print(endPos);
+    print(currentDragFactor);
+    print("index1$index");
+    if (currentDragFactor > minForwardDragFactor) {
+      setState(() {
+        if (index < galleryImages.length - 1) index++;
+      });
+    } else if (currentDragFactor < minPreviousDragFactor) {
+      setState(() {
+        if (index > 0) index--;
+      });
+    }
+    print("index2$index");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
+    return Positioned.fill(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              /*onHorizontalDragUpdate: verticalDragUpdateHandler,
+              onHorizontalDragEnd: verticalDragEndHandler,
+              onHorizontalDragStart: verticalDragStartHandler,*/
+              child: Container(
+                color: Colors.black,
+                child: Image.file(
+                  File(
+                    widget.imageList[index].path!,
+                  ),
+                  filterQuality: FilterQuality.none,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              widget.cloeCallback();
+            },
+            color: Colors.black54,
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

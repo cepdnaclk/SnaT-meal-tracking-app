@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 class ImageModel {
@@ -7,12 +8,17 @@ class ImageModel {
   Uint8List? bytes;
   String? path;
   int? size;
+  Uint8List? thumbnail;
+  File? imageFile;
 
-  ImageModel(
-      {this.name,
-      this.path,
-      this.bytes,
-      this.size,
-      this.url,
-      this.assetAddress});
+  ImageModel({
+    this.name,
+    this.path,
+    this.bytes,
+    this.size,
+    this.url,
+    this.assetAddress,
+    this.thumbnail,
+    this.imageFile,
+  });
 }

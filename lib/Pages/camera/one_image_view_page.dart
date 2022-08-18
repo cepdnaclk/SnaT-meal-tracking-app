@@ -40,8 +40,7 @@ class showimage extends StatelessWidget {
       //title: 'EasyFlutter',
       home: Scaffold(
         appBar:AppBar(
-          title: Text(""
-              "".tr),
+          title: Text("A_MEAL".tr),
           actions: [
             IconButton(
               icon: const Icon(Icons.delete_outline),
