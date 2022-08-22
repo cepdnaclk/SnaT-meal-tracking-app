@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/Components/Tab_Views/home_view.dart';
 import 'package:mobile_app/Pages/add_a_meal_screen.dart';
 
 import '../Models/food_model.dart';
@@ -23,9 +22,6 @@ class MealTile extends StatelessWidget {
 
   void deleteTile() {
     dateMeals[selectedMealTime].remove(meal);
-    print("hiiiii");
-    print(dateMeals[selectedMealTime]);
-    print(todayMeals[selectedMealTime]);
   }
 
   @override
@@ -106,7 +102,6 @@ class MealTile extends StatelessWidget {
                         iconCode: meal["iconCode"]);
                     result = food;
                     amount1 = meal["amount"].toString();
-                    print(amount1);
                     showModalBottomSheet(
                       context: context2,
                       builder: (context2) => AddNewFoodScreen(

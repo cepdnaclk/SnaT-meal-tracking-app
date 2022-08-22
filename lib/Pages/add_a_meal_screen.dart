@@ -70,7 +70,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("hello");
     return Form(
       key: _mealFormKey,
       child: Scaffold(
@@ -270,8 +269,6 @@ class _AddAMealScreenState extends State<AddAMealScreen> {
                   hasMealError = true;
                   setState(() {});
                 }
-                print(hasTimeError);
-                print(hasMealError);
               },
               child: Container(
                 decoration: BoxDecoration(

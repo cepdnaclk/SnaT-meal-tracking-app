@@ -32,7 +32,6 @@ class _DashboardLayoutState extends State<DashboardLayout>
 
   getData() async {
     isDone = await FirebaseServices.getFoodsData();
-    print(isDone);
     setState(() {});
   }
 

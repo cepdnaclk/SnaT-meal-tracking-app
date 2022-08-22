@@ -38,7 +38,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void initState() {
-    print(widget.userInfo?['name']);
     _nameController.text = widget.userInfo?['name'];
     _birthController.text = widget.userInfo?['dateOfBirth'];
     _genderController.text = widget.userInfo?['gender'];

@@ -24,7 +24,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   navigateToRegisterPage() async {
-    print(userData);
     Navigator.push(
       context,
       MaterialPageRoute(

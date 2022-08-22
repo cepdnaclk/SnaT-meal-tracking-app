@@ -7,7 +7,6 @@ import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Pages/welcome_screen.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 
-
 late List<CameraDescription> cameras;
 
 Future<void> main() async {
@@ -23,7 +22,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print(user == null);
     return GetMaterialApp(
       translations: LocalString(),
       locale: const Locale(

@@ -103,7 +103,6 @@ class _CountAdderState extends State<CountAdder> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        print(count >= 1);
                         if (count > 1) {
                           count--;
                           countController.text = count.toString();

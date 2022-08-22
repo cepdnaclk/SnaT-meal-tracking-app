@@ -31,8 +31,6 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   @override
   void initState() {
     super.initState();
-    print("12xs");
-    print(result?.name);
   }
 
   @override
@@ -55,7 +53,6 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
             onPressed: () async {
               double amount = double.parse(amount1);
               widget.reloadState();
-              print(editedIndex);
               if (editedIndex != null) {
                 dateMeals[selectedMealTime]
                     .replaceRange(editedIndex, editedIndex! + 1, [
@@ -96,7 +93,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                 child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: Text(
-                "Save",
+                "Add",
                 style: TextStyle(color: Colors.white),
               ),
             )),

@@ -1,11 +1,20 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mobile_app/Components/today_chart.dart';
 import 'package:mobile_app/Components/week_chart.dart';
 import 'package:mobile_app/Services/firebase_services.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:mobile_app/constants.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'chart_view_components/share_button.dart';
 
 Map todayStat = {};
 List<Map<String, dynamic>> weekStat = [];
@@ -20,7 +29,7 @@ class ChartView extends StatefulWidget {
 class _ChartViewState extends State<ChartView> {
   late Future _generateData;
   List<ChartData> todayChartData = [];
-  List<ChartData> weekChartData = [];
+  List<Map> weekChartData = [];
   double todayMax = 0;
   double weekMax = 0;
   String image = happyImage;
@@ -52,14 +61,36 @@ class _ChartViewState extends State<ChartView> {
       todayMax = todayMax < todayStat[meal].toDouble()
           ? todayStat[meal].toDouble()
           : todayMax;
+      try {
+        weekChartData.add({});
+      } on Exception catch (e) {
+        print(e);
+      }
+      weekChartData[i]['chartData'] = <ChartData>[];
+      for (Map data in weekStat.reversed) {
+        Color valueColor1 = data[meal] < limits[meal]![0]
+            ? ThemeInfo.chartBelowColor
+            : data[meal] > limits[meal]![1]
+                ? ThemeInfo.chartExceededColor
+                : ThemeInfo.chartExpectedColor;
+        if (valueColor == ThemeInfo.chartExceededColor) {
+          image = disappointedImage;
+        } else if (valueColor == ThemeInfo.chartBelowColor) {
+          image = sadImage;
+        } else {
+          image = happyImage;
+        }
+        weekChartData[i]['chartData'].add(ChartData(
+            data['dayOfWeek'].toString().substring(0, 3),
+            data[meal].toDouble(),
+            valueColor1,
+            image: image));
+        weekMax =
+            weekMax < data[meal].toDouble() ? data[meal].toDouble() : weekMax;
+      }
+      weekChartData[i]['max'] = weekMax;
+      weekMax = 0;
       i++;
-    }
-    for (Map data in weekStat.reversed) {
-      weekChartData.add(ChartData(data['dayOfWeek'].toString().substring(0, 3),
-          data['count'].toDouble(), Colors.green));
-      weekMax = weekMax < data['count'].toDouble()
-          ? data['count'].toDouble()
-          : weekMax;
     }
   }
 
@@ -70,11 +101,32 @@ class _ChartViewState extends State<ChartView> {
     _tooltip = TooltipBehavior(enable: true);
   }
 
-  final controller = ScreenshotController();
+  final controller1 = ScreenshotController();
+  final controller2 = ScreenshotController();
 
   late List<ChartData> data;
   late TooltipBehavior _tooltip;
 
+  Future saveAndShare(Uint8List bytes) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final image = File('${directory.path}/flutter.png');
+    image.writeAsBytesSync(bytes);
+    await Share.shareFiles([image.path]);
+  }
+
+  Future<String> saveImage(Uint8List bytes) async {
+    await [Permission.storage].request();
+    final time = DateTime.now()
+        .toIso8601String()
+        .replaceAll('.', '_')
+        .replaceAll(':', '_');
+    final name = "screenshot_$time";
+    final result = await ImageGallerySaver.saveImage(bytes, name: name);
+
+    return result['filePath'];
+  }
+
+  int tabPosition = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -87,65 +139,70 @@ class _ChartViewState extends State<ChartView> {
               length: 2,
               child: Scaffold(
                 body: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Column(
                     children: [
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      Flexible(
-                        flex: 4,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: TabBar(
-                            indicator: BoxDecoration(
-                                color: ThemeInfo.primaryColor,
-                                borderRadius: BorderRadius.circular(20.0)),
-                            indicatorColor: const Color(0xff1976d2),
-                            tabs: const [
-                              Tab(text: "For Today"),
-                              Tab(text: "This Week"),
-                            ],
-                          ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: TabBar(
+                          onTap: (tab) {
+                            tabPosition = tab;
+                          },
+                          indicator: BoxDecoration(
+                              color: ThemeInfo.primaryColor,
+                              borderRadius: BorderRadius.circular(20.0)),
+                          indicatorColor: const Color(0xff1976d2),
+                          tabs: const [
+                            Tab(text: "For Today"),
+                            Tab(text: "This Week"),
+                          ],
                         ),
                       ),
-                      const Spacer(),
-                      Screenshot(
-                        controller: controller,
-                        child: SizedBox(
-                          height: size.height * 0.67,
-                          child: TabBarView(
-                            children: [
-                              TodayChart(
-                                size: size,
-                                max: todayMax,
-                                data: todayChartData,
-                                controller: controller,
-                                interval: todayMax == 0 ? 1 : todayMax,
-                                showLabel: false,
+                      SizedBox(
+                        height: size.height * 0.6,
+                        child: TabBarView(
+                          children: [
+                            TodayChart(
+                              size: size,
+                              max: todayMax,
+                              data: todayChartData,
+                              interval: todayMax == 0 ? 1 : todayMax,
+                              showLabel: false,
+                              controller: controller1,
+                            ),
+                            WeekChart(
+                              size: size,
+                              max: meals.length.toDouble(),
+                              gradient: LinearGradient(
+                                colors: ThemeInfo.weekChartGradient,
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                               ),
-                              WeekChart(
-                                size: size,
-                                max: meals.length.toDouble(),
-                                gradient: LinearGradient(
-                                  colors: ThemeInfo.weekChartGradient,
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                data: weekChartData,
-                                controller: controller,
-                                interval: meals.length.toDouble(),
-                                showLabel: true,
-                              ),
-                            ],
-                          ),
+                              data: weekChartData,
+                              controller: controller2,
+                              interval: meals.length.toDouble(),
+                              showLabel: true,
+                            ),
+                          ],
                         ),
                       ),
-                      const Spacer(
-                        flex: 1,
+                      Button(
+                        press: () async {
+                          Uint8List? image;
+                          if (tabPosition == 0) {
+                            image = await controller1.capture();
+                          } else {
+                            image = await controller2.capture();
+                          }
+                          if (image == null) return;
+
+                          await saveImage(image);
+                          await saveAndShare(image);
+                        },
                       ),
                     ],
                   ),

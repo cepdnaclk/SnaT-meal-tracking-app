@@ -66,19 +66,14 @@ class FirebaseServices {
                 iconCode: data['iconCode']);
             array.add(food);
           }
-        }).catchError((e) {
-          print("e2$e");
-        });
+        }).catchError((e) {});
         foodsData[doc.id] = array;
       }
-    }).catchError((e) {
-      print(e);
-    });
+    }).catchError((e) {});
     return true;
   }
 
   static Future<Map> fetchData() async {
-    print("getting");
     Map meals = {};
     await FirebaseFirestore.instance
         .collection("users")
@@ -111,7 +106,6 @@ class FirebaseServices {
         'dayOfWeek': daysInAWeek[today.subtract(Duration(days: i)).weekday - 1],
       });
     }
-    print(weekStat);
     for (String meal in meals) {
       todayStat[meal] = 0;
       for (int i = 0; i < 7; i++) {
@@ -139,7 +133,6 @@ class FirebaseServices {
     }).catchError((e) {
       print(e);
     });
-    //print(todayStat);
     for (int i = 0; i < 7; i++) {
       await FirebaseFirestore.instance
           .collection("users")
@@ -169,7 +162,7 @@ class FirebaseServices {
       });
       weekStat[i]['count'] = count;
     }
-    print(weekStat);
+    print(todayStat);
     return true;
   }
 }
