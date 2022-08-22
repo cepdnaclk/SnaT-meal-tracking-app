@@ -54,7 +54,7 @@ class BmiCalcViewState extends State<BmiCalcView> {
               height: 15,
             ),
             const Text(
-              'Enter Your Height in Cm',
+              'Enter Your Height in cm',
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -79,7 +79,7 @@ class BmiCalcViewState extends State<BmiCalcView> {
               height: 15,
             ),
             const Text(
-              'Enter Your Weight (Kg)',
+              'Enter Your Weight (kg)',
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -93,7 +93,7 @@ class BmiCalcViewState extends State<BmiCalcView> {
               controller: weightController,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
-                  hintText: "Your Weight(Kg)",
+                  hintText: "Your Weight (kg)",
                   filled: true,
                   fillColor: Colors.green[50],
                   border: OutlineInputBorder(
@@ -133,41 +133,44 @@ class BmiCalcViewState extends State<BmiCalcView> {
               height: 15,
             ),
 
-            /*ElevatedButton(
-                    onPressed: () {
-                      // update user details
-                      usr.setHeightToFirebase(heightController.value.text);
-                      usr.setWeightToFirebase(weightController.value.text);
+            ElevatedButton(
+                onPressed: () {
+                  // update user details
+                  usr.setHeightToFirebase(heightController.value.text);
+                  usr.setWeightToFirebase(weightController.value.text);
 
-                      if (_gender == 1) {
-                        usr.setGenderToFirebase('male');
-                      } else if (_gender == 2) {
-                        usr.setGenderToFirebase('female');
-                      }
+                  if (_gender == 1) {
+                    usr.setGenderToFirebase('Male');
+                  } else if (_gender == 2) {
+                    usr.setGenderToFirebase('Female');
+                  }
 
-                      // dialogue box
-                      showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            actions: [
-                              TextButton(
-                                  onPressed: (){
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('closed'),
-                              )
-                            ],
-                            title: const Text('Update Alert'),
-                            contentPadding: const EdgeInsets.all(20.0),
-                            content: const Text('User Details Updated!'),
-                          ),
-                      );
-                    },
-                    child: const Text('Update User Details')
-                ),*/
+                  // dialogue box
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Closed'),
+                        )
+                      ],
+                      title: const Text('Update Alert'),
+                      contentPadding: const EdgeInsets.all(50.0),
+                      content: const Text('User Details Updated!'),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Update User Details',
+                  style: TextStyle(fontSize: 19),
+                )),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
               child: SwipeableButtonView(
                   isFinished: _isFinished,
                   onFinish: () async {

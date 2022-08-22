@@ -54,7 +54,7 @@ class _GenderWidgetState extends State<GenderWidget> {
                 ],
               )),
           const SizedBox(
-            width: 20,
+            width: 60,
           ),
           ChoiceChip3D(
               border: Border.all(color: Colors.grey),
