@@ -14,7 +14,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../constants.dart';
 import 'Tab_Views/chart_view.dart';
 
-class WeekChart extends StatelessWidget {
+class WeekChart extends StatefulWidget {
   const WeekChart({
     Key? key,
     required this.size,
@@ -35,6 +35,11 @@ class WeekChart extends StatelessWidget {
   final DataLabelSettings? dataLabelSettings;
   final bool showLabel;
 
+  @override
+  State<WeekChart> createState() => _WeekChartState();
+}
+
+class _WeekChartState extends State<WeekChart> {
   Future saveAndShare(Uint8List bytes) async {
     final directory = await getApplicationDocumentsDirectory();
     final image = File('${directory.path}/flutter.png');
@@ -54,8 +59,13 @@ class WeekChart extends StatelessWidget {
     return result['filePath'];
   }
 
+  final CarouselController carouselController = CarouselController();
+  final CarouselController carouselController1 = CarouselController();
+  int currentCard = 10000;
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
@@ -63,10 +73,10 @@ class WeekChart extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           SizedBox(
-            height: size.height * 0.01,
+            height: widget.size.height * 0.01,
           ),
           Text(
-            showLabel ? weekChartText : dailyChartText,
+            widget.showLabel ? weekChartText : dailyChartText,
             style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -74,27 +84,113 @@ class WeekChart extends StatelessWidget {
             ),
           ),
           Screenshot(
-            controller: controller,
-            child: CarouselSlider(
-                items: [
-                  for (int i = 0; i < data.length; i++)
-                    SingleMealChart(
-                      size: size,
-                      data: data[i]['chartData'],
-                      max: data[i]['max'],
-                      title: meals[i],
-                      controller: controller,
-                    )
-                ],
-                options: CarouselOptions(
-                    height: 330,
+            controller: widget.controller,
+            child: Column(
+              children: [
+                CarouselSlider(
+                  items: [
+                    for (int i = 0; i < widget.data.length; i++)
+                      SingleMealChart(
+                        size: widget.size,
+                        data: widget.data[i]['chartData'],
+                        max: widget.data[i]['max'],
+                        title: meals[i],
+                        controller: widget.controller,
+                      ),
+                  ],
+                  options: CarouselOptions(
+                      height: 330,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      viewportFraction: 0.90,
+                      enlargeCenterPage: true,
+                      onScrolled: (val) {
+                        if (currentCard > (val?.round() ?? currentCard)) {
+                          carouselController.previousPage();
+                          currentCard = val!.round();
+                        } else if (currentCard <
+                            (val?.round() ?? currentCard)) {
+                          carouselController.nextPage();
+                          currentCard = val!.round();
+                        }
+                      },
+                      onPageChanged: (val, _) {
+                        print(val);
+                      }),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CarouselSlider(
+                  carouselController: carouselController,
+                  items: [
+                    for (int i = 0; i < widget.data.length; i++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Opacity(
+                            opacity: 0.5,
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              width: width / 4,
+                              alignment: Alignment.center,
+                              child: Text(
+                                meals[i - 1 < 0 ? 7 : i - 1],
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                    color: ThemeInfo.secondaryColor,
+                                    width: 1,
+                                  )),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            alignment: Alignment.center,
+                            child: Text(meals[i]),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(
+                                  color: ThemeInfo.secondaryColor,
+                                  width: 1,
+                                )),
+                          ),
+                          Opacity(
+                            opacity: 0.5,
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              width: width / 4,
+                              alignment: Alignment.center,
+                              child: Text(
+                                meals[i + 1 > 6 ? 0 : i + 1],
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                    color: ThemeInfo.secondaryColor,
+                                    width: 1,
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                  options: CarouselOptions(
+                    height: 30,
                     enlargeStrategy: CenterPageEnlargeStrategy.height,
-                    viewportFraction: 0.90,
+                    viewportFraction: 1,
                     enlargeCenterPage: true,
-                    enableInfiniteScroll: false)),
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(
-            height: size.height * 0.01,
+            height: widget.size.height * 0.01,
           ),
         ],
       ),
@@ -178,10 +274,6 @@ class SingleMealChart extends StatelessWidget {
                         isTrackVisible: false,
                         trackColor: ThemeInfo.chartTrackColor,
                         yValueMapper: (ChartData data, _) => data.y,
-                        /*dataLabelMapper: (ChartData data, _) =>
-                        data.y == meals.length && showLabel
-                            ? "✔"
-                            : "",*/
                         pointColorMapper: (ChartData data, _) => data.color,
                         name: '',
                         animationDuration: 1000,
