@@ -30,10 +30,10 @@ class _NotificationViewState extends State<NotificationView> {
     DateTime now = DateTime.now();
     final yesterday = DateTime(now.year, now.month, now.day - 1);
     final yesterday_date = yesterday.toString().substring(0, 10);
-    getYesterdayMissedFoodCategories(yesterday_date);
+    getYesterdayMissedMealTimes(yesterday_date);
   }
 
-  getYesterdayMissedFoodCategories(String yesterday_date) async {
+  getYesterdayMissedMealTimes(String yesterday_date) async {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
