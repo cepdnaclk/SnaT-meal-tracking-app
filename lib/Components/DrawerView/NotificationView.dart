@@ -75,26 +75,8 @@ class _NotificationViewState extends State<NotificationView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ElevatedButton(
-              onPressed: () async {
-                await service.showNotification(
-                    id: 0,
-                    title: 'General Notification',
-                    body: 'Just a Notification');
-              },
-              child: const Text('show notification'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await service.showScheduledNotification(
-                  id: 2,
-                  title: 'title',
-                  body: 'some body',
-                  seconds: 10,
-                );
-              },
-              child: const Text('show scheduled notification'),
-            ),
+
+
             ElevatedButton(
               onPressed: () async {
                 await service.showDailyNotification(
@@ -106,16 +88,7 @@ class _NotificationViewState extends State<NotificationView> {
               },
               child: const Text('show daily notification'),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await service.showNotificationWithPayload(
-                    id: 3,
-                    title: 'You Missed a Meal!',
-                    body: 'Please, Enter Yesterday Breakfast Details!',
-                    payload: 'payload navigation');
-              },
-              child: const Text('show notification with payload'),
-            ),
+
             ElevatedButton(
               onPressed: () async {
                 await service.cancelAllNotifications();

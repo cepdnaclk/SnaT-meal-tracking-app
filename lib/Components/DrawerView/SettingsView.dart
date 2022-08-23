@@ -4,6 +4,9 @@ import 'package:mobile_app/Pages/user_profile.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
 import 'package:settings_ui/settings_ui.dart';
 
+import '../../Settings/ChangeAppLanguage.dart';
+
+
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
 
@@ -35,6 +38,22 @@ class SettingsView extends StatelessWidget {
               ),
             ],
           ),
+
+
+          SettingsSection(
+            title: Text('common'.tr),
+            tiles: <SettingsTile>[
+              SettingsTile.navigation(
+                onPressed: (context){
+                  var changelanguage = ChangeLanguage().buildLanguageDialog(context);
+                },
+                leading: const Icon(Icons.language),
+                title: Text('language'.tr),
+              ),
+            ],
+          ),
+
+
           SettingsSection(
             title: Text('Notification'.tr),
             tiles: <SettingsTile>[

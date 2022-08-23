@@ -50,39 +50,7 @@ class NotificationService {
         android: androidNotificationDetails, iOS: iosNotificationDetails);
   }
 
-  /* Show a notification */
-  Future<void> showNotification({
-    required int id,
-    required String title,
-    required String body,
-  }) async {
-    final details = await _notificationDetails();
-    await _notificationService.show(id, title, body, details);
-  }
-
-  /* show notification after some time(secs) */
-  Future<void> showScheduledNotification(
-      {required int id,
-      required String title,
-      required String body,
-      String? payload,
-      required int seconds}) async {
-    final details = await _notificationDetails();
-    await _notificationService.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(
-        DateTime.now().add(Duration(seconds: seconds)),
-        tz.local,
-      ),
-      details,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
-  }
-
+  // daily notification
   Future<void> showDailyNotification(
       {required int id,
       required String title,
