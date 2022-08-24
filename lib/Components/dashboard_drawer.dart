@@ -9,6 +9,7 @@ import 'package:mobile_app/Pages/login_screen.dart';
 import '../Pages/welcome_screen.dart';
 import '../Theme/theme_info.dart';
 
+User? user = FirebaseAuth.instance.currentUser;
 final _firestore = FirebaseFirestore.instance;
 String? email = user?.email.toString();
 String? name = user?.displayName.toString();
@@ -60,24 +61,24 @@ class DashboardDrawer extends StatelessWidget {
           //mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: ListTile(
-                iconColor: Colors.black,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                contentPadding: EdgeInsets.zero,
-                horizontalTitleGap: 0,
-                leading: const Icon(Icons.history_toggle_off_rounded),
-                title: const Text('Meal History',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    )),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MealHistory()));
-                },
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0),
+            //   child: ListTile(
+            //     iconColor: Colors.black,
+            //     visualDensity: VisualDensity.adaptivePlatformDensity,
+            //     contentPadding: EdgeInsets.zero,
+            //     horizontalTitleGap: 0,
+            //     leading: const Icon(Icons.history_toggle_off_rounded),
+            //     title: const Text('Meal History',
+            //         style: TextStyle(
+            //           fontSize: 18.0,
+            //         )),
+            //     onTap: () {
+            //       Navigator.push(context,
+            //           MaterialPageRoute(builder: (context) => MealHistory()));
+            //     },
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: ListTile(

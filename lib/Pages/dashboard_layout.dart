@@ -80,15 +80,15 @@ class _DashboardLayoutState extends State<DashboardLayout>
               ),
               Tab(
                   child: Container(
-                // custom bmi icon for tab view
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  'assets/images/bmi_icon.png',
-                  color: ThemeInfo.bottomTabButtonColor,
-                  height: 28.0,
-                  width: 28.0,
-                ),
-              )),
+                    // custom bmi icon for tab view
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      'assets/images/bmi_icon.png',
+                      color: ThemeInfo.bottomTabButtonColor,
+                      height: 28.0,
+                      width: 28.0,
+                    ),
+                  )),
               const Tab(
                 icon: Icon(Icons.calendar_today),
               ),

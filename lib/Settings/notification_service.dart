@@ -50,51 +50,18 @@ class NotificationService {
         android: androidNotificationDetails, iOS: iosNotificationDetails);
   }
 
-  /* Show a notification */
-  Future<void> showNotification({
-    required int id,
-    required String title,
-    required String body,
-  }) async {
-    final details = await _notificationDetails();
-    await _notificationService.show(id, title, body, details);
-  }
-
-  /* show notification after some time(secs) */
-  Future<void> showScheduledNotification(
-      {required int id,
-      required String title,
-      required String body,
-      String? payload,
-      required int seconds}) async {
-    final details = await _notificationDetails();
-    await _notificationService.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(
-        DateTime.now().add(Duration(seconds: seconds)),
-        tz.local,
-      ),
-      details,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
-  }
-
+  // daily notification
   Future<void> showDailyNotification(
       {required int id,
       required String title,
       required String body,
-      String? payload,
-      required Time time}) async {
+      String? payload,}) async {
     final details = await _notificationDetails();
     await _notificationService.zonedSchedule(
       id,
       title,
       body,
-      _scheduleDaily(Time(15,31,0)), // daily notification time
+      _scheduleDaily(const Time(8, 19, 0)), // daily notification time
       details,
       payload: payload,
       androidAllowWhileIdle: true,
@@ -114,15 +81,8 @@ class NotificationService {
         : scheduleDate;
   }
 
-  /* test notification with payload */
-  Future<void> showNotificationWithPayload(
-      {required int id,
-      required String title,
-      required String body,
-      required String payload}) async {
-    final details = await _notificationDetails();
-    await _notificationService.show(id, title, body, details, payload: payload);
-  }
+
+
 
   void onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) {
@@ -143,5 +103,4 @@ class NotificationService {
   Future<void> cancelNotifications(int id) async {
     await _notificationService.cancel(id);
   }
-
 }

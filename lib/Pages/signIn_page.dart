@@ -4,6 +4,7 @@ import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Pages/signUp_page.dart';
 import 'package:mobile_app/Services/custom_page_route.dart';
 import 'package:mobile_app/Theme/theme_info.dart';
+import 'package:mobile_app/Pages/reset_password.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -69,6 +70,10 @@ class _SignInState extends State<SignIn> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
   }
 
+  navigateToReset() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ResetPassword()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +124,7 @@ class _SignInState extends State<SignIn> {
                     textAlign: TextAlign.end,
                     style: TextStyle(color: Colors.blueAccent,fontSize: 15.0,),
                     ),
-                  onTap: navigateToSignUp,
+                  onTap: navigateToReset, 
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
