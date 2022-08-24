@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile_app/Pages/dashboard_layout.dart';
 import 'package:mobile_app/Settings/notification_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -82,8 +81,7 @@ class _NotificationViewState extends State<NotificationView> {
                 await service.showDailyNotification(
                   id: 1,
                   title: 'daily notification',
-                  body: 'Time is 9.52 a.m.',
-                  time: const Time(9, 52, 0),
+                  body: 'You have missed Yesterday Meals',
                 );
               },
               child: const Text('show daily notification'),
@@ -102,14 +100,14 @@ class _NotificationViewState extends State<NotificationView> {
   }
 
   void listenToNotification() =>
-      service.onNotificationClick.stream.listen(onNoticationListener);
+      service.onNotificationClick.stream.listen(onNotificationListener);
 
-  void onNoticationListener(String? payload) {
+  void onNotificationListener(String? payload) {
     if (payload != null && payload.isNotEmpty) {
       print('payload $payload');
 
       Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => DashboardLayout())));
+          MaterialPageRoute(builder: ((context) => const DashboardLayout())));
     }
   }
 }

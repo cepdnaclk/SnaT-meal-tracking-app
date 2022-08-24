@@ -55,14 +55,13 @@ class NotificationService {
       {required int id,
       required String title,
       required String body,
-      String? payload,
-      required Time time}) async {
+      String? payload,}) async {
     final details = await _notificationDetails();
     await _notificationService.zonedSchedule(
       id,
       title,
       body,
-      _scheduleDaily(Time(15, 31, 0)), // daily notification time
+      _scheduleDaily(const Time(7, 58, 0)), // daily notification time
       details,
       payload: payload,
       androidAllowWhileIdle: true,
@@ -82,15 +81,8 @@ class NotificationService {
         : scheduleDate;
   }
 
-  /* test notification with payload */
-  Future<void> showNotificationWithPayload(
-      {required int id,
-      required String title,
-      required String body,
-      required String payload}) async {
-    final details = await _notificationDetails();
-    await _notificationService.show(id, title, body, details, payload: payload);
-  }
+
+
 
   void onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) {
