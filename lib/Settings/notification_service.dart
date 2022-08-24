@@ -61,7 +61,7 @@ class NotificationService {
       id,
       title,
       body,
-      _scheduleDaily(const Time(7, 58, 0)), // daily notification time
+      _scheduleDaily(const Time(8, 19, 0)), // daily notification time
       details,
       payload: payload,
       androidAllowWhileIdle: true,

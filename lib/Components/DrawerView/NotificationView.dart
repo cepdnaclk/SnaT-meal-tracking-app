@@ -4,6 +4,7 @@ import 'package:mobile_app/Settings/notification_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/constants.dart';
+import 'package:mobile_app/main.dart';
 
 User? user = FirebaseAuth.instance.currentUser;
 
@@ -63,7 +64,7 @@ class _NotificationViewState extends State<NotificationView> {
     service = NotificationService();
     getMissingFoodData();
     service.initialize();
-    listenToNotification();
+    //listenToNotification();
     super.initState();
   }
 
