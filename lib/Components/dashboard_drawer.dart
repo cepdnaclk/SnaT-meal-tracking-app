@@ -99,26 +99,26 @@ class DashboardDrawer extends StatelessWidget {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: ListTile(
-                iconColor: Colors.black,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                contentPadding: EdgeInsets.zero,
-                horizontalTitleGap: 0,
-                leading: const Icon(Icons.notification_add_outlined),
-                title: const Text('Notifications',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    )),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NotificationView()));
-                },
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 10.0),
+            //   child: ListTile(
+            //     iconColor: Colors.black,
+            //     visualDensity: VisualDensity.adaptivePlatformDensity,
+            //     contentPadding: EdgeInsets.zero,
+            //     horizontalTitleGap: 0,
+            //     leading: const Icon(Icons.notification_add_outlined),
+            //     title: const Text('Notifications',
+            //         style: TextStyle(
+            //           fontSize: 18.0,
+            //         )),
+            //     onTap: () {
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => const NotificationView()));
+            //     },
+            //   ),
+            // ),
             const SizedBox(
               height: 100,
             ),

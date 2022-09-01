@@ -20,35 +20,17 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: ThemeInfo.loginBGColor,
       body: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(
-                "assets/images/login1.png",
-                width: MediaQuery.of(context).size.width * 3 / 7,
-              ),
-              const Spacer(),
-              Row(
-                children: [
-                  const Spacer(),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 7 / 24,
-                    width: MediaQuery.of(context).size.width / 9,
-                    child: Image.asset(
-                      "assets/images/login2.png",
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          Positioned.fill(
+              child: Image.asset(
+            "assets/images/login_bg.png",
+            fit: BoxFit.cover,
+          )),
           SafeArea(
             child: Column(
               children: [
                 Expanded(
                   child: Image.asset(
-                    "assets/images/login_main_landscape.png",
+                    "assets/images/frontPage.png",
                   ),
                 ),
                 Center(
