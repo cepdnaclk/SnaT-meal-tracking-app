@@ -28,42 +28,52 @@ class LoginScreen extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
-                Expanded(
-                  child: Image.asset(
-                    "assets/images/frontPage.png",
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    "SnaT",
-                    style: TextStyle(
-                      color: ThemeInfo.secondaryColor,
-                      fontSize: 80,
-                      //fontWeight: FontWeight.bold,
-                      fontFamily: ThemeInfo.logoFontFamily,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/logo_transparent.png",
+                      width: 75,
+                      height: 75,
                     ),
-                  ),
+                    Text(
+                      "SnaT",
+                      style: TextStyle(
+                        fontSize: 70,
+                        color: ThemeInfo.secondaryTextColor,
+                        fontWeight: FontWeight.bold,
+                        //fontFamily: ThemeInfo.logoFontFamily,
+                      ),
+                    ),
+                  ],
                 ),
                 const Center(
                   child: Text(
                     "Snap and Track",
                     style: TextStyle(
-                      fontSize: 27,
+                      fontSize: 25,
                       fontWeight: FontWeight.w500,
                       fontFamily: "Times new roman",
                     ),
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
+                Expanded(
+                  child: Image.asset(
+                    "assets/images/login_main.png",
+                    // width: 250,
+                    // height: 250,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
                   child: Text(
                     "Experience next level food tracking with photos, emojis, and fun-filled food journaling... Your way to a balanced meal is just a click or two away...",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
                       fontFamily: "Times new roman",
-                      color: Colors.grey[700],
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -74,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
+                      TextButton(
                         onPressed: () async {
                           Navigator.push(
                             context,
@@ -87,15 +97,18 @@ class LoginScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: Colors.white,
                             )),
-                        style: ElevatedButton.styleFrom(
-                          primary: ThemeInfo.bottomTabButtonColor,
-                          shadowColor: Colors.white,
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          backgroundColor: const Color(0xff19E6EF),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
                         ),
                       ),
                       const SizedBox(width: 50.0),
-                      ElevatedButton(
+                      TextButton(
                         onPressed: () async {
                           Navigator.push(
                             context,
@@ -109,14 +122,17 @@ class LoginScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          primary: ThemeInfo.bottomTabButtonColor,
-                          shadowColor: Colors.white,
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          backgroundColor: const Color(0xff19E6EF),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -124,12 +140,19 @@ class LoginScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Colors.white,
                     )),
                 const SizedBox(height: 10),
                 Center(
-                  child: GestureDetector(
-                    onTap: () async {
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      backgroundColor: const Color(0xff19E6EF),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
+                    ),
+                    onPressed: () async {
                       await FirebaseServices().signInWithGoogle();
                       print("Hello");
 
@@ -161,28 +184,18 @@ class LoginScreen extends StatelessWidget {
                         );
                       }
                     },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 15,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xff53a09e),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text(
-                        "Sign in with Google",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    child: const Text(
+                      "Sign in with Google",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
               ],
             ),
