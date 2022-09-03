@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                     "Snap and Track",
                     style: TextStyle(
                       fontSize: 25,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                       //fontFamily: "Times new roman",
                     ),
                   ),
@@ -65,14 +65,14 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8.0),
                   child: Text(
-                    "Experience next level food tracking with photos, emojis, and fun-filled food journaling... Your way to a balanced meal is just a click or two away...",
+                    "Experience next level food tracking with photos, emojis, and fun-filled food journaling...\nYour way to a balanced meal is just a click or two away...",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 14.5,
                       //fontFamily: "Times new roman",
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
@@ -136,13 +136,15 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Text('OR',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    )),
-                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('OR',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                ),
                 Center(
                   child: TextButton(
                     style: TextButton.styleFrom(
