@@ -12,7 +12,6 @@ import 'package:mobile_app/Theme/theme_info.dart';
 import 'Settings/notification_service.dart';
 import 'constants.dart';
 
-
 late List<CameraDescription> cameras;
 User? user = FirebaseAuth.instance.currentUser;
 late final NotificationService service;
@@ -28,8 +27,7 @@ Future<void> main() async {
   await service.initialize();
   print("notification service initialized\n");
   runApp(const MyApp());
-  generateNotification();
-
+  if (user != null) generateNotification();
 }
 
 String getMissingFoodData() {
@@ -56,7 +54,6 @@ getYesterdayMissedMealTimes(String yesterday_date) async {
       .doc(yesterday_date)
       .get()
       .then((DocumentSnapshot documentSnapshot) {
-
     if (documentSnapshot.exists) {
       Map numMap = (documentSnapshot.data() as Map);
       var consumedMealTimes = <String>{};
@@ -66,25 +63,25 @@ getYesterdayMissedMealTimes(String yesterday_date) async {
       }
       final List<String> consumedFood = consumedMealTimes.toList();
       List<String> difference =
-      mealTimes.toSet().difference(consumedFood.toSet()).toList();
+          mealTimes.toSet().difference(consumedFood.toSet()).toList();
       print(difference.toString());
       notificationBody = difference.toString();
       print(notificationBody);
     } else {
-      notificationBody = "You didn't keep track of Mealtimes yesterday. Please keep track of your Mealtimes";
+      notificationBody =
+          "You didn't keep track of Mealtimes yesterday. Please keep track of your Mealtimes";
       print(notificationBody);
     }
-  }
-  );
+  });
 }
 
-
 void generateNotification() async {
-  await service.showDailyNotification(id: 1, title: "Daily Notification",
-      body: getMissingFoodData(),
+  await service.showDailyNotification(
+    id: 1,
+    title: "Daily Notification",
+    body: getMissingFoodData(),
   );
   print('scheduled notification');
-
 }
 
 class MyApp extends StatelessWidget {

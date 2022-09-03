@@ -53,7 +53,7 @@ class LoginScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
-                      fontFamily: "Times new roman",
+                      //fontFamily: "Times new roman",
                     ),
                   ),
                 ),
@@ -70,8 +70,8 @@ class LoginScreen extends StatelessWidget {
                     "Experience next level food tracking with photos, emojis, and fun-filled food journaling... Your way to a balanced meal is just a click or two away...",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: "Times new roman",
+                      fontSize: 17,
+                      //fontFamily: "Times new roman",
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
