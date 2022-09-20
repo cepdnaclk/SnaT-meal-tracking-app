@@ -106,13 +106,21 @@ class _MealSectionState extends State<MealSection> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                (widget.mealItems![i]["amount"]
-                                                    .toInt()
-                                                    .toDouble() ==
-                                                widget.mealItems![i]["amount"]
-                                            ? widget.mealItems![i]["amount"]
-                                                .toInt()
-                                            : widget.mealItems![i]["amount"])
+                                (widget.mealItems![i]["amount"] == 0.25
+                                            ? "1/4"
+                                            : widget.mealItems![i]["amount"] ==
+                                                    0.5
+                                                ? "1/2"
+                                                : widget.mealItems![i]["amount"]
+                                                            .toInt()
+                                                            .toDouble() ==
+                                                        widget.mealItems![i]
+                                                            ["amount"]
+                                                    ? widget.mealItems![i]
+                                                            ["amount"]
+                                                        .toInt()
+                                                    : widget.mealItems![i]
+                                                        ["amount"])
                                         .toString() +
                                     ' ' +
                                     widget.mealItems![i]['unit'],

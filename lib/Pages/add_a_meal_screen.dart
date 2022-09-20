@@ -11,7 +11,7 @@ import '../constants.dart';
 import 'add_new_food_screen.dart';
 
 FoodModel? result;
-String amount1 = "1";
+String amount1 = "0";
 int? editedIndex;
 String? selectedMeal;
 String? selectedMealTime;

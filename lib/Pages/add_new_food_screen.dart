@@ -36,7 +36,7 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
   @override
   void dispose() {
     result = null;
-    amount1 = "1";
+    amount1 = "0";
     editedIndex = null;
     super.dispose();
   }
@@ -58,17 +58,19 @@ class _AddNewFoodScreenState extends State<AddNewFoodScreen> {
                     .replaceRange(editedIndex, editedIndex! + 1, [
                   {
                     "food": result!.name,
-                    'amount': (2 * amount).ceilToDouble() / 2,
+                    'amount': amount,
                     'unit': result!.unit,
                     'type': result!.mealType,
                     'iconCode': result!.iconCode,
                   }
                 ]);
               } else {
+                print(amount.toDouble());
+
                 dateMeals[selectedMealTime] != null
                     ? dateMeals[selectedMealTime].add({
                         "food": result!.name,
-                        'amount': (2 * amount).ceilToDouble() / 2,
+                        'amount': amount,
                         'unit': result!.unit,
                         'type': result!.mealType,
                         'iconCode': result!.iconCode,

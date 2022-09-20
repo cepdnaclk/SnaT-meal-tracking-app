@@ -60,9 +60,14 @@ class MealTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    (meal["amount"].toInt().toDouble() == meal["amount"]
-                                ? meal["amount"].toInt()
-                                : meal["amount"])
+                    (meal["amount"] == 0.25
+                                ? "1/4"
+                                : meal["amount"] == 0.5
+                                    ? "1/2"
+                                    : meal["amount"].toInt().toDouble() ==
+                                            meal["amount"]
+                                        ? meal["amount"].toInt()
+                                        : meal["amount"])
                             .toString() +
                         ' ' +
                         meal['unit'].replaceRange(
