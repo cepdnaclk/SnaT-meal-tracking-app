@@ -78,10 +78,27 @@ class _CountAdderState extends State<CountAdder> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        count++;
-                        countController.text = count.toString();
-                        widget.onChanged(count);
-                        setState(() {});
+                        if (count < 0.25) {
+                          count = 0.25;
+                          countController.text = count.toString();
+                          widget.onChanged(count);
+                          setState(() {});
+                        } else if (count < 0.5) {
+                          count = 0.5;
+                          countController.text = count.toString();
+                          widget.onChanged(count);
+                          setState(() {});
+                        } else if (count < 1) {
+                          count = 1;
+                          countController.text = count.toString();
+                          widget.onChanged(count);
+                          setState(() {});
+                        } else {
+                          count++;
+                          countController.text = count.toString();
+                          widget.onChanged(count);
+                          setState(() {});
+                        }
                       },
                       child: Container(
                         width: 50,
@@ -103,8 +120,23 @@ class _CountAdderState extends State<CountAdder> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        if (count > 1) {
+                        if (count >= 2) {
                           count--;
+                          countController.text = count.toString();
+                          widget.onChanged(count);
+                          setState(() {});
+                        } else if (count > 1) {
+                          count = 1;
+                          countController.text = count.toString();
+                          widget.onChanged(count);
+                          setState(() {});
+                        } else if (count > 0.5) {
+                          count = 0.5;
+                          countController.text = count.toString();
+                          widget.onChanged(count);
+                          setState(() {});
+                        } else if (count > 0.25) {
+                          count = 0.25;
                           countController.text = count.toString();
                           widget.onChanged(count);
                           setState(() {});
