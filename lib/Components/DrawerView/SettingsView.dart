@@ -6,7 +6,6 @@ import 'package:settings_ui/settings_ui.dart';
 
 import '../../Settings/ChangeAppLanguage.dart';
 
-
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
 
@@ -39,13 +38,13 @@ class SettingsView extends StatelessWidget {
             ],
           ),
 
-
           SettingsSection(
             title: Text('common'.tr),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                onPressed: (context){
-                  var changelanguage = ChangeLanguage().buildLanguageDialog(context);
+                onPressed: (context) {
+                  var changelanguage =
+                      ChangeLanguage().buildLanguageDialog(context);
                 },
                 leading: const Icon(Icons.language),
                 title: Text('language'.tr),
@@ -53,23 +52,22 @@ class SettingsView extends StatelessWidget {
             ],
           ),
 
-
-          SettingsSection(
-            title: Text('Notification'.tr),
-            tiles: <SettingsTile>[
-              SettingsTile.navigation(
-                onPressed: (context) {},
-                leading: const Icon(Icons.language),
-                title: const Text('Cancel Notifications'),
-              ),
-              SettingsTile.switchTile(
-                onToggle: (value) {},
-                initialValue: false,
-                leading: const Icon(Icons.format_paint),
-                title: const Text('Schedule Daily Notification'),
-              ),
-            ],
-          ),
+          // SettingsSection(
+          //   title: Text('Notification'.tr),
+          //   tiles: <SettingsTile>[
+          //     SettingsTile.navigation(
+          //       onPressed: (context) {},
+          //       leading: const Icon(Icons.language),
+          //       title: const Text('Cancel Notifications'),
+          //     ),
+          //     SettingsTile.switchTile(
+          //       onToggle: (value) {},
+          //       initialValue: false,
+          //       leading: const Icon(Icons.format_paint),
+          //       title: const Text('Schedule Daily Notification'),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
